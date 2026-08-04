@@ -1,12 +1,16 @@
 package com.numiscan.app.ui.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ClearAll
 import androidx.compose.material.icons.outlined.DoneAll
-import androidx.compose.material3.*
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -23,92 +27,70 @@ fun ResultToolbar(
 
 ) {
 
-    ElevatedCard(
+    Row(
 
         modifier = Modifier.fillMaxWidth(),
 
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 2.dp
-        )
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
 
     ) {
 
-        Row(
+        FilledTonalButton(
 
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(14.dp),
+            modifier = Modifier.weight(1f),
 
-            verticalAlignment = Alignment.CenterVertically
+            onClick = onSelectAll
 
         ) {
 
-            Column(
+            Icon(
 
-                modifier = Modifier.weight(1f)
+                imageVector = Icons.Outlined.DoneAll,
 
-            ) {
-
-                Text(
-
-                    text = "نتایج استخراج",
-
-                    style = MaterialTheme.typography.titleMedium
-
-                )
-
-                Text(
-
-                    text = "$selectedCount انتخاب شده از $totalCount",
-
-                    style = MaterialTheme.typography.bodySmall,
-
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-
-                )
-
-            }
-
-            FilledTonalIconButton(
-
-                onClick = onSelectAll
-
-            ) {
-
-                Icon(
-
-                    Icons.Outlined.DoneAll,
-
-                    contentDescription = null
-
-                )
-
-            }
-
-            Spacer(
-
-                Modifier.width(8.dp)
+                contentDescription = null
 
             )
 
-            FilledTonalIconButton(
+            Text(
 
-                onClick = onClear
+                text = " انتخاب همه"
 
-            ) {
+            )
 
-                Icon(
+        }
 
-                    Icons.Outlined.ClearAll,
+        FilledTonalButton(
 
-                    contentDescription = null
+            modifier = Modifier.weight(1f),
 
-                )
+            onClick = onClear
 
-            }
+        ) {
+
+            Icon(
+
+                imageVector = Icons.Outlined.ClearAll,
+
+                contentDescription = null
+
+            )
+
+            Text(
+
+                text = " پاک کردن"
+
+            )
 
         }
 
     }
+
+    Text(
+
+        text = "انتخاب شده: $selectedCount از $totalCount",
+
+        style = MaterialTheme.typography.bodyMedium
+
+    )
 
 }
