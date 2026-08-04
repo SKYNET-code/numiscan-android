@@ -1,11 +1,23 @@
 package com.numiscan.app.ui.components
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
+import com.numiscan.app.ui.theme.CardBorder
+import com.numiscan.app.ui.theme.Surface
 
 @Composable
 fun InputCard(
@@ -16,128 +28,85 @@ fun InputCard(
 
     onExtract: () -> Unit,
 
-    onClear: () -> Unit,
+    onPaste: () -> Unit,
 
-    onPaste: () -> Unit
+    onClear: () -> Unit
 
 ) {
-
 
     Card(
 
         modifier = Modifier.fillMaxWidth(),
 
-        shape = MaterialTheme.shapes.large
+        shape = RoundedCornerShape(18.dp),
+
+        border = BorderStroke(
+
+            1.dp,
+
+            CardBorder
+
+        ),
+
+        elevation = CardDefaults.cardElevation(
+
+            defaultElevation = 6.dp
+
+        ),
+
+        colors = CardDefaults.cardColors(
+
+            containerColor = Surface
+
+        )
 
     ) {
 
-
         Column(
 
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(18.dp),
 
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(14.dp)
 
         ) {
 
+            Text(
+
+                "متن پیامک یا متن دلخواه",
+
+                style = MaterialTheme.typography.titleMedium
+
+            )
 
             OutlinedTextField(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(170.dp),
 
                 value = text,
 
                 onValueChange = onTextChange,
 
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .heightIn(
-                            min = 150.dp
-                        ),
-
-                label = {
-
-                    Text("متن ورودی")
-
-                },
-
                 placeholder = {
 
-                    Text(
-                        "متن را وارد کنید"
-                    )
-
-                },
-
-
-                trailingIcon = {
-
-
-                    if(text.isNotEmpty()){
-
-
-                        IconButton(
-
-                            onClick = onClear
-
-                        ){
-
-                            Text("×")
-
-                        }
-
-                    }
+                    Text("پیامک یا متن را اینجا وارد کنید...")
 
                 }
 
             )
 
+            Button(
 
+                modifier = Modifier.fillMaxWidth(),
 
-            Row(
+                onClick = onExtract
 
-                modifier =
-                    Modifier.fillMaxWidth(),
+            ) {
 
-                horizontalArrangement =
-                    Arrangement.spacedBy(8.dp)
-
-            ){
-
-
-                OutlinedButton(
-
-                    modifier =
-                        Modifier.weight(1f),
-
-                    onClick = onPaste
-
-                ){
-
-                    Text("Paste")
-
-                }
-
-
-
-                Button(
-
-                    modifier =
-                        Modifier.weight(1f),
-
-                    enabled =
-                        text.isNotBlank(),
-
-                    onClick = onExtract
-
-                ){
-
-                    Text("استخراج")
-
-                }
-
+                Text("استخراج شماره‌ها")
 
             }
-
 
         }
 
