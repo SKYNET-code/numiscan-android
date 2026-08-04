@@ -72,9 +72,6 @@ class MainActivity : ComponentActivity() {
 
                         },
 
-                        onMenuClick = {
-
-                        }
 
                     )
 
