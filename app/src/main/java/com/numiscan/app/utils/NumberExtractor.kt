@@ -149,7 +149,7 @@ object NumberExtractor {
     ) {
 
         Regex(
-            "(?<![\\d۰-۹])(?:[\\d۰-۹]{3,}(?:[,،][\\d۰-۹]{3})*)(?![\\d۰-۹])"
+            "(?<![\\d۰-۹])(?:[\\d۰-۹]+(?:[,،][\\d۰-۹]{3})*)(?![\\d۰-۹])"
         )
             .findAll(text)
             .forEach {
@@ -158,6 +158,7 @@ object NumberExtractor {
                     it.value
                         .replace(",", "")
                         .replace("،", "")
+                        .trim()
 
                 if (
                     value.length >= 3 &&
