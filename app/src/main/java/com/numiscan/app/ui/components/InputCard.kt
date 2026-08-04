@@ -50,6 +50,7 @@ fun InputCard(
 
         ) {
 
+
             Text(
 
                 text = "متن ورودی",
@@ -60,11 +61,13 @@ fun InputCard(
 
             )
 
+
             Spacer(
 
                 modifier = Modifier.height(12.dp)
 
             )
+
 
             OutlinedTextField(
 
@@ -73,14 +76,16 @@ fun InputCard(
                 onValueChange = onTextChange,
 
                 modifier = Modifier
+
                     .fillMaxWidth()
+
                     .heightIn(min = 180.dp),
 
                 placeholder = {
 
                     Text(
 
-                        "متن، پیام، شماره‌ها یا اطلاعات را اینجا وارد یا Paste کنید..."
+                        text = "متن، پیام، شماره‌ها یا اطلاعات را اینجا وارد کنید..."
 
                     )
 
@@ -90,8 +95,9 @@ fun InputCard(
 
                 singleLine = false,
 
-                maxLines = 12
-                                colors = OutlinedTextFieldDefaults.colors(
+                maxLines = 12,
+
+                colors = OutlinedTextFieldDefaults.colors(
 
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
 
@@ -105,11 +111,13 @@ fun InputCard(
 
             )
 
+
             Spacer(
 
                 modifier = Modifier.height(14.dp)
 
             )
+
 
             Row(
 
@@ -121,6 +129,7 @@ fun InputCard(
 
             ) {
 
+
                 Text(
 
                     text = "${text.length} کاراکتر",
@@ -131,29 +140,31 @@ fun InputCard(
 
                 )
 
+
                 Row(
 
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
 
                 ) {
 
+
                     OutlinedButton(
 
                         onClick = {
-
-                            // TODO: Paste from clipboard
 
                         }
 
                     ) {
 
+
                         Icon(
 
-                            Icons.Outlined.ContentPaste,
+                            imageVector = Icons.Outlined.ContentPaste,
 
                             contentDescription = null
 
                         )
+
 
                         Spacer(
 
@@ -161,9 +172,16 @@ fun InputCard(
 
                         )
 
-                        Text("Paste")
+
+                        Text(
+
+                            "Paste"
+
+                        )
 
                     }
+
+
 
                     Button(
 
@@ -175,13 +193,15 @@ fun InputCard(
 
                     ) {
 
+
                         Icon(
 
-                            Icons.Outlined.DeleteOutline,
+                            imageVector = Icons.Outlined.DeleteOutline,
 
                             contentDescription = null
 
                         )
+
 
                         Spacer(
 
@@ -189,7 +209,12 @@ fun InputCard(
 
                         )
 
-                        Text("پاک کردن")
+
+                        Text(
+
+                            "پاک کردن"
+
+                        )
 
                     }
 
