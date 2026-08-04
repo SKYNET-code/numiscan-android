@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.numiscan.app.data.model.NumberType
+import androidx.compose.material.icons.outlined.Info
 
 @Composable
 fun NumberIcon(
@@ -19,6 +20,9 @@ fun NumberIcon(
 ) {
 
     val icon: ImageVector = when (type) {
+
+        NumberType.GENERAL ->
+            Icons.Outlined.Info
 
         NumberType.MOBILE ->
             Icons.Outlined.PhoneAndroid
