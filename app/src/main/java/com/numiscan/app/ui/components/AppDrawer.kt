@@ -1,73 +1,122 @@
 package com.numiscan.app.ui.components
 
-
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-
-
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun AppDrawer(
 
-    selected: String,
+    onClose: () -> Unit,
 
-    onNavigate: (String) -> Unit
+    modifier: Modifier = Modifier
 
-){
+) {
+
+    ModalDrawerSheet(
+
+        modifier = modifier
+            .fillMaxHeight()
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .padding(16.dp)
+
+        ) {
+
+            Text(
+
+                text = "NumiScan",
+
+                style = MaterialTheme.typography.headlineSmall
+
+            )
+
+            Text(
+
+                text = "شماره‌یاب هوشمند",
+
+                style = MaterialTheme.typography.bodyMedium,
+
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+
+            )
 
 
-    ModalDrawerSheet {
+            HorizontalDivider(
+
+                modifier = Modifier.padding(vertical = 16.dp)
+
+            )
 
 
+            NavigationDrawerItem(
 
-        TextButton(
+                label = {
 
-            onClick = {
+                    Text("تنظیمات")
 
-                onNavigate("home")
+                },
 
-            }
+                selected = false,
 
-        ){
+                onClick = {
 
-            Text("خانه")
+                },
+
+                icon = {
+
+                    Icon(
+
+                        imageVector = Icons.Outlined.Settings,
+
+                        contentDescription = null
+
+                    )
+
+                }
+
+            )
+                        NavigationDrawerItem(
+
+                label = {
+
+                    Text("درباره برنامه")
+
+                },
+
+                selected = false,
+
+                onClick = {
+
+                },
+
+                icon = {
+
+                    Icon(
+
+                        imageVector = Icons.Outlined.Info,
+
+                        contentDescription = null
+
+                    )
+
+                }
+
+            )
 
         }
-
-
-
-        TextButton(
-
-            onClick = {
-
-                onNavigate("settings")
-
-            }
-
-        ){
-
-            Text("تنظیمات")
-
-        }
-
-
-
-        TextButton(
-
-            onClick = {
-
-                onNavigate("about")
-
-            }
-
-        ){
-
-            Text("درباره")
-
-        }
-
 
     }
-
 
 }
