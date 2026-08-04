@@ -1,10 +1,26 @@
-when (type) {
+package com.numiscan.app.ui.components
 
-    NumberType.MOBILE -> "موبایل"
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import com.numiscan.app.data.model.NumberType
 
-    NumberType.LANDLINE -> "تلفن"
+@Composable
+fun NumberBadge(
+    type: NumberType
+) {
 
-    NumberType.BANK_CARD -> "کارت"
+    val text = when (type) {
+        NumberType.MOBILE -> "موبایل"
+        NumberType.LANDLINE -> "تلفن"
+        NumberType.BANK_CARD -> "کارت"
+        NumberType.SHABA -> "شبا"
+    }
 
-    NumberType.SHABA -> "شبا"
+    AssistChip(
+        onClick = {},
+        label = {
+            Text(text)
+        }
+    )
 }
