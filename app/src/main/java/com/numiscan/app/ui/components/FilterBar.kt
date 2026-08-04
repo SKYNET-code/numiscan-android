@@ -24,10 +24,13 @@ fun FilterBar(
 
 ) {
 
+
     Row(
 
         modifier = modifier
+
             .fillMaxWidth()
+
             .padding(vertical = 8.dp),
 
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -54,7 +57,10 @@ fun FilterBar(
             colors = FilterChipDefaults.filterChipColors(
 
                 selectedContainerColor =
-                    MaterialTheme.colorScheme.primaryContainer
+                    MaterialTheme.colorScheme.primaryContainer,
+
+                selectedLabelColor =
+                    MaterialTheme.colorScheme.onPrimaryContainer
 
             )
 
@@ -80,7 +86,10 @@ fun FilterBar(
             colors = FilterChipDefaults.filterChipColors(
 
                 selectedContainerColor =
-                    MaterialTheme.colorScheme.primaryContainer
+                    MaterialTheme.colorScheme.primaryContainer,
+
+                selectedLabelColor =
+                    MaterialTheme.colorScheme.onPrimaryContainer
 
             )
 
@@ -106,7 +115,10 @@ fun FilterBar(
             colors = FilterChipDefaults.filterChipColors(
 
                 selectedContainerColor =
-                    MaterialTheme.colorScheme.primaryContainer
+                    MaterialTheme.colorScheme.primaryContainer,
+
+                selectedLabelColor =
+                    MaterialTheme.colorScheme.onPrimaryContainer
 
             )
 
@@ -132,7 +144,10 @@ fun FilterBar(
             colors = FilterChipDefaults.filterChipColors(
 
                 selectedContainerColor =
-                    MaterialTheme.colorScheme.primaryContainer
+                    MaterialTheme.colorScheme.primaryContainer,
+
+                selectedLabelColor =
+                    MaterialTheme.colorScheme.onPrimaryContainer
 
             )
 
