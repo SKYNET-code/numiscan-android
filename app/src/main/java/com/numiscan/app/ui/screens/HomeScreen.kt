@@ -1,66 +1,64 @@
 package com.numiscan.app.ui.screens
 
-
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.numiscan.app.ui.components.AppTopBar
 import com.numiscan.app.ui.components.InputCard
-import com.numiscan.app.ui.components.ResultSummaryCard
 import com.numiscan.app.utils.ClipboardManager
-import com.numiscan.app.utils.HapticManager
-import com.numiscan.app.utils.SnackbarManager
 import com.numiscan.app.viewmodel.MainViewModel
-import kotlinx.coroutines.launch
-
-
 
 @Composable
 fun HomeScreen(
 
-    onOpenResults: () -> Unit,
+    openDrawer: () -> Unit,
+
+    openResults: () -> Unit,
 
     viewModel: MainViewModel = viewModel()
 
-){
-
-
-    val context = LocalContext.current
-
+) {
 
     val input by viewModel.inputText.collectAsState()
 
+    val snackbar = remember {
 
-    val results by viewModel.results.collectAsState()
+        SnackbarHostState()
 
-
-    val snackbarHostState =
-        remember {
-            SnackbarHostState()
-        }
-
-
-    val scope =
-        rememberCoroutineScope()
-
-
+    }
 
     Scaffold(
 
+        topBar = {
+
+            AppTopBar(
+
+                title = "NumiScan",
+
+                onMenuClick = openDrawer
+
+            )
+
+        },
+
         snackbarHost = {
 
-            SnackbarHost(
-                snackbarHostState
-            )
+            SnackbarHost(snackbar)
 
         }
 
-    ){ padding ->
-
-
+    ) { padding ->
 
         Column(
 
@@ -68,17 +66,13 @@ fun HomeScreen(
 
                 .padding(padding)
 
-                .padding(16.dp)
+                .padding(18.dp)
 
                 .fillMaxSize(),
 
-            verticalArrangement =
+            verticalArrangement = Arrangement.Top
 
-                Arrangement.spacedBy(16.dp)
-
-        ){
-
-
+        ) {
 
             InputCard(
 
@@ -90,32 +84,15 @@ fun HomeScreen(
 
                 },
 
+                onPaste = {
 
-                onExtract = {
+                    viewModel.updateText(
 
+                        ClipboardManager.paste(it = null)
 
-                    viewModel.extractNumbers()
-
-
-                    HapticManager.success(context)
-
-
-
-                    scope.launch {
-
-                        SnackbarManager.show(
-
-                            snackbarHostState,
-
-                            "استخراج انجام شد"
-
-                        )
-
-                    }
-
+                    )
 
                 },
-
 
                 onClear = {
 
@@ -123,41 +100,18 @@ fun HomeScreen(
 
                 },
 
+                onExtract = {
 
-                onPaste = {
+                    viewModel.extractNumbers()
 
-
-                    val text =
-                        ClipboardManager.paste(context)
-
-
-                    viewModel.updateText(text)
-
+                    openResults()
 
                 }
 
             )
-
-
-
-            ResultSummaryCard(
-
-                count = results.size,
-
-
-                onClick = {
-
-                    onOpenResults()
-
-                }
-
-            )
-
 
         }
 
-
     }
-
 
 }
