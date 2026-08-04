@@ -4,85 +4,35 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.numiscan.app.ui.components.*
 
-import com.numiscan.app.ui.components.InputCard
-import com.numiscan.app.ui.components.FilterBar
-import com.numiscan.app.ui.components.ResultCard
-import com.numiscan.app.ui.components.ResultSummaryCard
-import com.numiscan.app.viewmodel.MainViewModel
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
 
-    viewModel: MainViewModel,
+    state: HomeUiState,
 
-    openSettings: () -> Unit
+    onTextChange: (String) -> Unit,
+
+    onSearchChange: (String) -> Unit,
+
+    onFilterChange: (com.numiscan.app.data.model.NumberType?) -> Unit,
+
+    onMenuClick: () -> Unit
 
 ) {
 
-    val text by viewModel.inputText.collectAsState()
-
-    val results by viewModel.results.collectAsState()
-
     Scaffold(
-
-        containerColor = Color(0xFFF5F6F8),
 
         topBar = {
 
-            TopAppBar(
+            HomeTopBar(
 
-                title = {
-
-                    Text(
-
-                        text = "NumiScan",
-
-                        fontSize = 20.sp,
-
-                        color = MaterialTheme.colorScheme.primary
-
-                    )
-
-                },
-
-                navigationIcon = {
-
-                    IconButton(
-
-                        onClick = openSettings
-
-                    ) {
-
-                        Icon(
-
-                            Icons.Default.Menu,
-
-                            contentDescription = null
-
-                        )
-
-                    }
-
-                },
-
-                colors = TopAppBarDefaults.topAppBarColors(
-
-                    containerColor = Color.White
-
-                )
+                onMenuClick = onMenuClick
 
             )
 
@@ -90,171 +40,136 @@ fun HomeScreen(
 
     ) { padding ->
 
-        Column(
+
+        LazyColumn(
 
             modifier = Modifier
 
                 .fillMaxSize()
 
-                .padding(padding)
-                .padding(16.dp)
+                .background(
+
+                    MaterialTheme.colorScheme.background
+
+                )
+
+                .padding(padding),
+
+            contentPadding = PaddingValues(
+
+                horizontal = 16.dp,
+
+                vertical = 16.dp
+
+            ),
+
+            verticalArrangement = Arrangement.spacedBy(16.dp)
 
         ) {
-                        InputCard(
 
-                text = text,
 
-                onTextChange = {
+            item {
 
-                    viewModel.updateText(it)
+                InputCard(
 
-                }
+                    text = state.inputText,
 
-            )
+                    onTextChange = onTextChange
 
-            Spacer(
-
-                modifier = Modifier.height(16.dp)
-
-            )
-
-            Button(
-
-                onClick = {
-
-                    viewModel.extractNumbers()
-
-                },
-
-                modifier = Modifier.fillMaxWidth()
-
-            ) {
-
-                Text("استخراج شماره‌ها")
+                )
 
             }
 
-            Spacer(
 
-                modifier = Modifier.height(16.dp)
+            item {
 
-            )
+                SearchBar(
 
-            if (results.isNotEmpty()) {
+                    query = state.searchQuery,
 
-                ResultSummaryCard(
-
-                    results = results
+                    onQueryChange = onSearchChange
 
                 )
 
-                Spacer(
+            }
 
-                    modifier = Modifier.height(16.dp)
 
-                )
+            item {
 
                 FilterBar(
 
-                    selected = FilterType.ALL,
+                    selectedType = state.selectedType,
 
-                    onSelected = {
-
-                        viewModel.setFilter(it)
-
-                    }
+                    onTypeSelected = onFilterChange
 
                 )
 
-                Spacer(
+            }
+                        item {
 
-                    modifier = Modifier.height(16.dp)
+                if (state.results.isNotEmpty()) {
 
-                )
+                    ResultSummaryCard(
 
-                Text(
-
-                    text = "نتایج استخراج",
-
-                    style = MaterialTheme.typography.titleMedium
-
-                )
-
-                Spacer(
-
-                    modifier = Modifier.height(8.dp)
-
-                )
-                                Box(
-
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-
-                ) {
-
-                    LazyColumn(
-
-                        modifier = Modifier.fillMaxSize(),
-
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-
-                        contentPadding = PaddingValues(bottom = 16.dp)
-
-                    ) {
-
-                        items(
-
-                            items = results,
-
-                            key = { it.value }
-
-                        ) { item ->
-
-                            ResultCard(
-
-                                item = item,
-
-                                onSelect = {
-
-                                    viewModel.toggleSelection(item)
-
-                                }
-
-                            )
-
-                        }
-
-                    }
-
-                }
-
-            } else {
-
-                Box(
-
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-
-                    contentAlignment = Alignment.Center
-
-                ) {
-
-                    Text(
-
-                        text = "هنوز شماره‌ای استخراج نشده است.",
-
-                        color = Color.Gray,
-
-                        style = MaterialTheme.typography.bodyMedium
+                        total = state.results.size
 
                     )
 
                 }
 
             }
-                    }
+
+
+            if (state.results.isEmpty()) {
+
+                item {
+
+                    EmptyState()
+
+                }
+
+            }
+
+
+            items(
+
+                state.results
+
+            ) { item ->
+
+
+                ResultCard(
+
+                    item = item
+
+                )
+
+
+            }
+
+
+            item {
+
+
+                StatisticsCard(
+
+                    total = state.results.size,
+
+                    mobile = state.mobileCount,
+
+                    landline = state.landlineCount,
+
+                    bankCard = state.bankCardCount,
+
+                    shaba = state.shabaCount
+
+                )
+
+
+            }
+
+
+        }
 
     }
 
