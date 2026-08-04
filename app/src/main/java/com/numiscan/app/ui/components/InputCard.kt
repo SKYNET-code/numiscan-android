@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
@@ -23,6 +25,9 @@ fun InputCard(
     modifier: Modifier = Modifier
 
 ) {
+
+    val clipboardManager = LocalClipboardManager.current
+
 
     Card(
 
@@ -151,6 +156,19 @@ fun InputCard(
                     OutlinedButton(
 
                         onClick = {
+
+                            val clipboardText =
+                                clipboardManager.getText()
+
+                            if (clipboardText != null) {
+
+                                onTextChange(
+
+                                    clipboardText.text
+
+                                )
+
+                            }
 
                         }
 
