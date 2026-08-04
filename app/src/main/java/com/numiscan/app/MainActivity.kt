@@ -1,5 +1,6 @@
 package com.numiscan.app
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +21,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+
+        handleShareIntent(intent)
 
 
         setContent {
@@ -55,24 +59,61 @@ class MainActivity : ComponentActivity() {
 
                         },
 
+
                         onExtract = {
 
                             viewModel.extractNumbers()
 
                         },
 
+
                         onClear = {
 
                             viewModel.clearResults()
 
-                        },
-
+                        }
 
                     )
 
                 }
 
             }
+
+        }
+
+    }
+
+
+    override fun onNewIntent(intent: Intent?) {
+
+        super.onNewIntent(intent)
+
+        intent?.let {
+
+            handleShareIntent(it)
+
+        }
+
+    }
+
+
+    private fun handleShareIntent(intent: Intent) {
+
+        if (
+
+            intent.action == Intent.ACTION_SEND &&
+
+            intent.type == "text/plain"
+
+        ) {
+
+            intent.getStringExtra(Intent.EXTRA_TEXT)
+
+                ?.let { text ->
+
+                    viewModel.updateText(text)
+
+                }
 
         }
 
