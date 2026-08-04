@@ -1,144 +1,297 @@
 package com.numiscan.app.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ContentPaste
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.numiscan.app.ui.components.HomeTopBar
-import com.numiscan.app.ui.components.PrimaryButton
-import com.numiscan.app.ui.components.SectionTitle
+import com.numiscan.app.ui.components.InputCard
+import com.numiscan.app.ui.components.ResultSummaryCard
+import com.numiscan.app.utils.ClipboardManager
 import com.numiscan.app.viewmodel.MainViewModel
 
 @Composable
 fun HomeScreen(
 
-    openDrawer: () -> Unit,
-
-    openSettings: () -> Unit,
-
-    openResults: () -> Unit,
+    onShowResults: () -> Unit,
 
     viewModel: MainViewModel = viewModel()
 
 ) {
 
-    val text by viewModel.inputText.collectAsState()
+    val context = LocalContext.current
 
-    val snackbar = remember {
+    val input by viewModel.inputText.collectAsState()
 
-        SnackbarHostState()
+    val results by viewModel.results.collectAsState()
 
-    }
+    Column(
 
-    Scaffold(
+        modifier = Modifier
 
-        topBar = {
+            .fillMaxSize()
 
-            HomeTopBar(
+            .verticalScroll(
 
-                onMenuClick = openDrawer,
-
-                onSettingsClick = openSettings
+                rememberScrollState()
 
             )
 
-        },
+            .padding(20.dp)
 
-        snackbarHost = {
+    ) {
 
-            SnackbarHost(snackbar)
+        Spacer(
 
-        }
+            Modifier.height(8.dp)
 
-    ) { padding ->
+        )
 
-        Column(
+        Text(
 
-            modifier = Modifier
+            text = "NumiScan",
 
-                .padding(padding)
+            style = MaterialTheme.typography.headlineMedium
 
-                .navigationBarsPadding()
+        )
 
-                .fillMaxSize()
+        Spacer(
 
-                .verticalScroll(
+            Modifier.height(6.dp)
 
-                    rememberScrollState()
+        )
 
-                )
+        Text(
 
-                .padding(horizontal = 20.dp),
+            text = "استخراج هوشمند شماره‌ها",
 
-            verticalArrangement =
+            style = MaterialTheme.typography.bodyMedium,
 
-                Arrangement.spacedBy(18.dp)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+
+        )
+
+        Spacer(
+
+            Modifier.height(24.dp)
+
+        )
+                ElevatedCard(
+
+            modifier = Modifier.fillMaxWidth(),
+
+            elevation = CardDefaults.elevatedCardElevation(
+                defaultElevation = 4.dp
+            )
 
         ) {
 
-            SectionTitle(
+            Column(
 
-                text = "متن ورودی"
+                modifier = Modifier.padding(18.dp)
 
-            )
+            ) {
 
-            OutlinedTextField(
+                OutlinedTextField(
 
-                modifier = Modifier
+                    value = input,
 
-                    .fillMaxWidth(),
+                    onValueChange = {
 
-                value = text,
+                        viewModel.updateText(it)
 
-                onValueChange = {
+                    },
 
-                    viewModel.updateText(it)
+                    modifier = Modifier
 
-                },
+                        .fillMaxWidth()
 
-                minLines = 10,
+                        .height(180.dp),
 
-                placeholder = {
+                    placeholder = {
 
-                    androidx.compose.material3.Text(
+                        Text(
 
-                        "پیامک یا متن موردنظر را اینجا وارد کنید..."
+                            "پیامک، متن یا هر محتوایی را اینجا قرار دهید..."
+
+                        )
+
+                    }
+
+                )
+
+                Spacer(
+
+                    Modifier.height(16.dp)
+
+                )
+
+                Row(
+
+                    modifier = Modifier.fillMaxWidth(),
+
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+
+                ) {
+
+                    FilledTonalButton(
+
+                        modifier = Modifier.weight(1f),
+
+                        onClick = {
+
+                            val text = ClipboardManager.paste(context)
+
+                            viewModel.updateText(text)
+
+                        }
+
+                    ) {
+
+                        Icon(
+
+                            Icons.Outlined.ContentPaste,
+
+                            null
+
+                        )
+
+                        Spacer(
+
+                            Modifier.width(8.dp)
+
+                        )
+
+                        Text("چسباندن")
+
+                    }
+
+                    FilledTonalButton(
+
+                        modifier = Modifier.weight(1f),
+
+                        onClick = {
+
+                            viewModel.clearText()
+
+                        }
+
+                    ) {
+
+                        Icon(
+
+                            Icons.Outlined.Delete,
+
+                            null
+
+                        )
+
+                        Spacer(
+
+                            Modifier.width(8.dp)
+
+                        )
+
+                        Text("پاک کردن")
+
+                    }
+
+                }
+
+                Spacer(
+
+                    Modifier.height(18.dp)
+
+                )
+
+                Button(
+
+                    modifier = Modifier
+
+                        .fillMaxWidth()
+
+                        .height(54.dp),
+
+                    onClick = {
+
+                        viewModel.extractNumbers()
+
+                        onShowResults()
+
+                    }
+
+                ) {
+
+                    Text(
+
+                        "استخراج شماره‌ها"
 
                     )
 
                 }
 
-            )
-
-            PrimaryButton(
-
-                text = "استخراج شماره‌ها"
-
-            ) {
-
-                viewModel.extractNumbers()
-
-                openResults()
-
             }
 
         }
+
+        Spacer(
+
+            Modifier.height(22.dp)
+
+        )
+                if (results.isNotEmpty()) {
+
+            ResultSummaryCard(
+
+                total = results.size,
+
+                mobile = results.count {
+
+                    it.type.name == "MOBILE"
+
+                },
+
+                landline = results.count {
+
+                    it.type.name == "LANDLINE"
+
+                },
+
+                cards = results.count {
+
+                    it.type.name == "BANK_CARD"
+
+                },
+
+                shaba = results.count {
+
+                    it.type.name == "SHABA"
+
+                },
+
+                onOpenResults = {
+
+                    onShowResults()
+
+                }
+
+            )
+
+        }
+
+        Spacer(
+
+            Modifier.height(24.dp)
+
+        )
 
     }
 
