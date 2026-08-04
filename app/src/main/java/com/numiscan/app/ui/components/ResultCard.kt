@@ -2,7 +2,15 @@ package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
@@ -10,20 +18,16 @@ import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
-import com.numiscan.app.data.model.NumberType
 
 @Composable
 fun ResultCard(
@@ -32,11 +36,11 @@ fun ResultCard(
 
     onSelect: () -> Unit,
 
-    onCopy: () -> Unit,
+    onCopy: (() -> Unit)? = null,
 
-    onCall: () -> Unit,
+    onShare: (() -> Unit)? = null,
 
-    onShare: () -> Unit
+    onCall: (() -> Unit)? = null
 
 ) {
 
@@ -45,39 +49,25 @@ fun ResultCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-
                 onSelect()
-
             },
 
-        shape = RoundedCornerShape(22.dp),
+        shape = RoundedCornerShape(18.dp),
 
         border = BorderStroke(
-
             1.dp,
-
             MaterialTheme.colorScheme.outlineVariant
-
-        ),
-
-        elevation = CardDefaults.cardElevation(
-
-            defaultElevation = 4.dp
-
         ),
 
         colors = CardDefaults.cardColors(
-
-            containerColor =
-                MaterialTheme.colorScheme.surfaceVariant
-
+            containerColor = MaterialTheme.colorScheme.surface
         )
 
     ) {
 
         Column(
 
-            modifier = Modifier.padding(18.dp)
+            modifier = Modifier.padding(16.dp)
 
         ) {
 
@@ -109,124 +99,89 @@ fun ResultCard(
 
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(14.dp))
 
             Text(
 
                 text = item.value,
 
-                style = MaterialTheme.typography.titleMedium,
-
-                fontWeight = FontWeight.Bold,
-
-                maxLines = 2,
-
-                overflow = TextOverflow.Ellipsis
+                style = MaterialTheme.typography.titleMedium
 
             )
 
-            Spacer(Modifier.height(8.dp))
-
-            Text(
-
-                text = typeDescription(item.type),
-
-                style = MaterialTheme.typography.bodySmall,
-
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-
-            )
-
-            Spacer(Modifier.height(18.dp))
-
-            HorizontalDivider()
-
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(14.dp))
 
             Row(
 
-                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
 
-                horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier.fillMaxWidth()
 
             ) {
 
-                ActionButton(
+                IconButton(
 
-                    text = "کپی",
+                    onClick = {
 
-                    icon = Icons.Outlined.ContentCopy,
+                        onCopy?.invoke()
 
-                    onClick = onCopy
-
-                )
-
-                if (
-
-                    item.type == NumberType.MOBILE ||
-
-                    item.type == NumberType.PHONE
+                    }
 
                 ) {
 
-                    ActionButton(
+                    Icon(
 
-                        text = "تماس",
+                        Icons.Outlined.ContentCopy,
 
-                        icon = Icons.Outlined.Call,
-
-                        onClick = onCall
+                        null
 
                     )
 
                 }
 
-                ActionButton(
+                IconButton(
 
-                    text = "اشتراک",
+                    onClick = {
 
-                    icon = Icons.Outlined.Share,
+                        onShare?.invoke()
 
-                    onClick = onShare
+                    }
 
-                )
+                ) {
+
+                    Icon(
+
+                        Icons.Outlined.Share,
+
+                        null
+
+                    )
+
+                }
+
+                IconButton(
+
+                    onClick = {
+
+                        onCall?.invoke()
+
+                    }
+
+                ) {
+
+                    Icon(
+
+                        Icons.Outlined.Call,
+
+                        null
+
+                    )
+
+                }
 
             }
 
         }
-
-    }
-
-}
-
-private fun typeDescription(
-
-    type: NumberType
-
-): String {
-
-    return when (type) {
-
-        NumberType.MOBILE ->
-            "شماره تلفن همراه"
-
-        NumberType.PHONE ->
-            "شماره تلفن ثابت"
-
-        NumberType.CARD ->
-            "شماره کارت بانکی"
-
-        NumberType.SHABA ->
-            "شماره شبا"
-
-        NumberType.EMAIL ->
-            "آدرس ایمیل"
-
-        NumberType.URL ->
-            "آدرس اینترنتی"
-
-        NumberType.UNKNOWN ->
-            "نوع نامشخص"
 
     }
 
