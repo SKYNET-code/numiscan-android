@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
@@ -28,7 +27,6 @@ fun InputCard(
 
     val clipboardManager = LocalClipboardManager.current
 
-
     Card(
 
         modifier = modifier.fillMaxWidth(),
@@ -37,7 +35,7 @@ fun InputCard(
 
         colors = CardDefaults.cardColors(
 
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
 
         ),
 
@@ -55,24 +53,23 @@ fun InputCard(
 
         ) {
 
-
             Text(
 
                 text = "متن ورودی",
 
                 style = MaterialTheme.typography.titleMedium,
 
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+
+                color = MaterialTheme.colorScheme.onSurface
 
             )
-
 
             Spacer(
 
                 modifier = Modifier.height(12.dp)
 
             )
-
 
             OutlinedTextField(
 
@@ -106,23 +103,27 @@ fun InputCard(
 
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
 
-                    unfocusedBorderColor = Color(0xFFD8DDE5),
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
 
-                    focusedContainerColor = Color.White,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
 
-                    unfocusedContainerColor = Color.White
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+
+                    cursorColor = MaterialTheme.colorScheme.primary
 
                 )
 
             )
-
 
             Spacer(
 
                 modifier = Modifier.height(14.dp)
 
             )
-
 
             Row(
 
@@ -134,17 +135,15 @@ fun InputCard(
 
             ) {
 
-
                 Text(
 
                     text = "${text.length} کاراکتر",
 
                     style = MaterialTheme.typography.bodySmall,
 
-                    color = Color.Gray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
 
                 )
-
 
                 Row(
 
@@ -152,28 +151,19 @@ fun InputCard(
 
                 ) {
 
-
                     OutlinedButton(
 
                         onClick = {
 
-                            val clipboardText =
-                                clipboardManager.getText()
+                            clipboardManager.getText()?.let {
 
-                            if (clipboardText != null) {
-
-                                onTextChange(
-
-                                    clipboardText.text
-
-                                )
+                                onTextChange(it.text)
 
                             }
 
                         }
 
                     ) {
-
 
                         Icon(
 
@@ -183,23 +173,15 @@ fun InputCard(
 
                         )
 
-
                         Spacer(
 
                             modifier = Modifier.width(6.dp)
 
                         )
 
-
-                        Text(
-
-                            "Paste"
-
-                        )
+                        Text("Paste")
 
                     }
-
-
 
                     Button(
 
@@ -211,7 +193,6 @@ fun InputCard(
 
                     ) {
 
-
                         Icon(
 
                             imageVector = Icons.Outlined.DeleteOutline,
@@ -220,19 +201,13 @@ fun InputCard(
 
                         )
 
-
                         Spacer(
 
                             modifier = Modifier.width(6.dp)
 
                         )
 
-
-                        Text(
-
-                            "پاک کردن"
-
-                        )
+                        Text("پاک کردن")
 
                     }
 
