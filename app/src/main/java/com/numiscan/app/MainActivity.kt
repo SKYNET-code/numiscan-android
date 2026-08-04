@@ -6,21 +6,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.material3.ModalNavigationDrawer
-import com.numiscan.app.ui.components.AppDrawer
-import com.numiscan.app.ui.components.AppTopBar
-import com.numiscan.app.ui.screens.*
+import androidx.compose.ui.graphics.Color
+import com.numiscan.app.ui.screens.HomeScreen
+import com.numiscan.app.ui.screens.ResultsScreen
 import com.numiscan.app.ui.theme.NumiScanTheme
 
 
 
-class MainActivity : ComponentActivity(){
+class MainActivity : ComponentActivity() {
 
 
-    override fun onCreate(
-        savedInstanceState: Bundle?
-    ){
+    override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
@@ -28,22 +24,10 @@ class MainActivity : ComponentActivity(){
         setContent {
 
 
-            var darkMode by rememberSaveable {
-
-                mutableStateOf(false)
-
-            }
+            NumiScanTheme {
 
 
-
-            NumiScanTheme(
-
-                darkTheme = darkMode
-
-            ){
-
-
-                var page by remember {
+                var currentScreen by remember {
 
                     mutableStateOf("home")
 
@@ -51,99 +35,54 @@ class MainActivity : ComponentActivity(){
 
 
 
-                val drawerState =
-                    rememberDrawerState(
-                        DrawerValue.Closed
-                    )
+                when(currentScreen){
 
 
-
-                val scope =
-                    rememberCoroutineScope()
+                    "home" -> {
 
 
+                        HomeScreen(
 
-                ModalNavigationDrawer(
+                            onOpenResults = {
 
-
-                    drawerContent = {
-
-
-                        AppDrawer(
-
-                            selected = page,
-
-
-                            onNavigate = {
-
-                                page = it
+                                currentScreen = "results"
 
                             }
 
                         )
 
-                    }
-
-
-                ){
-
-
-                    Scaffold(
-
-                        topBar = {
-
-
-                            AppTopBar(
-
-                                title =
-                                    "NumiScan",
-
-                                onMenuClick = {
-
-                                }
-
-                            )
-
-                        }
-
-                    ){ padding ->
-
-
-
-                        when(page){
-
-
-                            "home" ->
-                                HomeScreen()
-
-
-
-                            "settings" ->
-                                SettingsScreen(
-
-                                    darkMode,
-
-                                    {
-                                        darkMode = it
-                                    }
-
-                                )
-
-
-
-                            "about" ->
-                                AboutScreen()
-
-                        }
 
                     }
+
+
+
+                    "results" -> {
+
+
+                        ResultsScreen(
+
+                            onBack = {
+
+                                currentScreen = "home"
+
+                            }
+
+                        )
+
+
+                    }
+
 
                 }
 
+
             }
+
 
         }
 
+
     }
+
 
 }
