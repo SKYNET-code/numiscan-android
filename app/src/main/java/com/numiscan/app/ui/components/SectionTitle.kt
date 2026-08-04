@@ -1,14 +1,18 @@
 package com.numiscan.app.ui.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun SectionTitle(
 
-    text: String
+    text: String,
+
+    modifier: Modifier = Modifier
 
 ) {
 
@@ -16,9 +20,11 @@ fun SectionTitle(
 
         text = text,
 
+        modifier = modifier.fillMaxWidth(),
+
         style = MaterialTheme.typography.titleMedium,
 
-        fontWeight = FontWeight.SemiBold
+        fontWeight = FontWeight.Bold
 
     )
 
