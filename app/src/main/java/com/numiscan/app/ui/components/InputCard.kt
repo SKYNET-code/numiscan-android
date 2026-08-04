@@ -91,3 +91,114 @@ fun InputCard(
                 singleLine = false,
 
                 maxLines = 12
+                                colors = OutlinedTextFieldDefaults.colors(
+
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+
+                    unfocusedBorderColor = Color(0xFFD8DDE5),
+
+                    focusedContainerColor = Color.White,
+
+                    unfocusedContainerColor = Color.White
+
+                )
+
+            )
+
+            Spacer(
+
+                modifier = Modifier.height(14.dp)
+
+            )
+
+            Row(
+
+                modifier = Modifier.fillMaxWidth(),
+
+                horizontalArrangement = Arrangement.SpaceBetween,
+
+                verticalAlignment = Alignment.CenterVertically
+
+            ) {
+
+                Text(
+
+                    text = "${text.length} کاراکتر",
+
+                    style = MaterialTheme.typography.bodySmall,
+
+                    color = Color.Gray
+
+                )
+
+                Row(
+
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+
+                ) {
+
+                    OutlinedButton(
+
+                        onClick = {
+
+                            // TODO: Paste from clipboard
+
+                        }
+
+                    ) {
+
+                        Icon(
+
+                            Icons.Outlined.ContentPaste,
+
+                            contentDescription = null
+
+                        )
+
+                        Spacer(
+
+                            modifier = Modifier.width(6.dp)
+
+                        )
+
+                        Text("Paste")
+
+                    }
+
+                    Button(
+
+                        onClick = {
+
+                            onTextChange("")
+
+                        }
+
+                    ) {
+
+                        Icon(
+
+                            Icons.Outlined.DeleteOutline,
+
+                            contentDescription = null
+
+                        )
+
+                        Spacer(
+
+                            modifier = Modifier.width(6.dp)
+
+                        )
+
+                        Text("پاک کردن")
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
