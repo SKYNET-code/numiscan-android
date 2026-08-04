@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
 import com.numiscan.app.data.model.FilterType
 import com.numiscan.app.ui.components.*
+import com.numiscan.app.data.model.NumberType
 
 @Composable
 fun HomeScreen(
@@ -36,7 +37,7 @@ fun HomeScreen(
 ) {
 
     var selectedType by remember {
-        mutableStateOf<FilterType?>(null)
+        mutableStateOf<NumberType?>(null)
     }
 
 
