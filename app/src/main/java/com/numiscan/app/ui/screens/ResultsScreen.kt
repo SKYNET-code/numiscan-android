@@ -1,29 +1,16 @@
 package com.numiscan.app.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.numiscan.app.ui.components.FilterBar
 import com.numiscan.app.ui.components.ResultCard
 import com.numiscan.app.ui.components.ResultToolbar
 import com.numiscan.app.ui.components.SearchBar
@@ -41,7 +28,7 @@ fun ResultsScreen(
 
     val results by viewModel.results.collectAsState()
 
-    val search = remember {
+    var search by remember {
 
         mutableStateOf("")
 
@@ -49,12 +36,9 @@ fun ResultsScreen(
 
     Scaffold(
 
-        containerColor =
-            MaterialTheme.colorScheme.background,
-
         topBar = {
 
-            TopAppBar(
+            CenterAlignedTopAppBar(
 
                 title = {
 
@@ -74,7 +58,7 @@ fun ResultsScreen(
 
                             Icons.AutoMirrored.Outlined.ArrowBack,
 
-                            null
+                            contentDescription = null
 
                         )
 
@@ -94,19 +78,35 @@ fun ResultsScreen(
 
                 .padding(padding)
 
-                .fillMaxSize()
+                .padding(16.dp)
+
+                .fillMaxSize(),
+
+            verticalArrangement = Arrangement.spacedBy(16.dp)
 
         ) {
 
             SearchBar(
 
-                value = search.value,
+                query = search,
 
-                onValueChange = {
+                onQueryChange = {
 
-                    search.value = it
+                    search = it
 
                     viewModel.search(it)
+
+                }
+
+            )
+
+            FilterBar(
+
+                selected = viewModel.currentFilter,
+
+                onSelected = {
+
+                    viewModel.setFilter(it)
 
                 }
 
@@ -115,10 +115,16 @@ fun ResultsScreen(
             ResultToolbar(
 
                 selectedCount =
-                    results.count { it.selected },
+
+                results.count {
+
+                    it.selected
+
+                },
 
                 totalCount =
-                    results.size,
+
+                results.size,
 
                 onSelectAll = {
 
@@ -128,17 +134,13 @@ fun ResultsScreen(
 
                 onClear = {
 
-                    viewModel.clearResults()
+                    viewModel.clearSelection()
 
                 }
 
             )
 
             LazyColumn(
-
-                modifier = Modifier.fillMaxSize(),
-
-                contentPadding = PaddingValues(16.dp),
 
                 verticalArrangement = Arrangement.spacedBy(12.dp)
 
