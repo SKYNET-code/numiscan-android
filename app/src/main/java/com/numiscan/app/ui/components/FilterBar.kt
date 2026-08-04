@@ -1,77 +1,155 @@
 package com.numiscan.app.ui.components
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.numiscan.app.data.model.FilterType
+import com.numiscan.app.data.model.NumberType
 
 @Composable
 fun FilterBar(
 
-    selected: FilterType,
+    selectedType: NumberType?,
 
-    onSelected: (FilterType) -> Unit
+    onTypeSelected: (NumberType?) -> Unit,
+
+    modifier: Modifier = Modifier
 
 ) {
 
     Row(
 
-        modifier = Modifier.horizontalScroll(
-
-            rememberScrollState()
-
-        ),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
 
         horizontalArrangement = Arrangement.spacedBy(8.dp)
 
     ) {
 
-        FilterType.entries.forEach { filter ->
+        FilterChip(
 
-            FilterChip(
+            selected = selectedType == null,
 
-                selected = filter == selected,
+            onClick = {
 
-                onClick = {
+                onTypeSelected(null)
 
-                    onSelected(filter)
+            },
 
-                },
+            label = {
 
-                label = {
+                Text(
 
-                    Text(
+                    text = "همه"
 
-                        when (filter) {
+                )
 
-                            FilterType.ALL -> "همه"
+            },
 
-                            FilterType.MOBILE -> "موبایل"
+            colors = FilterChipDefaults.filterChipColors(
 
-                            FilterType.LANDLINE -> "ثابت"
-
-                            FilterType.BANK_CARD -> "کارت"
-
-                            FilterType.SHABA -> "شبا"
-
-                        }
-
-                    )
-
-                },
-
-                colors = FilterChipDefaults.filterChipColors()
+                selectedContainerColor =
+                    MaterialTheme.colorScheme.primaryContainer
 
             )
 
-        }
+        )
+
+        FilterChip(
+
+            selected = selectedType == NumberType.MOBILE,
+
+            onClick = {
+
+                onTypeSelected(NumberType.MOBILE)
+
+            },
+
+            label = {
+
+                Text(
+
+                    text = "موبایل"
+
+                )
+
+            }
+
+        )
+
+        FilterChip(
+
+            selected = selectedType == NumberType.LANDLINE,
+
+            onClick = {
+
+                onTypeSelected(NumberType.LANDLINE)
+
+            },
+
+            label = {
+
+                Text(
+
+                    text = "ثابت"
+
+                )
+
+            }
+
+        )
+                FilterChip(
+
+            selected = selectedType == NumberType.BANK_CARD,
+
+            onClick = {
+
+                onTypeSelected(NumberType.BANK_CARD)
+
+            },
+
+            label = {
+
+                Text(
+
+                    text = "کارت بانکی"
+
+                )
+
+            }
+
+        )
+
+
+        FilterChip(
+
+            selected = selectedType == NumberType.SHABA,
+
+            onClick = {
+
+                onTypeSelected(NumberType.SHABA)
+
+            },
+
+            label = {
+
+                Text(
+
+                    text = "شبا"
+
+                )
+
+            }
+
+        )
 
     }
 
