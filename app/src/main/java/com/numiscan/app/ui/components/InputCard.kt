@@ -1,23 +1,16 @@
 package com.numiscan.app.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.ContentPaste
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.numiscan.app.ui.theme.CardBorder
-import com.numiscan.app.ui.theme.Surface
 
 @Composable
 fun InputCard(
@@ -34,77 +27,157 @@ fun InputCard(
 
 ) {
 
-    Card(
+    ElevatedCard(
 
         modifier = Modifier.fillMaxWidth(),
 
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(24.dp),
 
-        border = BorderStroke(
-
-            1.dp,
-
-            CardBorder
-
-        ),
-
-        elevation = CardDefaults.cardElevation(
-
+        elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 6.dp
-
-        ),
-
-        colors = CardDefaults.cardColors(
-
-            containerColor = Surface
-
         )
 
     ) {
 
         Column(
 
-            modifier = Modifier.padding(18.dp),
-
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            modifier = Modifier.padding(20.dp)
 
         ) {
 
             Text(
 
-                "متن پیامک یا متن دلخواه",
+                text = "متن ورودی",
 
                 style = MaterialTheme.typography.titleMedium
 
             )
 
-            OutlinedTextField(
+            Spacer(
+                Modifier.height(14.dp)
+            )
 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(170.dp),
+            OutlinedTextField(
 
                 value = text,
 
                 onValueChange = onTextChange,
 
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp),
+
+                shape = RoundedCornerShape(18.dp),
+
                 placeholder = {
 
-                    Text("پیامک یا متن را اینجا وارد کنید...")
+                    Text(
+
+                        "پیامک، متن، شماره‌ها یا هر اطلاعاتی را اینجا وارد یا جای‌گذاری کنید.",
+
+                        textAlign = TextAlign.Start
+
+                    )
 
                 }
 
             )
 
-            Button(
+            Spacer(
+                Modifier.height(18.dp)
+            )
+
+            Row(
 
                 modifier = Modifier.fillMaxWidth(),
+
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+
+            ) {
+
+                FilledTonalButton(
+
+                    modifier = Modifier.weight(1f),
+
+                    onClick = onPaste
+
+                ) {
+
+                    Icon(
+
+                        Icons.Outlined.ContentPaste,
+
+                        contentDescription = null
+
+                    )
+
+                    Spacer(
+                        Modifier.width(8.dp)
+                    )
+
+                    Text("چسباندن")
+
+                }
+
+                FilledTonalButton(
+
+                    modifier = Modifier.weight(1f),
+
+                    onClick = onClear
+
+                ) {
+
+                    Icon(
+
+                        Icons.Outlined.Clear,
+
+                        contentDescription = null
+
+                    )
+
+                    Spacer(
+                        Modifier.width(8.dp)
+                    )
+
+                    Text("پاک کردن")
+
+                }
+
+            }
+
+            Spacer(
+                Modifier.height(18.dp)
+            )
+
+            Button(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp),
+
+                shape = RoundedCornerShape(16.dp),
 
                 onClick = onExtract
 
             ) {
 
-                Text("استخراج شماره‌ها")
+                Icon(
+
+                    Icons.Outlined.Search,
+
+                    contentDescription = null
+
+                )
+
+                Spacer(
+                    Modifier.width(8.dp)
+                )
+
+                Text(
+
+                    "استخراج شماره‌ها"
+
+                )
 
             }
 
