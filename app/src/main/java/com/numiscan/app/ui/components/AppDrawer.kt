@@ -1,9 +1,11 @@
 package com.numiscan.app.ui.components
 
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 
 
@@ -14,7 +16,7 @@ fun AppDrawer(
 
     onNavigate: (String) -> Unit
 
-){
+) {
 
 
     ModalDrawerSheet {
@@ -24,18 +26,17 @@ fun AppDrawer(
 
             text = "NumiScan",
 
-            style =
-                MaterialTheme.typography
-                    .headlineSmall,
+            style = MaterialTheme.typography.headlineSmall,
 
-            modifier =
-                Modifier
-                    .padding(
-                        start = DrawerDefaults.ItemPadding.calculateStartPadding(
-                            androidx.compose.ui.unit.LayoutDirection.Ltr
-                        ),
-                        top = androidx.compose.ui.unit.dp
-                    )
+            modifier = Modifier.padding(
+
+                start = 16.dp,
+
+                top = 24.dp,
+
+                bottom = 16.dp
+
+            )
 
         )
 
@@ -49,10 +50,7 @@ fun AppDrawer(
 
             },
 
-
-            selected =
-                selected == "home",
-
+            selected = selected == "home",
 
             onClick = {
 
@@ -72,10 +70,7 @@ fun AppDrawer(
 
             },
 
-
-            selected =
-                selected == "settings",
-
+            selected = selected == "settings",
 
             onClick = {
 
@@ -95,10 +90,7 @@ fun AppDrawer(
 
             },
 
-
-            selected =
-                selected == "about",
-
+            selected = selected == "about",
 
             onClick = {
 
