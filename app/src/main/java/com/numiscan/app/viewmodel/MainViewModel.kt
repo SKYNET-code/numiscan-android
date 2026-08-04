@@ -1,266 +1,140 @@
 package com.numiscan.app.viewmodel
 
-
 import androidx.lifecycle.ViewModel
-import com.numiscan.app.data.model.*
-import com.numiscan.app.domain.DuplicateFilter
-import com.numiscan.app.domain.NumberExtractor
+import com.numiscan.app.data.model.ExtractedNumber
+import com.numiscan.app.data.model.FilterType
+import com.numiscan.app.data.model.SortType
+import com.numiscan.app.utils.NumberExtractor
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
 
 class MainViewModel : ViewModel() {
 
-
-    private val extractor = NumberExtractor
-
-    private val duplicateFilter = DuplicateFilter()
-
-
-
-    private val _inputText =
-        MutableStateFlow("")
-
-
-    val inputText =
-        _inputText.asStateFlow()
-
-
+    private val _inputText = MutableStateFlow("")
+    val inputText = _inputText.asStateFlow()
 
     private val _allResults =
         MutableStateFlow<List<ExtractedNumber>>(emptyList())
 
-
-
     private val _results =
         MutableStateFlow<List<ExtractedNumber>>(emptyList())
 
+    val results = _results.asStateFlow()
 
-    val results =
-        _results.asStateFlow()
-
-
-
-    private var currentFilter =
-        FilterType.ALL
-
-
-
-    private var searchQuery =
-        ""
-
-
+    private var currentFilter = FilterType.ALL
+    private var searchQuery = ""
 
     fun updateText(value: String) {
-
         _inputText.value = value
-
     }
 
+    fun extractNumbers(removeDuplicates: Boolean = true) {
 
+        var list = NumberExtractor.extract(_inputText.value)
 
-    fun extractNumbers(
-        removeDuplicates: Boolean = true
-    ) {
-
-
-        var data =
-            extractor.extract(
-                _inputText.value
-            )
-
-
-        if(removeDuplicates){
-
-            data =
-                duplicateFilter.removeDuplicates(data)
-
+        if (removeDuplicates) {
+            list = list.distinctBy { it.value }
         }
 
-
-        _allResults.value = data
-
+        _allResults.value = list
 
         applyFilters()
-
     }
 
-
-
-    fun search(value:String){
-
+    fun search(value: String) {
         searchQuery = value
-
         applyFilters()
-
     }
 
-
-
-    fun setFilter(
-        filter: FilterType
-    ){
-
+    fun setFilter(filter: FilterType) {
         currentFilter = filter
-
         applyFilters()
-
     }
 
-
-
-    fun sort(
-        type: SortType
-    ){
-
+    fun sort(type: SortType) {
 
         _results.value =
-            when(type){
-
-                SortType.NEWEST ->
-                    _results.value.sortedByDescending {
-                        it.timestamp
-                    }
-
-
-                SortType.OLDEST ->
-                    _results.value.sortedBy {
-                        it.timestamp
-                    }
-
+            when (type) {
 
                 SortType.ASCENDING ->
-                    _results.value.sortedBy {
-                        it.value
-                    }
-
+                    _results.value.sortedBy { it.value }
 
                 SortType.DESCENDING ->
-                    _results.value.sortedByDescending {
-                        it.value
-                    }
+                    _results.value.sortedByDescending { it.value }
 
+                SortType.NEWEST ->
+                    _results.value
+
+                SortType.OLDEST ->
+                    _results.value
             }
-
     }
 
+    private fun applyFilters() {
 
+        var list = _allResults.value
 
-    private fun applyFilters(){
-
-
-        var filtered =
-            _allResults.value
-
-
-
-        if(currentFilter != FilterType.ALL){
-
-            filtered =
-                filtered.filter {
-
-                    it.type.name ==
-                            currentFilter.name
-
+        if (currentFilter != FilterType.ALL) {
+            list =
+                list.filter {
+                    it.type.name == currentFilter.name
                 }
-
         }
 
-
-
-        if(searchQuery.isNotBlank()){
-
-            filtered =
-                filtered.filter {
-
+        if (searchQuery.isNotBlank()) {
+            list =
+                list.filter {
                     it.value.contains(
-                        searchQuery
+                        searchQuery,
+                        ignoreCase = true
                     )
-
                 }
-
         }
 
-
-
-        _results.value = filtered
-
+        _results.value = list
     }
 
+    fun toggleSelection(item: ExtractedNumber) {
 
+        _allResults.value =
+            _allResults.value.map {
 
-    fun toggleSelection(
-        item: ExtractedNumber
-    ){
-
-        _results.value =
-            _results.value.map {
-
-
-                if(it.value == item.value){
-
-                    it.copy(
-                        selected = !it.selected
-                    )
-
-                }
-                else {
-
+                if (it.value == item.value)
+                    it.copy(selected = !it.selected)
+                else
                     it
-
-                }
-
             }
 
+        applyFilters()
     }
 
+    fun selectAll() {
 
-
-    fun selectAll(){
-
-        _results.value =
-            _results.value.map {
-
-                it.copy(
-                    selected = true
-                )
-
+        _allResults.value =
+            _allResults.value.map {
+                it.copy(selected = true)
             }
 
+        applyFilters()
     }
 
+    fun clearSelection() {
 
-
-    fun clearSelection(){
-
-        _results.value =
-            _results.value.map {
-
-                it.copy(
-                    selected = false
-                )
-
+        _allResults.value =
+            _allResults.value.map {
+                it.copy(selected = false)
             }
 
+        applyFilters()
     }
 
-
-
-    fun clearText(){
-
+    fun clearText() {
         _inputText.value = ""
-
     }
 
-
-
-    fun clearResults(){
+    fun clearResults() {
 
         _allResults.value = emptyList()
-
         _results.value = emptyList()
-
     }
-
 }
