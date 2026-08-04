@@ -1,44 +1,35 @@
 package com.numiscan.app.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 private val LightColors = lightColorScheme(
 
     primary = Primary,
+
+    primaryContainer = PrimaryContainer,
+
     secondary = Secondary,
-    tertiary = Accent,
 
     background = Background,
+
     surface = Surface,
 
-    onPrimary = Surface,
-    onBackground = TextPrimary,
-    onSurface = TextPrimary
+    surfaceVariant = SurfaceVariant,
 
-)
+    onPrimary = OnPrimary,
 
-private val DarkColors = darkColorScheme(
+    onBackground = OnBackground,
 
-    primary = Secondary,
-    secondary = Accent,
+    onSurface = OnSurface,
 
-    background = Color(0xFF111827),
-    surface = Color(0xFF1F2937),
-
-    onPrimary = Surface,
-    onBackground = Surface,
-    onSurface = Surface
+    outline = Outline
 
 )
 
 @Composable
 fun NumiScanTheme(
-
-    darkTheme: Boolean = isSystemInDarkTheme(),
 
     content: @Composable () -> Unit
 
@@ -46,9 +37,11 @@ fun NumiScanTheme(
 
     MaterialTheme(
 
-        colorScheme = if (darkTheme) DarkColors else LightColors,
+        colorScheme = LightColors,
 
-        typography = AppTypography,
+        typography = Typography,
+
+        shapes = Shapes,
 
         content = content
 
