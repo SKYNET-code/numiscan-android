@@ -1,63 +1,72 @@
 package com.numiscan.app.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.numiscan.app.ui.screens.AboutScreen
 import com.numiscan.app.ui.screens.HomeScreen
 import com.numiscan.app.ui.screens.SettingsScreen
-import com.numiscan.app.viewmodel.MainViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+
+sealed class Screen(val route: String) {
+
+    data object Home : Screen("home")
+
+    data object Settings : Screen("settings")
+
+    data object About : Screen("about")
+
+}
+
 
 @Composable
 fun AppNavigation(
 
-    modifier: Modifier = Modifier
+    homeScreen: @Composable () -> Unit
 
 ) {
 
     val navController = rememberNavController()
 
-    val mainViewModel: MainViewModel = viewModel()
 
     NavHost(
 
         navController = navController,
 
-        startDestination = "home",
-
-        modifier = modifier
+        startDestination = Screen.Home.route
 
     ) {
 
-        composable("home") {
 
-            HomeScreen(
+        composable(
 
-                viewModel = mainViewModel,
+            Screen.Home.route
 
-                openSettings = {
+        ) {
 
-                    navController.navigate("settings")
-
-                }
-
-            )
+            homeScreen()
 
         }
 
-        composable("settings") {
 
-            SettingsScreen(
+        composable(
 
-                onBack = {
+            Screen.Settings.route
 
-                    navController.popBackStack()
+        ) {
 
-                }
+            SettingsScreen()
 
-            )
+        }
+
+
+        composable(
+
+            Screen.About.route
+
+        ) {
+
+            AboutScreen()
 
         }
 
