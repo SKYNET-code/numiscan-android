@@ -1,27 +1,19 @@
 package com.numiscan.app.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.Checkbox
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
+import com.numiscan.app.data.model.NumberType
 
 @Composable
 fun ResultCard(
@@ -42,18 +34,14 @@ fun ResultCard(
 
         modifier = Modifier.fillMaxWidth(),
 
-        shape = RoundedCornerShape(20.dp),
-
-        colors = CardDefaults.cardColors(
-
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-
-        ),
+        shape = RoundedCornerShape(18.dp),
 
         elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp
+        ),
 
-            defaultElevation = 3.dp
-
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
 
     ) {
@@ -83,23 +71,15 @@ fun ResultCard(
                 )
 
                 Spacer(
-
-                    modifier = Modifier.width(8.dp)
-
+                    Modifier.width(10.dp)
                 )
 
-                NumberBadge(
-
-                    type = item.type
-
-                )
+                NumberBadge(item.type)
 
             }
 
             Spacer(
-
-                modifier = Modifier.height(14.dp)
-
+                Modifier.height(14.dp)
             )
 
             Text(
@@ -113,17 +93,13 @@ fun ResultCard(
             )
 
             Spacer(
-
-                modifier = Modifier.height(16.dp)
-
+                Modifier.height(18.dp)
             )
 
-            Divider()
+            HorizontalDivider()
 
             Spacer(
-
-                modifier = Modifier.height(8.dp)
-
+                Modifier.height(8.dp)
             )
 
             Row(
@@ -144,41 +120,59 @@ fun ResultCard(
 
                         Icons.Outlined.ContentCopy,
 
-                        null
+                        contentDescription = null
 
                     )
 
                 }
 
-                IconButton(
+                if (
 
-                    onClick = onCall
+                    item.type == NumberType.MOBILE ||
+
+                    item.type == NumberType.PHONE
 
                 ) {
 
-                    Icon(
+                    IconButton(
 
-                        Icons.Outlined.Call,
+                        onClick = onCall
 
-                        null
+                    ) {
 
-                    )
+                        Icon(
+
+                            Icons.Outlined.Call,
+
+                            contentDescription = null
+
+                        )
+
+                    }
 
                 }
 
-                IconButton(
+                if (
 
-                    onClick = onShare
+                    item.type != NumberType.UNKNOWN
 
                 ) {
 
-                    Icon(
+                    IconButton(
 
-                        Icons.Outlined.Share,
+                        onClick = onShare
 
-                        null
+                    ) {
 
-                    )
+                        Icon(
+
+                            Icons.Outlined.Share,
+
+                            contentDescription = null
+
+                        )
+
+                    }
 
                 }
 
