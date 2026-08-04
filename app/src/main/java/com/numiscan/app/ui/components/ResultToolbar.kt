@@ -1,35 +1,38 @@
 package com.numiscan.app.ui.components
 
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
 
 
 @Composable
 fun ResultToolbar(
 
+    selectedCount: Int,
+
+    totalCount: Int,
+
     onSelectAll: () -> Unit,
 
     onClear: () -> Unit
 
-) {
+){
+
 
 
     Row(
 
-        modifier = Modifier.fillMaxWidth(),
+        modifier =
+            Modifier.fillMaxWidth(),
 
         horizontalArrangement =
-            Arrangement.spacedBy(8.dp)
+            Arrangement.SpaceBetween
 
-    ) {
+    ){
+
 
 
         Button(
@@ -38,7 +41,9 @@ fun ResultToolbar(
 
         ){
 
-            Text("انتخاب همه")
+            Text(
+                "انتخاب همه ($totalCount)"
+            )
 
         }
 
@@ -50,10 +55,14 @@ fun ResultToolbar(
 
         ){
 
-            Text("پاک کردن")
+            Text(
+                "پاک کردن"
+            )
 
         }
 
+
     }
+
 
 }
