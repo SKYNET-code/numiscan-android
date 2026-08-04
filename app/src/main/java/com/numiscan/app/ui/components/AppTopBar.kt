@@ -14,7 +14,9 @@ import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+fun AppTopBar(
+
+    title: String = "NumiScan",
 
     onMenuClick: () -> Unit
 
@@ -26,7 +28,7 @@ fun TopBar(
 
             Text(
 
-                text = "NumiScan",
+                text = title,
 
                 style = MaterialTheme.typography.titleLarge
 
@@ -56,9 +58,7 @@ fun TopBar(
 
         colors = TopAppBarDefaults.topAppBarColors(
 
-            containerColor = Color.Transparent,
-
-            scrolledContainerColor = Color.Transparent
+            containerColor = Color.Transparent
 
         )
 
