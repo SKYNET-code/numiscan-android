@@ -4,11 +4,14 @@ import androidx.lifecycle.ViewModel
 import com.numiscan.app.data.model.ExtractedNumber
 import com.numiscan.app.data.model.FilterType
 import com.numiscan.app.data.model.SortType
+import com.numiscan.app.domain.DuplicateFilter
 import com.numiscan.app.utils.NumberExtractor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class MainViewModel : ViewModel() {
+
+    private val duplicateFilter = DuplicateFilter()
 
     private val _inputText = MutableStateFlow("")
     val inputText = _inputText.asStateFlow()
@@ -21,53 +24,65 @@ class MainViewModel : ViewModel() {
 
     val results = _results.asStateFlow()
 
-    private var currentFilter = FilterType.ALL
+    var currentFilter: FilterType = FilterType.ALL
+        private set
+
     private var searchQuery = ""
 
-    fun updateText(value: String) {
-        _inputText.value = value
+    fun updateText(text: String) {
+        _inputText.value = text
     }
 
     fun extractNumbers(removeDuplicates: Boolean = true) {
 
-        var list = NumberExtractor.extract(_inputText.value)
+        var data = NumberExtractor.extract(_inputText.value)
 
         if (removeDuplicates) {
-            list = list.distinctBy { it.value }
+            data = duplicateFilter.removeDuplicates(data)
         }
 
-        _allResults.value = list
+        _allResults.value = data
 
         applyFilters()
     }
 
-    fun search(value: String) {
-        searchQuery = value
+    fun search(query: String) {
+
+        searchQuery = query
+
         applyFilters()
+
     }
 
     fun setFilter(filter: FilterType) {
+
         currentFilter = filter
+
         applyFilters()
+
     }
 
     fun sort(type: SortType) {
 
-        _results.value =
-            when (type) {
+        _results.value = when (type) {
 
-                SortType.ASCENDING ->
-                    _results.value.sortedBy { it.value }
+            SortType.NEWEST ->
+                _results.value
 
-                SortType.DESCENDING ->
-                    _results.value.sortedByDescending { it.value }
+            SortType.OLDEST ->
+                _results.value
 
-                SortType.NEWEST ->
-                    _results.value
+            SortType.ASCENDING ->
+                _results.value.sortedBy {
+                    it.value
+                }
 
-                SortType.OLDEST ->
-                    _results.value
-            }
+            SortType.DESCENDING ->
+                _results.value.sortedByDescending {
+                    it.value
+                }
+        }
+
     }
 
     private fun applyFilters() {
@@ -75,66 +90,90 @@ class MainViewModel : ViewModel() {
         var list = _allResults.value
 
         if (currentFilter != FilterType.ALL) {
-            list =
-                list.filter {
-                    it.type.name == currentFilter.name
-                }
+
+            list = list.filter {
+
+                it.type.name == currentFilter.name
+
+            }
+
         }
 
         if (searchQuery.isNotBlank()) {
-            list =
-                list.filter {
-                    it.value.contains(
-                        searchQuery,
-                        ignoreCase = true
-                    )
-                }
+
+            list = list.filter {
+
+                it.value.contains(
+                    searchQuery,
+                    ignoreCase = true
+                )
+
+            }
+
         }
 
         _results.value = list
+
     }
 
     fun toggleSelection(item: ExtractedNumber) {
 
-        _allResults.value =
-            _allResults.value.map {
+        _results.value = _results.value.map {
 
-                if (it.value == item.value)
-                    it.copy(selected = !it.selected)
-                else
-                    it
+            if (it.value == item.value) {
+
+                it.copy(
+
+                    selected = !it.selected
+
+                )
+
+            } else {
+
+                it
+
             }
 
-        applyFilters()
+        }
+
     }
 
     fun selectAll() {
 
-        _allResults.value =
-            _allResults.value.map {
+        _results.value =
+
+            _results.value.map {
+
                 it.copy(selected = true)
+
             }
 
-        applyFilters()
     }
 
     fun clearSelection() {
 
-        _allResults.value =
-            _allResults.value.map {
+        _results.value =
+
+            _results.value.map {
+
                 it.copy(selected = false)
+
             }
 
-        applyFilters()
     }
 
     fun clearText() {
+
         _inputText.value = ""
+
     }
 
     fun clearResults() {
 
         _allResults.value = emptyList()
+
         _results.value = emptyList()
+
     }
+
 }
