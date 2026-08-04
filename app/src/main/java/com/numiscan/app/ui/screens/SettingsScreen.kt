@@ -1,75 +1,76 @@
 package com.numiscan.app.ui.screens
 
-
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
-
 
 @Composable
 fun SettingsScreen(
 
-    darkMode:Boolean,
+    modifier: Modifier = Modifier
 
-    onDarkModeChange:(Boolean)->Unit
+) {
 
-){
+    var autoDetect by remember {
+
+        mutableStateOf(true)
+
+    }
 
 
     Column(
 
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(24.dp),
 
-        verticalArrangement =
-            Arrangement.spacedBy(20.dp)
+        verticalArrangement = Arrangement.spacedBy(20.dp),
 
-    ){
+        horizontalAlignment = Alignment.Start
 
+    ) {
 
         Text(
 
             text = "تنظیمات",
 
-            style =
-                MaterialTheme.typography
-                    .headlineMedium
+            style = MaterialTheme.typography.headlineSmall
 
         )
 
 
+        Text(
 
-        Row(
+            text = "تشخیص خودکار شماره‌ها",
 
-            modifier =
-                Modifier.fillMaxWidth(),
+            style = MaterialTheme.typography.titleMedium
 
-            horizontalArrangement =
-                Arrangement.SpaceBetween
-
-        ){
+        )
 
 
-            Text(
-                "حالت تاریک"
-            )
+        Switch(
 
+            checked = autoDetect,
 
-            Switch(
+            onCheckedChange = {
 
-                checked = darkMode,
+                autoDetect = it
 
-                onCheckedChange =
-                    onDarkModeChange
+            }
 
-            )
-
-        }
+        )
 
     }
 
