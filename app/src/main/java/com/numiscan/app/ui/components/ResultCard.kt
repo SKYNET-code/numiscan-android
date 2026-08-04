@@ -1,67 +1,60 @@
 package com.numiscan.app.ui.components
 
-import androidx.compose.foundation.BorderStroke
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
 import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Message
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.Checkbox
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
+import com.numiscan.app.data.model.NumberType
+import com.numiscan.app.utils.ClipboardManager
+import com.numiscan.app.utils.ShareManager
 
 @Composable
 fun ResultCard(
 
     item: ExtractedNumber,
 
-    onSelect: () -> Unit,
-
-    onCopy: (() -> Unit)? = null,
-
-    onShare: (() -> Unit)? = null,
-
-    onCall: (() -> Unit)? = null
+    onSelect: () -> Unit
 
 ) {
+
+    val context = LocalContext.current
 
     Card(
 
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                onSelect()
-            },
+            .fillMaxWidth(),
 
         shape = RoundedCornerShape(18.dp),
 
-        border = BorderStroke(
-            1.dp,
-            MaterialTheme.colorScheme.outlineVariant
+        colors = CardDefaults.cardColors(
+
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+
         ),
 
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+        elevation = CardDefaults.cardElevation(4.dp)
 
     ) {
 
@@ -77,14 +70,6 @@ fun ResultCard(
 
             ) {
 
-                NumberIcon(item.type)
-
-                Spacer(Modifier.width(10.dp))
-
-                NumberBadge(item.type)
-
-                Spacer(Modifier.weight(1f))
-
                 Checkbox(
 
                     checked = item.selected,
@@ -97,25 +82,35 @@ fun ResultCard(
 
                 )
 
+                Spacer(Modifier.width(8.dp))
+
+                NumberBadge(item.type)
+
             }
 
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(10.dp))
 
             Text(
 
                 text = item.value,
 
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+
+                fontWeight = FontWeight.Bold
 
             )
 
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(12.dp))
+
+            HorizontalDivider()
+
+            Spacer(Modifier.height(8.dp))
 
             Row(
 
-                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.fillMaxWidth(),
 
-                modifier = Modifier.fillMaxWidth()
+                horizontalArrangement = Arrangement.SpaceEvenly
 
             ) {
 
@@ -123,7 +118,13 @@ fun ResultCard(
 
                     onClick = {
 
-                        onCopy?.invoke()
+                        ClipboardManager.copy(
+
+                            context,
+
+                            item.value
+
+                        )
 
                     }
 
@@ -143,7 +144,13 @@ fun ResultCard(
 
                     onClick = {
 
-                        onShare?.invoke()
+                        ShareManager.share(
+
+                            context,
+
+                            item.value
+
+                        )
 
                     }
 
@@ -159,23 +166,81 @@ fun ResultCard(
 
                 }
 
-                IconButton(
+                if (
 
-                    onClick = {
+                    item.type == NumberType.MOBILE ||
 
-                        onCall?.invoke()
-
-                    }
+                    item.type == NumberType.LANDLINE
 
                 ) {
 
-                    Icon(
+                    IconButton(
 
-                        Icons.Outlined.Call,
+                        onClick = {
 
-                        null
+                            context.startActivity(
 
-                    )
+                                Intent(
+
+                                    Intent.ACTION_DIAL,
+
+                                    Uri.parse("tel:${item.value}")
+
+                                )
+
+                            )
+
+                        }
+
+                    ) {
+
+                        Icon(
+
+                            Icons.Outlined.Call,
+
+                            null
+
+                        )
+
+                    }
+
+                }
+
+                if (
+
+                    item.type == NumberType.MOBILE
+
+                ) {
+
+                    IconButton(
+
+                        onClick = {
+
+                            context.startActivity(
+
+                                Intent(
+
+                                    Intent.ACTION_SENDTO,
+
+                                    Uri.parse("smsto:${item.value}")
+
+                                )
+
+                            )
+
+                        }
+
+                    ) {
+
+                        Icon(
+
+                            Icons.Outlined.Message,
+
+                            null
+
+                        )
+
+                    }
 
                 }
 
