@@ -1,5 +1,6 @@
 package com.numiscan.app.data.model
 
+
 data class ExtractedNumber(
 
     val value: String,
@@ -8,6 +9,8 @@ data class ExtractedNumber(
 
     val sourceText: String = "",
 
-    val selected: Boolean = false
+    val selected: Boolean = false,
+
+    val timestamp: Long = System.currentTimeMillis()
 
 )
