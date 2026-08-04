@@ -2,15 +2,16 @@ package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.AssistChip
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.numiscan.app.data.model.NumberType
 
 @Composable
@@ -20,46 +21,57 @@ fun NumberBadge(
 
 ) {
 
+    val background: Color
+    val foreground: Color
     val text: String
-    val color: Color
 
     when (type) {
 
         NumberType.MOBILE -> {
 
+            background = Color(0xFFE8F5E9)
+            foreground = Color(0xFF2E7D32)
             text = "موبایل"
-            color = Color(0xFF2E7D32)
 
         }
 
         NumberType.LANDLINE -> {
 
-            text = "ثابت"
-            color = Color(0xFF1565C0)
+            background = Color(0xFFE3F2FD)
+            foreground = Color(0xFF1565C0)
+            text = "تلفن ثابت"
 
         }
 
         NumberType.BANK_CARD -> {
 
-            text = "کارت"
-            color = Color(0xFFEF6C00)
+            background = Color(0xFFFFF3E0)
+            foreground = Color(0xFFEF6C00)
+            text = "کارت بانکی"
 
         }
 
         NumberType.SHABA -> {
 
-            text = "شبا"
-            color = Color(0xFF6A1B9A)
+            background = Color(0xFFF3E5F5)
+            foreground = Color(0xFF7B1FA2)
+            text = "شماره شبا"
 
         }
 
     }
 
-    Surface(
+    Row(
 
-        color = color.copy(alpha = 0.15f),
-
-        shape = RoundedCornerShape(50)
+        modifier = Modifier
+            .background(
+                background,
+                RoundedCornerShape(50.dp)
+            )
+            .padding(
+                horizontal = 12.dp,
+                vertical = 6.dp
+            )
 
     ) {
 
@@ -67,12 +79,11 @@ fun NumberBadge(
 
             text = text,
 
-            color = color,
+            color = foreground,
 
-            style = MaterialTheme.typography.labelMedium,
+            fontSize = 12.sp,
 
-            modifier = androidx.compose.ui.Modifier
-                .height(32.dp),
+            fontWeight = FontWeight.SemiBold
 
         )
 
