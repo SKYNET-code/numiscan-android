@@ -2,37 +2,40 @@ package com.numiscan.app.domain
 
 object TextNormalizer {
 
-    private val persianDigits = charArrayOf(
-        '۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'
-    )
-
-    private val arabicDigits = charArrayOf(
-        '٠','١','٢','٣','٤','٥','٦','٧','٨','٩'
-    )
-
     fun normalize(text: String): String {
 
-        var result = text
+        return buildString {
 
-        persianDigits.forEachIndexed { index, c ->
+            text.forEach { c ->
 
-            result = result.replace(c, ('0' + index))
+                append(
+                    when (c) {
 
-        }
+                        in '۰'..'۹' ->
+                            '0' + (c - '۰')
 
-        arabicDigits.forEachIndexed { index, c ->
+                        in '٠'..'٩' ->
+                            '0' + (c - '٠')
 
-            result = result.replace(c, ('0' + index))
+                        'ي' -> 'ی'
 
-        }
+                        'ك' -> 'ک'
 
-        return result
-            .replace("ي", "ی")
-            .replace("ك", "ک")
-            .replace("\u200C", "")
-            .replace("\u200F", "")
-            .replace("\u200E", "")
-            .trim()
+                        '\u200C',
+                        '\u200E',
+                        '\u200F' -> ' '
+
+                        else -> c
+
+                    }
+                )
+
+            }
+
+        }.replace(
+            Regex("\\s+"),
+            " "
+        ).trim()
 
     }
 
