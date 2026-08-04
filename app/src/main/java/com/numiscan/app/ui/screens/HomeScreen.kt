@@ -204,7 +204,7 @@ fun HomeScreen(
 
                         onClear = onClear,
 
-                        onFilter = {}
+                        
 
                     )
 
