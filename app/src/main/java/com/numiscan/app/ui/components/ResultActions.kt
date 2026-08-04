@@ -4,18 +4,12 @@ package com.numiscan.app.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 
 
 @Composable
-fun ResultActions(
-
-    onCopy: () -> Unit,
-
-    onShare: () -> Unit
-
-){
+fun ResultActions(){
 
 
     Row(
@@ -31,10 +25,7 @@ fun ResultActions(
 
         Button(
 
-            onClick = onCopy,
-
-            modifier =
-                Modifier.weight(1f)
+            onClick = {}
 
         ){
 
@@ -44,18 +35,16 @@ fun ResultActions(
 
 
 
-        OutlinedButton(
+        Button(
 
-            onClick = onShare,
-
-            modifier =
-                Modifier.weight(1f)
+            onClick = {}
 
         ){
 
             Text("اشتراک")
 
         }
+
 
     }
 
