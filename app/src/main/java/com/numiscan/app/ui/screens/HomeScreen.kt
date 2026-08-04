@@ -1,128 +1,166 @@
 package com.numiscan.app.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentPaste
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.sp
+
 import com.numiscan.app.ui.components.InputCard
+import com.numiscan.app.ui.components.FilterBar
+import com.numiscan.app.ui.components.ResultCard
 import com.numiscan.app.ui.components.ResultSummaryCard
-import com.numiscan.app.utils.ClipboardManager
 import com.numiscan.app.viewmodel.MainViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
 
-    onShowResults: () -> Unit,
+    viewModel: MainViewModel,
 
-    viewModel: MainViewModel = viewModel()
+    openSettings: () -> Unit
 
 ) {
 
-    val context = LocalContext.current
-
-    val input by viewModel.inputText.collectAsState()
+    val text by viewModel.inputText.collectAsState()
 
     val results by viewModel.results.collectAsState()
 
-    Column(
+    Scaffold(
 
-        modifier = Modifier
+        containerColor = Color(0xFFF5F6F8),
 
-            .fillMaxSize()
+        topBar = {
 
-            .verticalScroll(
+            TopAppBar(
 
-                rememberScrollState()
+                title = {
+
+                    Text(
+
+                        text = "NumiScan",
+
+                        fontSize = 20.sp,
+
+                        color = MaterialTheme.colorScheme.primary
+
+                    )
+
+                },
+
+                navigationIcon = {
+
+                    IconButton(
+
+                        onClick = openSettings
+
+                    ) {
+
+                        Icon(
+
+                            Icons.Default.Menu,
+
+                            contentDescription = null
+
+                        )
+
+                    }
+
+                },
+
+                colors = TopAppBarDefaults.topAppBarColors(
+
+                    containerColor = Color.White
+
+                )
 
             )
 
-            .padding(20.dp)
+        }
 
-    ) {
+    ) { padding ->
 
-        Spacer(
+        Column(
 
-            Modifier.height(8.dp)
+            modifier = Modifier
 
-        )
+                .fillMaxSize()
 
-        Text(
-
-            text = "NumiScan",
-
-            style = MaterialTheme.typography.headlineMedium
-
-        )
-
-        Spacer(
-
-            Modifier.height(6.dp)
-
-        )
-
-        Text(
-
-            text = "استخراج هوشمند شماره‌ها",
-
-            style = MaterialTheme.typography.bodyMedium,
-
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-
-        )
-
-        Spacer(
-
-            Modifier.height(24.dp)
-
-        )
-                ElevatedCard(
-
-            modifier = Modifier.fillMaxWidth(),
-
-            elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 4.dp
-            )
+                .padding(padding)
+                .padding(16.dp)
 
         ) {
+                        InputCard(
 
-            Column(
+                text = text,
 
-                modifier = Modifier.padding(18.dp)
+                onTextChange = {
+
+                    viewModel.updateText(it)
+
+                }
+
+            )
+
+            Spacer(
+
+                modifier = Modifier.height(16.dp)
+
+            )
+
+            Button(
+
+                onClick = {
+
+                    viewModel.extractNumbers()
+
+                },
+
+                modifier = Modifier.fillMaxWidth()
 
             ) {
 
-                OutlinedTextField(
+                Text("استخراج شماره‌ها")
 
-                    value = input,
+            }
 
-                    onValueChange = {
+            Spacer(
 
-                        viewModel.updateText(it)
+                modifier = Modifier.height(16.dp)
 
-                    },
+            )
 
-                    modifier = Modifier
+            if (results.isNotEmpty()) {
 
-                        .fillMaxWidth()
+                ResultSummaryCard(
 
-                        .height(180.dp),
+                    results = results
 
-                    placeholder = {
+                )
 
-                        Text(
+                Spacer(
 
-                            "پیامک، متن یا هر محتوایی را اینجا قرار دهید..."
+                    modifier = Modifier.height(16.dp)
 
-                        )
+                )
+
+                FilterBar(
+
+                    selected = FilterType.ALL,
+
+                    onSelected = {
+
+                        viewModel.setFilter(it)
 
                     }
 
@@ -130,168 +168,93 @@ fun HomeScreen(
 
                 Spacer(
 
-                    Modifier.height(16.dp)
+                    modifier = Modifier.height(16.dp)
 
                 )
 
-                Row(
+                Text(
 
-                    modifier = Modifier.fillMaxWidth(),
+                    text = "نتایج استخراج",
 
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    style = MaterialTheme.typography.titleMedium
+
+                )
+
+                Spacer(
+
+                    modifier = Modifier.height(8.dp)
+
+                )
+                                Box(
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
 
                 ) {
 
-                    FilledTonalButton(
+                    LazyColumn(
 
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.fillMaxSize(),
 
-                        onClick = {
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
 
-                            val text = ClipboardManager.paste(context)
-
-                            viewModel.updateText(text)
-
-                        }
+                        contentPadding = PaddingValues(bottom = 16.dp)
 
                     ) {
 
-                        Icon(
+                        items(
 
-                            Icons.Outlined.ContentPaste,
+                            items = results,
 
-                            null
+                            key = { it.value }
 
-                        )
+                        ) { item ->
 
-                        Spacer(
+                            ResultCard(
 
-                            Modifier.width(8.dp)
+                                item = item,
 
-                        )
+                                onSelect = {
 
-                        Text("چسباندن")
+                                    viewModel.toggleSelection(item)
 
-                    }
+                                }
 
-                    FilledTonalButton(
-
-                        modifier = Modifier.weight(1f),
-
-                        onClick = {
-
-                            viewModel.clearText()
+                            )
 
                         }
-
-                    ) {
-
-                        Icon(
-
-                            Icons.Outlined.Delete,
-
-                            null
-
-                        )
-
-                        Spacer(
-
-                            Modifier.width(8.dp)
-
-                        )
-
-                        Text("پاک کردن")
 
                     }
 
                 }
 
-                Spacer(
+            } else {
 
-                    Modifier.height(18.dp)
-
-                )
-
-                Button(
+                Box(
 
                     modifier = Modifier
-
                         .fillMaxWidth()
+                        .weight(1f),
 
-                        .height(54.dp),
-
-                    onClick = {
-
-                        viewModel.extractNumbers()
-
-                        onShowResults()
-
-                    }
+                    contentAlignment = Alignment.Center
 
                 ) {
 
                     Text(
 
-                        "استخراج شماره‌ها"
+                        text = "هنوز شماره‌ای استخراج نشده است.",
+
+                        color = Color.Gray,
+
+                        style = MaterialTheme.typography.bodyMedium
 
                     )
 
                 }
 
             }
-
-        }
-
-        Spacer(
-
-            Modifier.height(22.dp)
-
-        )
-                if (results.isNotEmpty()) {
-
-            ResultSummaryCard(
-
-                total = results.size,
-
-                mobile = results.count {
-
-                    it.type.name == "MOBILE"
-
-                },
-
-                landline = results.count {
-
-                    it.type.name == "LANDLINE"
-
-                },
-
-                cards = results.count {
-
-                    it.type.name == "BANK_CARD"
-
-                },
-
-                shaba = results.count {
-
-                    it.type.name == "SHABA"
-
-                },
-
-                onOpenResults = {
-
-                    onShowResults()
-
-                }
-
-            )
-
-        }
-
-        Spacer(
-
-            Modifier.height(24.dp)
-
-        )
+                    }
 
     }
 
