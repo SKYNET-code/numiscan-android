@@ -1,102 +1,86 @@
 package com.numiscan.app.ui.components
 
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.numiscan.app.data.model.ExtractedNumber
+import com.numiscan.app.data.model.NumberItem
 
 
 
 @Composable
 fun ResultCard(
 
-    item: ExtractedNumber,
+    item: NumberItem,
 
-    onSelect: () -> Unit
+    onSelect: () -> Unit,
+
+    onCopy: () -> Unit = {},
+
+    onShare: () -> Unit = {},
+
+    onCall: () -> Unit = {},
+
+    onSms: () -> Unit = {}
 
 ){
 
 
+
     Card(
 
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .clickable {
+        modifier = Modifier
 
-                    onSelect()
+            .fillMaxWidth(),
 
-                },
-
-
-        shape =
-            MaterialTheme.shapes.large
-
+        shape = MaterialTheme.shapes.large
 
     ){
 
 
 
-        Row(
+        Column(
 
             modifier =
                 Modifier.padding(16.dp),
 
-
-            verticalAlignment =
-                Alignment.CenterVertically
+            verticalArrangement =
+                Arrangement.spacedBy(8.dp)
 
         ){
 
 
 
-            NumberIcon(
+            Row(
 
-                type = item.type
-
-            )
-
-
-
-            Spacer(
-
-                modifier =
-                    Modifier.width(12.dp)
-
-            )
-
-
-
-            Column(
-
-                modifier =
-                    Modifier.weight(1f)
+                horizontalArrangement =
+                    Arrangement.SpaceBetween
 
             ){
 
 
-
                 Text(
 
-                    text = item.value,
+                    text = item.type.name,
 
                     style =
-                        MaterialTheme
-                            .typography
-                            .titleMedium
+                        MaterialTheme.typography.labelMedium
 
                 )
 
 
 
-                NumberBadge(
+                Checkbox(
 
-                    type = item.type
+                    checked = item.selected,
+
+                    onCheckedChange = {
+
+                        onSelect()
+
+                    }
 
                 )
 
@@ -105,22 +89,102 @@ fun ResultCard(
 
 
 
-            Checkbox(
-
-                checked =
-                    item.selected,
 
 
-                onCheckedChange = {
+            Text(
 
-                    onSelect()
+                text = item.value,
 
-                }
+                style =
+                    MaterialTheme.typography.titleMedium
 
             )
 
+
+
+
+
+            Row(
+
+                horizontalArrangement =
+                    Arrangement.spacedBy(8.dp)
+
+            ){
+
+
+
+                Button(
+
+                    onClick = onCopy
+
+                ){
+
+                    Text("کپی")
+
+                }
+
+
+
+                Button(
+
+                    onClick = onShare
+
+                ){
+
+                    Text("اشتراک")
+
+                }
+
+
+
+                if(
+                    item.type.name == "MOBILE"
+                    ||
+                    item.type.name == "LANDLINE"
+                ){
+
+
+                    Button(
+
+                        onClick = onCall
+
+                    ){
+
+                        Text("تماس")
+
+                    }
+
+
+                }
+
+
+
+                if(
+                    item.type.name == "MOBILE"
+                ){
+
+
+                    Button(
+
+                        onClick = onSms
+
+                    ){
+
+                        Text("SMS")
+
+                    }
+
+
+                }
+
+
+            }
+
+
         }
 
+
     }
+
 
 }
