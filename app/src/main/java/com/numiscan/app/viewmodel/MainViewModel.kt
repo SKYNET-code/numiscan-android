@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 class MainViewModel : ViewModel() {
 
 
-    private val extractor = NumberExtractor()
+    private val extractor = NumberExtractor
 
     private val duplicateFilter = DuplicateFilter()
 
