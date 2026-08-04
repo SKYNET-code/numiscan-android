@@ -7,8 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
@@ -24,15 +22,11 @@ fun HomeScreen(
 
     onTextChange: (String) -> Unit,
 
-    onSearch: (String) -> Unit,
-
     onFilter: (FilterType) -> Unit,
 
     onExtract: () -> Unit,
 
-    onClear: () -> Unit,
-
-    
+    onClear: () -> Unit
 
 ) {
 
@@ -42,9 +36,10 @@ fun HomeScreen(
         topBar = {
 
             AppTopBar(
-                    title = "NumiScan",
-        
-                )
+
+                title = "NumiScan"
+
+            )
 
         }
 
@@ -98,17 +93,6 @@ fun HomeScreen(
                     text = "شناسایی شماره‌ها",
 
                     onClick = onExtract
-
-                )
-
-            }
-                        item {
-
-                SearchBar(
-
-                    query = "",
-
-                    onQueryChange = onSearch
 
                 )
 
@@ -202,9 +186,7 @@ fun HomeScreen(
 
                     ResultToolbar(
 
-                        onClear = onClear,
-
-                        
+                        onClear = onClear
 
                     )
 
