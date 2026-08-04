@@ -4,24 +4,20 @@ package com.numiscan.app.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 
 
 @Composable
-fun ResultToolbar(
-
-    onSelectAll: () -> Unit,
-
-    onClear: () -> Unit
-
-){
+fun ResultToolbar(){
 
 
     Row(
 
         modifier =
-            Modifier.fillMaxWidth(),
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
 
         horizontalArrangement =
             Arrangement.spacedBy(8.dp)
@@ -29,12 +25,9 @@ fun ResultToolbar(
     ){
 
 
-        OutlinedButton(
+        Button(
 
-            onClick = onSelectAll,
-
-            modifier =
-                Modifier.weight(1f)
+            onClick = {}
 
         ){
 
@@ -44,12 +37,9 @@ fun ResultToolbar(
 
 
 
-        OutlinedButton(
+        Button(
 
-            onClick = onClear,
-
-            modifier =
-                Modifier.weight(1f)
+            onClick = {}
 
         ){
 
