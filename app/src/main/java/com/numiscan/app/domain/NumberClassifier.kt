@@ -1,57 +1,63 @@
 package com.numiscan.app.domain
 
+
 import com.numiscan.app.data.model.NumberType
 
 
-class NumberClassifier {
+
+object NumberClassifier {
 
 
-    fun classify(number: String): NumberType {
+    fun classify(
+        value: String
+    ): NumberType {
 
 
-        val clean = number
-            .replace(" ", "")
-            .replace("-", "")
+        val number =
+            value.trim()
 
 
         return when {
 
 
-            clean.matches(
-                Regex("^09\\d{9}$")
-            ) -> {
-
-                NumberType.MOBILE
-
-            }
+            number.startsWith("IR")
+                    &&
+                    number.length == 26 ->
+                NumberType.SHABA
 
 
-            clean.matches(
-                Regex("^\\d{11}$")
-            ) -> {
 
-                NumberType.LANDLINE
-
-            }
-
-
-            clean.matches(
-                Regex("^\\d{16}$")
-            ) -> {
-
+            number.length == 16
+                    &&
+                    number.all {
+                        it.isDigit()
+                    } ->
                 NumberType.BANK_CARD
 
-            }
 
 
-            else -> {
+            number.startsWith("09")
+                    &&
+                    number.length == 11 ->
+                NumberType.MOBILE
 
+
+
+            number.startsWith("0")
+                    &&
+                    number.length >= 10 ->
+                NumberType.LANDLINE
+
+
+
+            else ->
                 NumberType.UNKNOWN
 
-            }
 
         }
 
+
     }
+
 
 }
