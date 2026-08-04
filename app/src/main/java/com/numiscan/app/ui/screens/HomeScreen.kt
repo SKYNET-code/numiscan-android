@@ -1,20 +1,32 @@
 package com.numiscan.app.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.numiscan.app.ui.components.InputCard
-import com.numiscan.app.ui.components.EmptyState
+import com.numiscan.app.ui.components.ResultCard
+import com.numiscan.app.ui.components.StatisticsCard
+import com.numiscan.app.viewmodel.MainViewModel
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
 
-    var text by remember {
-        mutableStateOf("")
-    }
+    viewModel: MainViewModel = viewModel()
+
+) {
+
+
+    val results by viewModel.results.collectAsState()
+
+
+    val input by viewModel.inputText.collectAsState()
+
 
 
     Column(
@@ -37,20 +49,66 @@ fun HomeScreen() {
         )
 
 
+
         InputCard(
 
-            text = text,
+            text = input,
 
             onTextChange = {
 
-                text = it
+                viewModel.updateText(it)
+
+            },
+
+            onExtract = {
+
+                viewModel.extractNumbers()
+
+            },
+
+            onClear = {
+
+                viewModel.clearText()
 
             }
 
         )
 
 
-        EmptyState()
+
+        StatisticsCard(
+
+            count = results.size
+
+        )
+
+
+
+        LazyColumn(
+
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+
+        ) {
+
+
+            items(results) { item ->
+
+
+                ResultCard(
+
+                    item = item,
+
+                    onSelect = {
+
+                        viewModel.toggleSelection(item)
+
+                    }
+
+                )
+
+            }
+
+        }
 
     }
 
