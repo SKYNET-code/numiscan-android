@@ -8,7 +8,12 @@ import com.numiscan.app.ui.screens.AboutScreen
 import com.numiscan.app.ui.screens.HomeScreen
 import com.numiscan.app.ui.screens.SettingsScreen
 
-sealed class Screen(val route: String) {
+
+sealed class Screen(
+
+    val route: String
+
+) {
 
     data object Home : Screen("home")
 
