@@ -36,7 +36,7 @@ object NumberExtractor {
 
                 results.add(
 
-                    NumberItem(
+                    ExtractedNumber(
 
                         value = it.value.uppercase(),
 
@@ -62,7 +62,7 @@ object NumberExtractor {
 
                 results.add(
 
-                    NumberItem(
+                    ExtractedNumber(
 
                         value = it.value,
 
@@ -90,7 +90,7 @@ object NumberExtractor {
 
                 results.add(
 
-                    NumberItem(
+                    ExtractedNumber(
 
                         value = it.value,
 
@@ -131,7 +131,7 @@ object NumberExtractor {
 
                     results.add(
 
-                        NumberItem(
+                        ExtractedNumber(
 
                             value = value,
 
