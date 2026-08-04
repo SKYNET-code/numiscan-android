@@ -4,9 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
@@ -30,6 +35,13 @@ fun HomeScreen(
 
 ) {
 
+    var selectedType by remember {
+        mutableStateOf<FilterType?>(null)
+    }
+
+
+    val listState = rememberLazyListState()
+
 
     Scaffold(
 
@@ -47,6 +59,8 @@ fun HomeScreen(
 
 
         LazyColumn(
+
+            state = listState,
 
             modifier = Modifier
 
@@ -88,13 +102,53 @@ fun HomeScreen(
 
             item {
 
-                PrimaryButton(
+                Row(
 
-                    text = "شناسایی شماره‌ها",
+                    modifier = Modifier.fillMaxWidth(),
 
-                    onClick = onExtract
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
 
-                )
+                ) {
+
+
+                    Box(
+
+                        modifier = Modifier.weight(1f)
+
+                    ) {
+
+                        PrimaryButton(
+
+                            text = "شناسایی شماره‌ها",
+
+                            onClick = onExtract
+
+                        )
+
+                    }
+
+
+                    if (results.isNotEmpty()) {
+
+                        Box(
+
+                            modifier = Modifier.weight(1f)
+
+                        ) {
+
+                            PrimaryButton(
+
+                                text = "حذف نتایج",
+
+                                onClick = onClear
+
+                            )
+
+                        }
+
+                    }
+
+                }
 
             }
 
@@ -103,9 +157,11 @@ fun HomeScreen(
 
                 FilterBar(
 
-                    selectedType = null,
+                    selectedType = selectedType,
 
                     onTypeSelected = {
+
+                        selectedType = it
 
                         onFilter(
 
@@ -178,22 +234,6 @@ fun HomeScreen(
 
 
             }
-
-
-            item {
-
-                if (results.isNotEmpty()) {
-
-                    ResultToolbar(
-
-                        onClear = onClear
-
-                    )
-
-                }
-
-            }
-
 
         }
 
