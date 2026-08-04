@@ -6,8 +6,6 @@ data class ExtractedNumber(
 
     val type: NumberType,
 
-    val selected: Boolean = false,
-
-    val timestamp: Long = System.currentTimeMillis()
+    val selected: Boolean = false
 
 )
