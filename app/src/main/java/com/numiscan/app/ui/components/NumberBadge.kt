@@ -32,6 +32,9 @@ fun NumberBadge(
         NumberType.SHABA ->
             "شبا"
 
+        NumberType.GENERAL ->
+            "عدد"
+
     }
 
 
