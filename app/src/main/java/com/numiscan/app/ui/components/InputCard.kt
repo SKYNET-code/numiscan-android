@@ -87,11 +87,19 @@ fun InputCard(
 
                     Text(
 
-                        text = "متن، پیام، شماره‌ها یا اطلاعات را اینجا وارد کنید..."
+                        text = "متن، پیام، شماره‌ها یا اطلاعات را اینجا وارد کنید...",
+
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
 
                     )
 
                 },
+
+                textStyle = MaterialTheme.typography.bodyLarge.copy(
+
+                    color = MaterialTheme.colorScheme.onSurface
+
+                ),
 
                 shape = RoundedCornerShape(16.dp),
 
@@ -109,11 +117,11 @@ fun InputCard(
 
                     unfocusedContainerColor = MaterialTheme.colorScheme.surface,
 
+                    cursorColor = MaterialTheme.colorScheme.primary,
+
                     focusedTextColor = MaterialTheme.colorScheme.onSurface,
 
-                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-
-                    cursorColor = MaterialTheme.colorScheme.primary
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
 
                 )
 
@@ -150,14 +158,20 @@ fun InputCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
 
                 ) {
-
-                    OutlinedButton(
+                                        OutlinedButton(
 
                         onClick = {
 
-                            clipboardManager.getText()?.let {
+                            val clipboardText =
+                                clipboardManager.getText()
 
-                                onTextChange(it.text)
+                            if (clipboardText != null) {
+
+                                onTextChange(
+
+                                    clipboardText.text
+
+                                )
 
                             }
 
@@ -179,7 +193,11 @@ fun InputCard(
 
                         )
 
-                        Text("Paste")
+                        Text(
+
+                            "Paste"
+
+                        )
 
                     }
 
@@ -207,7 +225,11 @@ fun InputCard(
 
                         )
 
-                        Text("پاک کردن")
+                        Text(
+
+                            "پاک کردن"
+
+                        )
 
                     }
 
