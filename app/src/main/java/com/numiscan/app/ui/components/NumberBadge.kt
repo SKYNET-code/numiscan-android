@@ -1,17 +1,14 @@
 package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.numiscan.app.data.model.NumberType
 
 @Composable
@@ -21,72 +18,53 @@ fun NumberBadge(
 
 ) {
 
-    val background: Color
-    val foreground: Color
-    val text: String
+    val title = when (type) {
 
-    when (type) {
+        NumberType.MOBILE ->
+            "موبایل"
 
-        NumberType.MOBILE -> {
+        NumberType.LANDLINE ->
+            "ثابت"
 
-            background = Color(0xFFE8F5E9)
-            foreground = Color(0xFF2E7D32)
-            text = "موبایل"
+        NumberType.BANK_CARD ->
+            "کارت بانکی"
 
-        }
-
-        NumberType.LANDLINE -> {
-
-            background = Color(0xFFE3F2FD)
-            foreground = Color(0xFF1565C0)
-            text = "تلفن ثابت"
-
-        }
-
-        NumberType.BANK_CARD -> {
-
-            background = Color(0xFFFFF3E0)
-            foreground = Color(0xFFEF6C00)
-            text = "کارت بانکی"
-
-        }
-
-        NumberType.SHABA -> {
-
-            background = Color(0xFFF3E5F5)
-            foreground = Color(0xFF7B1FA2)
-            text = "شماره شبا"
-
-        }
+        NumberType.SHABA ->
+            "شبا"
 
     }
 
-    Row(
+
+    Text(
+
+        text = title,
+
+        style = MaterialTheme.typography.labelMedium,
+
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
 
         modifier = Modifier
+
+            .clip(
+
+                RoundedCornerShape(50)
+
+            )
+
             .background(
-                background,
-                RoundedCornerShape(50.dp)
+
+                MaterialTheme.colorScheme.primaryContainer
+
             )
+
             .padding(
+
                 horizontal = 12.dp,
-                vertical = 6.dp
+
+                vertical = 5.dp
+
             )
 
-    ) {
-
-        Text(
-
-            text = text,
-
-            color = foreground,
-
-            fontSize = 12.sp,
-
-            fontWeight = FontWeight.SemiBold
-
-        )
-
-    }
+    )
 
 }
