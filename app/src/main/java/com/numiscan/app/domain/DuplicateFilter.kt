@@ -5,15 +5,10 @@ import com.numiscan.app.data.model.ExtractedNumber
 class DuplicateFilter {
 
     fun removeDuplicates(
-        list: List<ExtractedNumber>
+        items: List<ExtractedNumber>
     ): List<ExtractedNumber> {
 
-        return list.distinctBy {
-
-            "${it.type}:${it.value}"
-
-        }
-
+        return items
+            .distinctBy { it.value.trim() }
     }
-
 }
