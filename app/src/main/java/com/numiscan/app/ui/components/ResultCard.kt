@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
+import androidx.compose.runtime.Immutable
 
 @Composable
 fun ResultCard(
