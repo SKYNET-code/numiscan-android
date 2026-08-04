@@ -12,7 +12,11 @@ fun InputCard(
 
     text: String,
 
-    onTextChange: (String) -> Unit
+    onTextChange: (String) -> Unit,
+
+    onExtract: () -> Unit,
+
+    onClear: () -> Unit
 
 ) {
 
@@ -41,9 +45,12 @@ fun InputCard(
 
                 onValueChange = onTextChange,
 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 150.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .heightIn(
+                            min = 150.dp
+                        ),
 
                 label = {
 
@@ -51,24 +58,51 @@ fun InputCard(
 
                 },
 
-                placeholder = {
 
-                    Text("متن را اینجا قرار دهید")
+                trailingIcon = {
+
+
+                    if(text.isNotEmpty()) {
+
+
+                        IconButton(
+
+                            onClick = onClear
+
+                        ) {
+
+
+                            Text("×")
+
+                        }
+
+                    }
 
                 }
 
             )
 
 
+
             Button(
 
-                onClick = {},
+                modifier =
+                    Modifier.fillMaxWidth(),
 
-                modifier = Modifier.fillMaxWidth()
+
+                enabled = text.isNotBlank(),
+
+
+                onClick = onExtract
 
             ) {
 
-                Text("استخراج شماره‌ها")
+
+                Text(
+
+                    "استخراج شماره‌ها"
+
+                )
 
             }
 
