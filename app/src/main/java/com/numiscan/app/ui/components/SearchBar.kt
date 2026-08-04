@@ -12,25 +12,29 @@ import androidx.compose.ui.Modifier
 @Composable
 fun SearchBar(
 
-    value: String,
+    query: String,
 
-    onValueChange: (String) -> Unit
+    onQueryChange: (String) -> Unit
 
 ) {
 
 
     OutlinedTextField(
 
-        value = value,
+        value = query,
 
-        onValueChange = onValueChange,
+        onValueChange = onQueryChange,
 
         modifier =
             Modifier.fillMaxWidth(),
 
+        singleLine = true,
+
         placeholder = {
 
-            Text("جستجو در نتایج")
+            Text(
+                "جستجو در نتایج"
+            )
 
         }
 
