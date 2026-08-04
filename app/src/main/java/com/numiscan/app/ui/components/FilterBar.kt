@@ -34,6 +34,7 @@ fun FilterBar(
 
     ) {
 
+
         FilterChip(
 
             selected = selectedType == null,
@@ -46,9 +47,7 @@ fun FilterBar(
 
             label = {
 
-                Text(
-                    text = "همه"
-                )
+                Text("همه")
 
             },
 
@@ -74,11 +73,16 @@ fun FilterBar(
 
             label = {
 
-                Text(
-                    text = "موبایل"
-                )
+                Text("موبایل")
 
-            }
+            },
+
+            colors = FilterChipDefaults.filterChipColors(
+
+                selectedContainerColor =
+                    MaterialTheme.colorScheme.primaryContainer
+
+            )
 
         )
 
@@ -95,11 +99,16 @@ fun FilterBar(
 
             label = {
 
-                Text(
-                    text = "ثابت"
-                )
+                Text("ثابت")
 
-            }
+            },
+
+            colors = FilterChipDefaults.filterChipColors(
+
+                selectedContainerColor =
+                    MaterialTheme.colorScheme.primaryContainer
+
+            )
 
         )
 
@@ -116,11 +125,16 @@ fun FilterBar(
 
             label = {
 
-                Text(
-                    text = "کارت بانکی"
-                )
+                Text("کارت بانکی")
 
-            }
+            },
+
+            colors = FilterChipDefaults.filterChipColors(
+
+                selectedContainerColor =
+                    MaterialTheme.colorScheme.primaryContainer
+
+            )
 
         )
 
