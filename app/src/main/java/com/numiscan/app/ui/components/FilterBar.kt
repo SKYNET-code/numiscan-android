@@ -47,9 +47,7 @@ fun FilterBar(
             label = {
 
                 Text(
-
                     text = "همه"
-
                 )
 
             },
@@ -62,6 +60,7 @@ fun FilterBar(
             )
 
         )
+
 
         FilterChip(
 
@@ -76,14 +75,13 @@ fun FilterBar(
             label = {
 
                 Text(
-
                     text = "موبایل"
-
                 )
 
             }
 
         )
+
 
         FilterChip(
 
@@ -98,15 +96,15 @@ fun FilterBar(
             label = {
 
                 Text(
-
                     text = "ثابت"
-
                 )
 
             }
 
         )
-                FilterChip(
+
+
+        FilterChip(
 
             selected = selectedType == NumberType.BANK_CARD,
 
@@ -119,32 +117,7 @@ fun FilterBar(
             label = {
 
                 Text(
-
                     text = "کارت بانکی"
-
-                )
-
-            }
-
-        )
-
-
-        FilterChip(
-
-            selected = selectedType == NumberType.SHABA,
-
-            onClick = {
-
-                onTypeSelected(NumberType.SHABA)
-
-            },
-
-            label = {
-
-                Text(
-
-                    text = "شبا"
-
                 )
 
             }
