@@ -6,14 +6,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.numiscan.app.data.model.NumberItem
+import com.numiscan.app.data.model.ExtractedNumber
 
 
 
 @Composable
 fun ResultCard(
 
-    item: NumberItem,
+    item: ExtractedNumber,
 
     onSelect: () -> Unit,
 
@@ -28,32 +28,28 @@ fun ResultCard(
 ){
 
 
-
     Card(
 
-        modifier = Modifier
-
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
 
         shape = MaterialTheme.shapes.large
 
     ){
 
 
-
         Column(
 
-            modifier =
-                Modifier.padding(16.dp),
+            modifier = Modifier.padding(16.dp),
 
             verticalArrangement =
-                Arrangement.spacedBy(8.dp)
+                Arrangement.spacedBy(10.dp)
 
         ){
 
 
-
             Row(
+
+                modifier = Modifier.fillMaxWidth(),
 
                 horizontalArrangement =
                     Arrangement.SpaceBetween
@@ -61,12 +57,9 @@ fun ResultCard(
             ){
 
 
-                Text(
+                NumberBadge(
 
-                    text = item.type.name,
-
-                    style =
-                        MaterialTheme.typography.labelMedium
+                    type = item.type
 
                 )
 
@@ -89,18 +82,14 @@ fun ResultCard(
 
 
 
-
-
             Text(
 
                 text = item.value,
 
                 style =
-                    MaterialTheme.typography.titleMedium
+                    MaterialTheme.typography.titleLarge
 
             )
-
-
 
 
 
@@ -110,7 +99,6 @@ fun ResultCard(
                     Arrangement.spacedBy(8.dp)
 
             ){
-
 
 
                 Button(
@@ -138,11 +126,9 @@ fun ResultCard(
 
 
                 if(
-                    item.type.name == "MOBILE"
-                    ||
-                    item.type.name == "LANDLINE"
+                    item.type == NumberType.MOBILE ||
+                    item.type == NumberType.LANDLINE
                 ){
-
 
                     Button(
 
@@ -154,15 +140,13 @@ fun ResultCard(
 
                     }
 
-
                 }
 
 
 
                 if(
-                    item.type.name == "MOBILE"
+                    item.type == NumberType.MOBILE
                 ){
-
 
                     Button(
 
@@ -173,7 +157,6 @@ fun ResultCard(
                         Text("SMS")
 
                     }
-
 
                 }
 
