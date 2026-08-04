@@ -16,11 +16,14 @@ object NumberExtractor {
         extractBankCards(normalized, results)
         extractMobiles(normalized, results)
         extractLandlines(normalized, results)
+        extractGeneralNumbers(normalized, results)
 
         return results
             .distinctBy { "${it.type}:${it.value}" }
             .sortedBy { it.value }
+
     }
+
 
     private fun extractShaba(
         text: String,
@@ -28,34 +31,42 @@ object NumberExtractor {
     ) {
 
         Regex(
-            "IR\\s*\\d(?:[\\s-]?\\d){25}",
+            "(?<!\\d)IR\\s*\\d(?:[\\s-]?\\d){25}(?!\\d)",
             RegexOption.IGNORE_CASE
-        ).findAll(text).forEach {
+        )
+            .findAll(text)
+            .forEach {
 
-            val value =
-                it.value
-                    .replace(" ", "")
-                    .replace("-", "")
-                    .uppercase()
+                val value =
+                    it.value
+                        .replace(" ", "")
+                        .replace("-", "")
+                        .uppercase()
 
-            if (value.length == 26) {
+                if (value.length == 26) {
 
-                results.add(
-                    ExtractedNumber(
-                        value = value,
-                        type = NumberType.SHABA
+                    results.add(
+                        ExtractedNumber(
+                            value = value,
+                            type = NumberType.SHABA
+                        )
                     )
-                )
+
+                }
+
             }
-        }
+
     }
+
 
     private fun extractBankCards(
         text: String,
         results: MutableList<ExtractedNumber>
     ) {
 
-        Regex("\\d(?:[\\s-]?\\d){15}")
+        Regex(
+            "(?<!\\d)\\d(?:[\\s-]?\\d){15}(?!\\d)"
+        )
             .findAll(text)
             .forEach {
 
@@ -72,16 +83,22 @@ object NumberExtractor {
                             type = NumberType.BANK_CARD
                         )
                     )
+
                 }
+
             }
+
     }
+
 
     private fun extractMobiles(
         text: String,
         results: MutableList<ExtractedNumber>
     ) {
 
-        Regex("09\\d{9}")
+        Regex(
+            "(?<!\\d)09\\d{9}(?!\\d)"
+        )
             .findAll(text)
             .forEach {
 
@@ -91,27 +108,75 @@ object NumberExtractor {
                         type = NumberType.MOBILE
                     )
                 )
+
             }
+
     }
+
 
     private fun extractLandlines(
         text: String,
         results: MutableList<ExtractedNumber>
     ) {
 
-        Regex("0[1-8]\\d{8,10}")
+        Regex(
+            "(?<![\\d۰-۹])0[1-8]\\d{8,10}(?![\\d۰-۹])"
+        )
             .findAll(text)
             .forEach {
 
-                if (!it.value.startsWith("09")) {
+                val value = it.value
+
+                if (!value.startsWith("09")) {
 
                     results.add(
                         ExtractedNumber(
-                            value = it.value,
+                            value = value,
                             type = NumberType.LANDLINE
                         )
                     )
+
                 }
+
             }
+
     }
+
+
+    private fun extractGeneralNumbers(
+        text: String,
+        results: MutableList<ExtractedNumber>
+    ) {
+
+        Regex(
+            "(?<![\\d۰-۹])(?:[\\d۰-۹]{3,}(?:[,،][\\d۰-۹]{3})*)(?![\\d۰-۹])"
+        )
+            .findAll(text)
+            .forEach {
+
+                val value =
+                    it.value
+                        .replace(",", "")
+                        .replace("،", "")
+
+                if (
+                    value.length >= 3 &&
+                    !results.any { item ->
+                        item.value == value
+                    }
+                ) {
+
+                    results.add(
+                        ExtractedNumber(
+                            value = value,
+                            type = NumberType.GENERAL
+                        )
+                    )
+
+                }
+
+            }
+
+    }
+
 }
