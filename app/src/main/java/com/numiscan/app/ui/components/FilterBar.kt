@@ -1,16 +1,16 @@
 package com.numiscan.app.ui.components
 
-
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.*
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.FilterType
-
-
 
 @Composable
 fun FilterBar(
@@ -19,65 +19,55 @@ fun FilterBar(
 
     onSelected: (FilterType) -> Unit
 
-){
-
+) {
 
     Row(
 
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(
-                rememberScrollState()
-            ),
+        modifier = Modifier.horizontalScroll(
 
-        horizontalArrangement =
-            Arrangement.spacedBy(8.dp)
+            rememberScrollState()
 
-    ){
+        ),
 
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
 
-        FilterType.entries.forEach { type ->
+    ) {
 
+        FilterType.entries.forEach { filter ->
 
             FilterChip(
 
-                selected =
-                    selected == type,
-
+                selected = filter == selected,
 
                 onClick = {
 
-                    onSelected(type)
+                    onSelected(filter)
 
                 },
-
 
                 label = {
 
                     Text(
 
-                        when(type){
+                        when (filter) {
 
-                            FilterType.ALL ->
-                                "همه"
+                            FilterType.ALL -> "همه"
 
+                            FilterType.MOBILE -> "موبایل"
 
-                            FilterType.MOBILE ->
-                                "موبایل"
+                            FilterType.LANDLINE -> "ثابت"
 
+                            FilterType.BANK_CARD -> "کارت"
 
-                            FilterType.LANDLINE ->
-                                "تلفن ثابت"
-
-
-                            FilterType.BANK_CARD ->
-                                "کارت بانکی"
+                            FilterType.SHABA -> "شبا"
 
                         }
 
                     )
 
-                }
+                },
+
+                colors = FilterChipDefaults.filterChipColors()
 
             )
 
