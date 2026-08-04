@@ -1,191 +1,90 @@
 package com.numiscan.app.utils
 
-
-import com.numiscan.app.data.model.NumberItem
+import com.numiscan.app.data.model.ExtractedNumber
 import com.numiscan.app.data.model.NumberType
-
-
 
 object NumberExtractor {
 
+    fun extract(text: String): List<ExtractedNumber> {
 
+        val normalized = normalizeDigits(text)
 
-    fun extract(text: String): List<NumberItem> {
+        val results = mutableListOf<ExtractedNumber>()
 
-
-        val normalized =
-            normalizeDigits(text)
-
-
-        val results =
-            mutableListOf<NumberItem>()
-
-
-
-        val shabaRegex =
-            Regex(
-                "\\bIR[0-9]{24}\\b",
-                RegexOption.IGNORE_CASE
-            )
-
-
-
-        shabaRegex.findAll(normalized)
-            .forEach {
-
-
+        Regex("\\bIR\\d{24}\\b", RegexOption.IGNORE_CASE)
+            .findAll(normalized)
+            .forEach { match ->
                 results.add(
-
                     ExtractedNumber(
-
-                        value = it.value.uppercase(),
-
+                        value = match.value.uppercase(),
                         type = NumberType.SHABA
-
                     )
-
                 )
-
-
             }
 
-
-
-        val cardRegex =
-            Regex("\\b[0-9]{16}\\b")
-
-
-
-        cardRegex.findAll(normalized)
-            .forEach {
-
-
+        Regex("\\b\\d{16}\\b")
+            .findAll(normalized)
+            .forEach { match ->
                 results.add(
-
                     ExtractedNumber(
-
-                        value = it.value,
-
+                        value = match.value,
                         type = NumberType.BANK_CARD
-
                     )
-
                 )
-
-
             }
 
-
-
-        val mobileRegex =
-            Regex(
-                "\\b09[0-9]{9}\\b"
-            )
-
-
-
-        mobileRegex.findAll(normalized)
-            .forEach {
-
-
+        Regex("\\b09\\d{9}\\b")
+            .findAll(normalized)
+            .forEach { match ->
                 results.add(
-
                     ExtractedNumber(
-
-                        value = it.value,
-
+                        value = match.value,
                         type = NumberType.MOBILE
-
                     )
-
                 )
-
-
             }
 
+        Regex("\\b0[1-8]\\d{8,10}\\b")
+            .findAll(normalized)
+            .forEach { match ->
 
+                val value = match.value
 
-        val phoneRegex =
-            Regex(
-                "\\b0[1-8][0-9]{8,10}\\b"
-            )
-
-
-
-        phoneRegex.findAll(normalized)
-            .forEach {
-
-
-
-                val value =
-                    it.value
-
-
-
-                if(
-                    !value.startsWith("09")
-                    &&
-                    value.length >= 10
-                ){
-
-
+                if (!value.startsWith("09")) {
                     results.add(
-
                         ExtractedNumber(
-
                             value = value,
-
                             type = NumberType.LANDLINE
-
                         )
-
                     )
-
                 }
-
-
             }
 
-
-
-        return results
-            .distinctBy {
-
-                it.value
-
-            }
-
-
+        return results.distinctBy { it.value }
     }
 
+    private fun normalizeDigits(text: String): String {
 
-
-
-
-    private fun normalizeDigits(
-        input: String
-    ): String {
-
-
-        return input
-
-            .replace('۰','0')
-            .replace('۱','1')
-            .replace('۲','2')
-            .replace('۳','3')
-            .replace('۴','4')
-            .replace('۵','5')
-            .replace('۶','6')
-            .replace('۷','7')
-            .replace('۸','8')
-            .replace('۹','9')
-
-            .replace(
-                Regex("\\s+"),
-                " "
-            )
-
+        return text
+            .replace('۰', '0')
+            .replace('۱', '1')
+            .replace('۲', '2')
+            .replace('۳', '3')
+            .replace('۴', '4')
+            .replace('۵', '5')
+            .replace('۶', '6')
+            .replace('۷', '7')
+            .replace('۸', '8')
+            .replace('۹', '9')
+            .replace('٠', '0')
+            .replace('١', '1')
+            .replace('٢', '2')
+            .replace('٣', '3')
+            .replace('٤', '4')
+            .replace('٥', '5')
+            .replace('٦', '6')
+            .replace('٧', '7')
+            .replace('٨', '8')
+            .replace('٩', '9')
     }
-
-
 }
