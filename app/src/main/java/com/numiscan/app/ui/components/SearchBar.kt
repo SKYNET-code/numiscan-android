@@ -16,7 +16,8 @@ fun SearchBar(
 
     onQueryChange: (String) -> Unit
 
-) {
+){
+
 
 
     OutlinedTextField(
@@ -33,11 +34,12 @@ fun SearchBar(
         placeholder = {
 
             Text(
-                "جستجو در نتایج"
+                "جستجو"
             )
 
         }
 
     )
+
 
 }
