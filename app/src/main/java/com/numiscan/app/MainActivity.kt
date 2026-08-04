@@ -6,19 +6,19 @@ import androidx.activity.compose.setContent
 import com.numiscan.app.navigation.AppNavigation
 import com.numiscan.app.ui.theme.NumiScanTheme
 
-class MainActivity:ComponentActivity(){
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(
 
-        savedInstanceState:Bundle?
+        savedInstanceState: Bundle?
 
-    ){
+    ) {
 
         super.onCreate(savedInstanceState)
 
-        setContent{
+        setContent {
 
-            NumiScanTheme{
+            NumiScanTheme {
 
                 AppNavigation()
 
