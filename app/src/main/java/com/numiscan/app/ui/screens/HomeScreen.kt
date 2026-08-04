@@ -225,7 +225,8 @@ fun HomeScreen(
 
                 items(
 
-                    results
+                        items = results,
+                        key = { it.type.name + it.value }
 
                 ) { item ->
 
