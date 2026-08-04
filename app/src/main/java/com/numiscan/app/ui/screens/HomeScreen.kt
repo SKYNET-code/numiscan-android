@@ -18,6 +18,10 @@ import com.numiscan.app.data.model.ExtractedNumber
 import com.numiscan.app.data.model.FilterType
 import com.numiscan.app.ui.components.*
 import com.numiscan.app.data.model.NumberType
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.gestures.FlingBehavior
+import androidx.compose.foundation.gestures.ScrollableDefaults
+
 
 @Composable
 fun HomeScreen(
@@ -42,7 +46,7 @@ fun HomeScreen(
 
 
     val listState = rememberLazyListState()
-
+    val flingBehavior = ScrollableDefaults.flingBehavior()
 
     Scaffold(
 
@@ -74,6 +78,8 @@ fun HomeScreen(
                 )
 
                 .padding(padding),
+            
+            flingBehavior = flingBehavior,
 
             contentPadding = PaddingValues(
 
