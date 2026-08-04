@@ -2,21 +2,27 @@ package com.numiscan.app.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.numiscan.app.ui.components.AppTopBar
-import com.numiscan.app.ui.components.InputCard
-import com.numiscan.app.utils.ClipboardManager
+import com.numiscan.app.ui.components.HomeTopBar
+import com.numiscan.app.ui.components.PrimaryButton
+import com.numiscan.app.ui.components.SectionTitle
 import com.numiscan.app.viewmodel.MainViewModel
 
 @Composable
@@ -24,13 +30,15 @@ fun HomeScreen(
 
     openDrawer: () -> Unit,
 
+    openSettings: () -> Unit,
+
     openResults: () -> Unit,
 
     viewModel: MainViewModel = viewModel()
 
 ) {
 
-    val input by viewModel.inputText.collectAsState()
+    val text by viewModel.inputText.collectAsState()
 
     val snackbar = remember {
 
@@ -42,11 +50,11 @@ fun HomeScreen(
 
         topBar = {
 
-            AppTopBar(
+            HomeTopBar(
 
-                title = "NumiScan",
+                onMenuClick = openDrawer,
 
-                onMenuClick = openDrawer
+                onSettingsClick = openSettings
 
             )
 
@@ -66,49 +74,69 @@ fun HomeScreen(
 
                 .padding(padding)
 
-                .padding(18.dp)
+                .navigationBarsPadding()
 
-                .fillMaxSize(),
+                .fillMaxSize()
 
-            verticalArrangement = Arrangement.Top
+                .verticalScroll(
+
+                    rememberScrollState()
+
+                )
+
+                .padding(horizontal = 20.dp),
+
+            verticalArrangement =
+
+                Arrangement.spacedBy(18.dp)
 
         ) {
 
-            InputCard(
+            SectionTitle(
 
-                text = input,
+                text = "متن ورودی"
 
-                onTextChange = {
+            )
+
+            OutlinedTextField(
+
+                modifier = Modifier
+
+                    .fillMaxWidth(),
+
+                value = text,
+
+                onValueChange = {
 
                     viewModel.updateText(it)
 
                 },
 
-                onPaste = {
+                minLines = 10,
 
-                    viewModel.updateText(
+                placeholder = {
 
-                        ClipboardManager.paste(it = null)
+                    androidx.compose.material3.Text(
+
+                        "پیامک یا متن موردنظر را اینجا وارد کنید..."
 
                     )
-
-                },
-
-                onClear = {
-
-                    viewModel.clearText()
-
-                },
-
-                onExtract = {
-
-                    viewModel.extractNumbers()
-
-                    openResults()
 
                 }
 
             )
+
+            PrimaryButton(
+
+                text = "استخراج شماره‌ها"
+
+            ) {
+
+                viewModel.extractNumbers()
+
+                openResults()
+
+            }
 
         }
 
