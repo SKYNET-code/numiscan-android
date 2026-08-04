@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.numiscan.app.R
 
-private val VazirFont = FontFamily(
+val VazirFont = FontFamily(
 
     Font(
         R.font.vazirmatn_regular,
@@ -18,100 +18,105 @@ private val VazirFont = FontFamily(
     Font(
         R.font.vazirmatn_medium,
         FontWeight.Medium
+    ),
+
+    Font(
+        R.font.vazirmatn_bold,
+        FontWeight.Bold
     )
 
 )
 
 val Typography = Typography(
 
-    bodyLarge = TextStyle(
-
+    displayLarge = TextStyle(
         fontFamily = VazirFont,
-
-        fontWeight = FontWeight.Normal,
-
-        fontSize = 16.sp
-
+        fontWeight = FontWeight.Bold,
+        fontSize = 57.sp
     ),
 
-    bodyMedium = TextStyle(
-
+    displayMedium = TextStyle(
         fontFamily = VazirFont,
-
-        fontWeight = FontWeight.Normal,
-
-        fontSize = 14.sp
-
+        fontWeight = FontWeight.Bold,
+        fontSize = 45.sp
     ),
 
-    bodySmall = TextStyle(
-
+    displaySmall = TextStyle(
         fontFamily = VazirFont,
+        fontWeight = FontWeight.Bold,
+        fontSize = 36.sp
+    ),
 
-        fontWeight = FontWeight.Normal,
+    headlineLarge = TextStyle(
+        fontFamily = VazirFont,
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp
+    ),
 
-        fontSize = 12.sp
+    headlineMedium = TextStyle(
+        fontFamily = VazirFont,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp
+    ),
 
+    headlineSmall = TextStyle(
+        fontFamily = VazirFont,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp
     ),
 
     titleLarge = TextStyle(
-
         fontFamily = VazirFont,
-
-        fontWeight = FontWeight.Medium,
-
+        fontWeight = FontWeight.Bold,
         fontSize = 22.sp
-
     ),
 
     titleMedium = TextStyle(
-
         fontFamily = VazirFont,
-
         fontWeight = FontWeight.Medium,
-
         fontSize = 18.sp
-
     ),
 
     titleSmall = TextStyle(
-
         fontFamily = VazirFont,
-
         fontWeight = FontWeight.Medium,
-
         fontSize = 16.sp
+    ),
 
+    bodyLarge = TextStyle(
+        fontFamily = VazirFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    ),
+
+    bodyMedium = TextStyle(
+        fontFamily = VazirFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+
+    bodySmall = TextStyle(
+        fontFamily = VazirFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
     ),
 
     labelLarge = TextStyle(
-
         fontFamily = VazirFont,
-
         fontWeight = FontWeight.Medium,
-
         fontSize = 14.sp
-
     ),
 
     labelMedium = TextStyle(
-
         fontFamily = VazirFont,
-
         fontWeight = FontWeight.Medium,
-
         fontSize = 12.sp
-
     ),
 
     labelSmall = TextStyle(
-
         fontFamily = VazirFont,
-
-        fontWeight = FontWeight.Normal,
-
+        fontWeight = FontWeight.Medium,
         fontSize = 11.sp
-
     )
 
 )
