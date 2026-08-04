@@ -4,64 +4,57 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ClearAll
-import androidx.compose.material.icons.outlined.DoneAll
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material.icons.outlined.DeleteSweep
+import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun ResultToolbar(
 
-    selectedCount: Int,
+    onClear: () -> Unit,
 
-    totalCount: Int,
+    onFilter: () -> Unit,
 
-    onSelectAll: () -> Unit,
-
-    onClear: () -> Unit
+    modifier: Modifier = Modifier
 
 ) {
 
     Row(
 
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth(),
 
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.End,
+
+        verticalAlignment = Alignment.CenterVertically
 
     ) {
 
-        FilledTonalButton(
+        IconButton(
 
-            modifier = Modifier.weight(1f),
-
-            onClick = onSelectAll
+            onClick = onFilter
 
         ) {
 
             Icon(
 
-                imageVector = Icons.Outlined.DoneAll,
+                imageVector = Icons.Outlined.FilterList,
 
-                contentDescription = null
+                contentDescription = "Filter",
 
-            )
-
-            Text(
-
-                text = " انتخاب همه"
+                tint = MaterialTheme.colorScheme.primary
 
             )
 
         }
 
-        FilledTonalButton(
 
-            modifier = Modifier.weight(1f),
+        IconButton(
 
             onClick = onClear
 
@@ -69,28 +62,16 @@ fun ResultToolbar(
 
             Icon(
 
-                imageVector = Icons.Outlined.ClearAll,
+                imageVector = Icons.Outlined.DeleteSweep,
 
-                contentDescription = null
+                contentDescription = "Clear",
 
-            )
-
-            Text(
-
-                text = " پاک کردن"
+                tint = MaterialTheme.colorScheme.primary
 
             )
 
         }
 
     }
-
-    Text(
-
-        text = "انتخاب شده: $selectedCount از $totalCount",
-
-        style = MaterialTheme.typography.bodyMedium
-
-    )
 
 }
