@@ -1,7 +1,7 @@
 package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,17 +14,20 @@ fun PrimaryButton(
 
     text: String,
 
-    onClick: () -> Unit
+    onClick: () -> Unit,
+
+    modifier: Modifier = Modifier
 
 ) {
 
     Button(
 
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp),
+        onClick = onClick,
 
-        onClick = onClick
+        modifier = modifier
+            .fillMaxWidth(),
+
+        shape = RoundedCornerShape(16.dp)
 
     ) {
 
@@ -32,7 +35,7 @@ fun PrimaryButton(
 
             text = text,
 
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.labelLarge
 
         )
 
