@@ -48,11 +48,6 @@ class MainActivity : ComponentActivity() {
 
                         },
 
-                        onSearch = {
-
-                            viewModel.search(it)
-
-                        },
 
                         onFilter = {
 
