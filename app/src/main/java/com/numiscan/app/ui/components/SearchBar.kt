@@ -2,8 +2,9 @@ package com.numiscan.app.ui.components
 
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 
@@ -11,11 +12,11 @@ import androidx.compose.ui.Modifier
 @Composable
 fun SearchBar(
 
-    value:String,
+    value: String,
 
-    onValueChange:(String)->Unit
+    onValueChange: (String) -> Unit
 
-){
+) {
 
 
     OutlinedTextField(
@@ -27,9 +28,9 @@ fun SearchBar(
         modifier =
             Modifier.fillMaxWidth(),
 
-        label = {
+        placeholder = {
 
-            Text("جستجو")
+            Text("جستجو در نتایج")
 
         }
 
