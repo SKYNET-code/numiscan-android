@@ -3,14 +3,13 @@ package com.numiscan.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import com.numiscan.app.navigation.AppNavigation
 import com.numiscan.app.ui.screens.HomeScreen
 import com.numiscan.app.ui.theme.NumiScanTheme
 import com.numiscan.app.viewmodel.MainViewModel
-import androidx.activity.viewModels
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.collectAsState
-
 
 class MainActivity : ComponentActivity() {
 
@@ -29,7 +28,9 @@ class MainActivity : ComponentActivity() {
             NumiScanTheme {
 
 
-                val state by viewModel.uiState.collectAsState()
+                val inputText by viewModel.inputText.collectAsState()
+
+                val results by viewModel.results.collectAsState()
 
 
                 AppNavigation {
@@ -37,20 +38,47 @@ class MainActivity : ComponentActivity() {
 
                     HomeScreen(
 
-                        state = state,
+                        inputText = inputText,
 
-                        onTextChange = viewModel::updateText,
+                        results = results,
 
-                        onSearchChange = viewModel::updateSearch,
+                        onTextChange = {
 
-                        onFilterChange = viewModel::setFilter,
+                            viewModel.updateText(it)
 
-                        onMenuClick = {}
+                        },
+
+                        onSearch = {
+
+                            viewModel.search(it)
+
+                        },
+
+                        onFilter = {
+
+                            viewModel.setFilter(it)
+
+                        },
+
+                        onExtract = {
+
+                            viewModel.extractNumbers()
+
+                        },
+
+                        onClear = {
+
+                            viewModel.clearResults()
+
+                        },
+
+                        onMenuClick = {
+
+                        }
 
                     )
 
                 }
-
 
             }
 
