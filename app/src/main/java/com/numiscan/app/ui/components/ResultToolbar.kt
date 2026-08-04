@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -17,8 +16,6 @@ import androidx.compose.ui.Modifier
 fun ResultToolbar(
 
     onClear: () -> Unit,
-
-    onFilter: () -> Unit,
 
     modifier: Modifier = Modifier
 
@@ -34,25 +31,6 @@ fun ResultToolbar(
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-
-        IconButton(
-
-            onClick = onFilter
-
-        ) {
-
-            Icon(
-
-                imageVector = Icons.Outlined.FilterList,
-
-                contentDescription = "Filter",
-
-                tint = MaterialTheme.colorScheme.primary
-
-            )
-
-        }
-
 
         IconButton(
 
