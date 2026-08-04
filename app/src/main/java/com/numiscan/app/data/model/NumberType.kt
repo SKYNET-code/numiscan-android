@@ -8,6 +8,8 @@ enum class NumberType {
 
     BANK_CARD,
 
-    SHABA
+    SHABA,
+
+    GENERAL
 
 }
