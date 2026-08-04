@@ -1,13 +1,13 @@
 package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ClearAll
+import androidx.compose.material.icons.outlined.DoneAll
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -23,79 +23,89 @@ fun ResultToolbar(
 
 ) {
 
-    Column(
+    ElevatedCard(
 
         modifier = Modifier.fillMaxWidth(),
 
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 2.dp
+        )
 
     ) {
 
-        Text(
-
-            text = "نتایج استخراج",
-
-            style = MaterialTheme.typography.titleLarge,
-
-            fontWeight = FontWeight.Bold
-
-        )
-
-        Text(
-
-            text = "$totalCount مورد پیدا شد",
-
-            style = MaterialTheme.typography.bodyMedium,
-
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-
-        )
-
         Row(
 
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp),
 
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            verticalAlignment = Alignment.CenterVertically
 
         ) {
 
-            OutlinedButton(
+            Column(
 
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
+
+            ) {
+
+                Text(
+
+                    text = "نتایج استخراج",
+
+                    style = MaterialTheme.typography.titleMedium
+
+                )
+
+                Text(
+
+                    text = "$selectedCount انتخاب شده از $totalCount",
+
+                    style = MaterialTheme.typography.bodySmall,
+
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+
+                )
+
+            }
+
+            FilledTonalIconButton(
 
                 onClick = onSelectAll
 
             ) {
 
-                Text("انتخاب همه")
+                Icon(
+
+                    Icons.Outlined.DoneAll,
+
+                    contentDescription = null
+
+                )
 
             }
 
-            OutlinedButton(
+            Spacer(
 
-                modifier = Modifier.weight(1f),
+                Modifier.width(8.dp)
+
+            )
+
+            FilledTonalIconButton(
 
                 onClick = onClear
 
             ) {
 
-                Text("پاک کردن")
+                Icon(
+
+                    Icons.Outlined.ClearAll,
+
+                    contentDescription = null
+
+                )
 
             }
-
-        }
-
-        if (selectedCount > 0) {
-
-            Text(
-
-                text = "$selectedCount مورد انتخاب شده",
-
-                style = MaterialTheme.typography.bodySmall,
-
-                color = MaterialTheme.colorScheme.primary
-
-            )
 
         }
 
