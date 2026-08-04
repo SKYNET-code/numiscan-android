@@ -12,9 +12,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SettingsScreen(
 
-    darkMode: Boolean,
+    darkMode:Boolean,
 
-    onDarkModeChange: (Boolean) -> Unit
+    onDarkModeChange:(Boolean)->Unit
 
 ){
 
@@ -27,10 +27,9 @@ fun SettingsScreen(
                 .padding(16.dp),
 
         verticalArrangement =
-            Arrangement.spacedBy(16.dp)
+            Arrangement.spacedBy(20.dp)
 
     ){
-
 
 
         Text(
@@ -56,7 +55,9 @@ fun SettingsScreen(
         ){
 
 
-            Text("حالت تاریک")
+            Text(
+                "حالت تاریک"
+            )
 
 
             Switch(
