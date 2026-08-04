@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.numiscan.app.data.model.NumberType
 
 
@@ -17,31 +18,44 @@ fun NumberIcon(
 ){
 
 
+    val icon: ImageVector = when(type){
+
+
+        NumberType.MOBILE ->
+            Icons.Default.PhoneAndroid
+
+
+
+        NumberType.LANDLINE ->
+            Icons.Default.Phone
+
+
+
+        NumberType.BANK_CARD ->
+            Icons.Default.CreditCard
+
+
+
+        NumberType.SHABA ->
+            Icons.Default.AccountBalance
+
+
+
+        NumberType.UNKNOWN ->
+            Icons.Default.Help
+
+
+    }
+
+
+
     Icon(
 
-        imageVector = when(type){
-
-
-            NumberType.MOBILE ->
-                Icons.Default.PhoneAndroid
-
-
-            NumberType.LANDLINE ->
-                Icons.Default.Phone
-
-
-            NumberType.BANK_CARD ->
-                Icons.Default.CreditCard
-
-
-            NumberType.UNKNOWN ->
-                Icons.Default.QuestionMark
-
-        },
-
+        imageVector = icon,
 
         contentDescription = null
 
     )
+
 
 }
