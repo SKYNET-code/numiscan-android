@@ -7,24 +7,35 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.numiscan.app.data.model.ExtractedNumber
+import com.numiscan.app.data.model.FilterType
 import com.numiscan.app.ui.components.*
 
 @Composable
 fun HomeScreen(
 
-    state: HomeUiState,
+    inputText: String,
+
+    results: List<ExtractedNumber>,
 
     onTextChange: (String) -> Unit,
 
-    onSearchChange: (String) -> Unit,
+    onSearch: (String) -> Unit,
 
-    onFilterChange: (com.numiscan.app.data.model.NumberType?) -> Unit,
+    onFilter: (FilterType) -> Unit,
+
+    onExtract: () -> Unit,
+
+    onClear: () -> Unit,
 
     onMenuClick: () -> Unit
 
 ) {
+
 
     Scaffold(
 
@@ -72,7 +83,7 @@ fun HomeScreen(
 
                 InputCard(
 
-                    text = state.inputText,
+                    text = inputText,
 
                     onTextChange = onTextChange
 
@@ -83,11 +94,22 @@ fun HomeScreen(
 
             item {
 
+                PrimaryButton(
+
+                    text = "شناسایی شماره‌ها",
+
+                    onClick = onExtract
+
+                )
+
+            }
+                        item {
+
                 SearchBar(
 
-                    query = state.searchQuery,
+                    query = "",
 
-                    onQueryChange = onSearchChange
+                    onQueryChange = onSearch
 
                 )
 
@@ -98,20 +120,42 @@ fun HomeScreen(
 
                 FilterBar(
 
-                    selectedType = state.selectedType,
+                    selectedType = null,
 
-                    onTypeSelected = onFilterChange
+                    onTypeSelected = {
+
+                        onFilter(
+
+                            when (it) {
+
+                                null ->
+                                    FilterType.ALL
+
+                                else ->
+                                    FilterType.valueOf(
+
+                                        it.name
+
+                                    )
+
+                            }
+
+                        )
+
+                    }
 
                 )
 
             }
-                        item {
 
-                if (state.results.isNotEmpty()) {
+
+            item {
+
+                if (results.isNotEmpty()) {
 
                     ResultSummaryCard(
 
-                        total = state.results.size
+                        total = results.size
 
                     )
 
@@ -120,7 +164,8 @@ fun HomeScreen(
             }
 
 
-            if (state.results.isEmpty()) {
+            if (results.isEmpty()) {
+
 
                 item {
 
@@ -128,21 +173,25 @@ fun HomeScreen(
 
                 }
 
-            }
+
+            } else {
 
 
-            items(
+                items(
 
-                state.results
+                    results
 
-            ) { item ->
+                ) { item ->
 
 
-                ResultCard(
+                    ResultCard(
 
-                    item = item
+                        item = item
 
-                )
+                    )
+
+
+                }
 
 
             }
@@ -150,21 +199,17 @@ fun HomeScreen(
 
             item {
 
+                if (results.isNotEmpty()) {
 
-                StatisticsCard(
+                    ResultToolbar(
 
-                    total = state.results.size,
+                        onClear = onClear,
 
-                    mobile = state.mobileCount,
+                        onFilter = {}
 
-                    landline = state.landlineCount,
+                    )
 
-                    bankCard = state.bankCardCount,
-
-                    shaba = state.shabaCount
-
-                )
-
+                }
 
             }
 
