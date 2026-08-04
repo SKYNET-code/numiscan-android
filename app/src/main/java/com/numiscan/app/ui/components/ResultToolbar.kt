@@ -1,12 +1,14 @@
 package com.numiscan.app.ui.components
 
-
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
-
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun ResultToolbar(
@@ -19,50 +21,84 @@ fun ResultToolbar(
 
     onClear: () -> Unit
 
-){
+) {
 
+    Column(
 
+        modifier = Modifier.fillMaxWidth(),
 
-    Row(
+        verticalArrangement = Arrangement.spacedBy(12.dp)
 
-        modifier =
-            Modifier.fillMaxWidth(),
+    ) {
 
-        horizontalArrangement =
-            Arrangement.SpaceBetween
+        Text(
 
-    ){
+            text = "نتایج استخراج",
 
+            style = MaterialTheme.typography.titleLarge,
 
+            fontWeight = FontWeight.Bold
 
-        Button(
+        )
 
-            onClick = onSelectAll
+        Text(
 
-        ){
+            text = "$totalCount مورد پیدا شد",
 
-            Text(
-                "انتخاب همه ($totalCount)"
-            )
+            style = MaterialTheme.typography.bodyMedium,
+
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+
+        )
+
+        Row(
+
+            modifier = Modifier.fillMaxWidth(),
+
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+
+        ) {
+
+            OutlinedButton(
+
+                modifier = Modifier.weight(1f),
+
+                onClick = onSelectAll
+
+            ) {
+
+                Text("انتخاب همه")
+
+            }
+
+            OutlinedButton(
+
+                modifier = Modifier.weight(1f),
+
+                onClick = onClear
+
+            ) {
+
+                Text("پاک کردن")
+
+            }
 
         }
 
-
-
-        Button(
-
-            onClick = onClear
-
-        ){
+        if (selectedCount > 0) {
 
             Text(
-                "پاک کردن"
+
+                text = "$selectedCount مورد انتخاب شده",
+
+                style = MaterialTheme.typography.bodySmall,
+
+                color = MaterialTheme.colorScheme.primary
+
             )
 
         }
-
 
     }
-
 
 }
