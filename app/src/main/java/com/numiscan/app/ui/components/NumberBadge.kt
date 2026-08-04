@@ -2,59 +2,77 @@ package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.AssistChip
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.NumberType
 
 @Composable
 fun NumberBadge(
+
     type: NumberType
+
 ) {
 
-    val (title, color) = when (type) {
+    val text: String
+    val color: Color
 
-        NumberType.MOBILE ->
-            "موبایل" to Color(0xFF2E7D32)
+    when (type) {
 
-        NumberType.LANDLINE ->
-            "تلفن ثابت" to Color(0xFF1565C0)
+        NumberType.MOBILE -> {
 
-        NumberType.BANK_CARD ->
-            "کارت بانکی" to Color(0xFFF57C00)
+            text = "موبایل"
+            color = Color(0xFF2E7D32)
 
-        NumberType.SHABA ->
-            "شماره شبا" to Color(0xFF6A1B9A)
+        }
+
+        NumberType.LANDLINE -> {
+
+            text = "ثابت"
+            color = Color(0xFF1565C0)
+
+        }
+
+        NumberType.BANK_CARD -> {
+
+            text = "کارت"
+            color = Color(0xFFEF6C00)
+
+        }
+
+        NumberType.SHABA -> {
+
+            text = "شبا"
+            color = Color(0xFF6A1B9A)
+
+        }
 
     }
 
     Surface(
 
-        color = color.copy(alpha = 0.12f),
+        color = color.copy(alpha = 0.15f),
 
-        shape = RoundedCornerShape(50.dp)
+        shape = RoundedCornerShape(50)
 
     ) {
 
         Text(
 
-            text = title,
+            text = text,
 
             color = color,
 
             style = MaterialTheme.typography.labelMedium,
 
-            modifier = Modifier.padding(
-                horizontal = 12.dp,
-                vertical = 6.dp
-            )
+            modifier = androidx.compose.ui.Modifier
+                .height(32.dp),
 
         )
 
