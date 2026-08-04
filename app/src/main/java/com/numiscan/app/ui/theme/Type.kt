@@ -27,7 +27,7 @@ val VazirFont = FontFamily(
 
 )
 
-val Typography = Typography(
+val AppTypography = Typography(
 
     displayLarge = TextStyle(
         fontFamily = VazirFont,
