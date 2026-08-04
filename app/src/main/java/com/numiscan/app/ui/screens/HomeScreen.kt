@@ -41,11 +41,10 @@ fun HomeScreen(
 
         topBar = {
 
-            HomeTopBar(
-
-                onMenuClick = onMenuClick
-
-            )
+            AppTopBar(
+                    title = "NumiScan",
+                    onMenuClick = onMenuClick
+                )
 
         }
 
