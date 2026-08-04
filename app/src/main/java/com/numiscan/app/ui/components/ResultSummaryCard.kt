@@ -1,100 +1,183 @@
 package com.numiscan.app.ui.components
 
-
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material.icons.outlined.CreditCard
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material.icons.outlined.SimCard
+import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
-
 
 @Composable
 fun ResultSummaryCard(
 
-    count: Int,
+    total: Int,
 
-    onClick: () -> Unit
+    mobile: Int,
 
-){
+    landline: Int,
 
+    cards: Int,
 
-    Card(
+    shaba: Int,
 
-        modifier = Modifier
+    onOpenResults: () -> Unit
 
-            .fillMaxWidth()
+) {
 
-            .clickable {
+    ElevatedCard(
 
-                onClick()
+        modifier = Modifier.fillMaxWidth(),
 
-            },
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 4.dp
+        )
 
-        shape = MaterialTheme.shapes.large
-
-    ){
-
+    ) {
 
         Column(
 
-            modifier =
-                Modifier.padding(20.dp)
+            modifier = Modifier.padding(18.dp)
 
-        ){
-
+        ) {
 
             Text(
 
-                text = "نتایج استخراج شده",
+                text = "خلاصه نتایج",
 
-                style =
-                    MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleLarge,
 
-            )
-
-
-            Spacer(
-
-                modifier =
-                    Modifier.height(8.dp)
+                fontWeight = FontWeight.Bold
 
             )
 
+            Spacer(Modifier.height(18.dp))
+
+            SummaryRow(
+                Icons.Outlined.Phone,
+                "شماره موبایل",
+                mobile
+            )
+
+            SummaryRow(
+                Icons.Outlined.SimCard,
+                "تلفن ثابت",
+                landline
+            )
+
+            SummaryRow(
+                Icons.Outlined.CreditCard,
+                "کارت بانکی",
+                cards
+            )
+
+            SummaryRow(
+                Icons.Outlined.AccountBalance,
+                "شماره شبا",
+                shaba
+            )
+
+            HorizontalDivider()
+
+            Spacer(Modifier.height(12.dp))
 
             Text(
 
-                text = "$count مورد پیدا شد",
+                text = "جمع کل: $total",
 
-                style =
-                    MaterialTheme.typography.bodyLarge
-
-            )
-
-
-            Spacer(
-
-                modifier =
-                    Modifier.height(8.dp)
+                style = MaterialTheme.typography.titleMedium
 
             )
 
+            Spacer(Modifier.height(16.dp))
 
-            Text(
+            Button(
 
-                text = "برای مشاهده نتایج لمس کنید",
+                modifier = Modifier.fillMaxWidth(),
 
-                style =
-                    MaterialTheme.typography.bodyMedium
+                onClick = onOpenResults
 
-            )
+            ) {
 
+                Text(
+
+                    "مشاهده نتایج"
+
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                Icon(
+
+                    Icons.Outlined.ChevronRight,
+
+                    null
+
+                )
+
+            }
 
         }
 
-
     }
 
+}
+
+@Composable
+private fun SummaryRow(
+
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+
+    title: String,
+
+    count: Int
+
+) {
+
+    Row(
+
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+
+        Icon(
+
+            icon,
+
+            null
+
+        )
+
+        Spacer(Modifier.width(10.dp))
+
+        Text(
+
+            text = title,
+
+            modifier = Modifier.weight(1f)
+
+        )
+
+        Text(
+
+            text = count.toString(),
+
+            style = MaterialTheme.typography.titleMedium,
+
+            fontWeight = FontWeight.Bold
+
+        )
+
+    }
 
 }
