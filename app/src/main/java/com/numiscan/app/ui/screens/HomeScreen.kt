@@ -32,7 +32,7 @@ fun HomeScreen(
 
     onClear: () -> Unit,
 
-    onMenuClick: () -> Unit
+    
 
 ) {
 
@@ -43,7 +43,7 @@ fun HomeScreen(
 
             AppTopBar(
                     title = "NumiScan",
-                    onMenuClick = onMenuClick
+        
                 )
 
         }
