@@ -8,7 +8,11 @@ class DuplicateFilter {
         list: List<ExtractedNumber>
     ): List<ExtractedNumber> {
 
-        return list.distinctBy { it.value }
+        return list.distinctBy {
+
+            "${it.type}:${it.value}"
+
+        }
 
     }
 
