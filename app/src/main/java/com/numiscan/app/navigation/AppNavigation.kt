@@ -1,48 +1,43 @@
 package com.numiscan.app.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.numiscan.app.ui.screens.HomeScreen
 import com.numiscan.app.ui.screens.ResultsScreen
 
+object Routes {
+
+    const val HOME = "home"
+
+    const val RESULTS = "results"
+
+}
+
 @Composable
-fun AppNavigation(){
+fun AppNavigation() {
 
-    val navController=
-
-        rememberNavController()
+    val navController = rememberNavController()
 
     NavHost(
 
-        navController=navController,
+        navController = navController,
 
-        startDestination=AppDestination.Home.route
+        startDestination = Routes.HOME
 
-    ){
+    ) {
 
-        composable(
-
-            AppDestination.Home.route
-
-        ){
+        composable(Routes.HOME) {
 
             HomeScreen(
 
-                openDrawer={
-
-                },
-
-                openSettings={
-
-                },
-
-                openResults={
+                onShowResults = {
 
                     navController.navigate(
 
-                        AppDestination.Results.route
+                        Routes.RESULTS
 
                     )
 
@@ -52,15 +47,11 @@ fun AppNavigation(){
 
         }
 
-        composable(
-
-            AppDestination.Results.route
-
-        ){
+        composable(Routes.RESULTS) {
 
             ResultsScreen(
 
-                onBack={
+                onBack = {
 
                     navController.popBackStack()
 
