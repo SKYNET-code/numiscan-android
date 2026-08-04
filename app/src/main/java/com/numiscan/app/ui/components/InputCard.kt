@@ -16,7 +16,9 @@ fun InputCard(
 
     onExtract: () -> Unit,
 
-    onClear: () -> Unit
+    onClear: () -> Unit,
+
+    onPaste: () -> Unit
 
 ) {
 
@@ -58,19 +60,26 @@ fun InputCard(
 
                 },
 
+                placeholder = {
+
+                    Text(
+                        "متن را وارد کنید"
+                    )
+
+                },
+
 
                 trailingIcon = {
 
 
-                    if(text.isNotEmpty()) {
+                    if(text.isNotEmpty()){
 
 
                         IconButton(
 
                             onClick = onClear
 
-                        ) {
-
+                        ){
 
                             Text("×")
 
@@ -84,27 +93,51 @@ fun InputCard(
 
 
 
-            Button(
+            Row(
 
                 modifier =
                     Modifier.fillMaxWidth(),
 
+                horizontalArrangement =
+                    Arrangement.spacedBy(8.dp)
 
-                enabled = text.isNotBlank(),
-
-
-                onClick = onExtract
-
-            ) {
+            ){
 
 
-                Text(
+                OutlinedButton(
 
-                    "استخراج شماره‌ها"
+                    modifier =
+                        Modifier.weight(1f),
 
-                )
+                    onClick = onPaste
+
+                ){
+
+                    Text("Paste")
+
+                }
+
+
+
+                Button(
+
+                    modifier =
+                        Modifier.weight(1f),
+
+                    enabled =
+                        text.isNotBlank(),
+
+                    onClick = onExtract
+
+                ){
+
+                    Text("استخراج")
+
+                }
+
 
             }
+
 
         }
 
