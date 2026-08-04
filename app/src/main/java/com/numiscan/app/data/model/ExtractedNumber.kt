@@ -9,8 +9,6 @@ data class ExtractedNumber(
 
     val sourceText: String = "",
 
-    val selected: Boolean = false,
-
-    val timestamp: Long = System.currentTimeMillis()
+    val selected: Boolean = false
 
 )
