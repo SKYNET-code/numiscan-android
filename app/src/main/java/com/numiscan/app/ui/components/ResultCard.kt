@@ -1,42 +1,31 @@
 package com.numiscan.app.ui.components
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
-import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Message
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.numiscan.app.data.model.ExtractedNumber
-import com.numiscan.app.data.model.NumberType
 
 @Composable
 fun ResultCard(
 
     item: ExtractedNumber,
 
-    onSelect: () -> Unit,
-
-    onCopy: (() -> Unit)? = null,
-
-    onShare: (() -> Unit)? = null,
-
-    onCall: (() -> Unit)? = null
+    onSelect: () -> Unit
 
 ) {
 
@@ -44,22 +33,23 @@ fun ResultCard(
 
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onSelect() },
+            .clickable {
+                onSelect()
+            },
 
         shape = RoundedCornerShape(18.dp),
 
+        border = BorderStroke(
+            1.dp,
+            Color(0xFFE3E7EE)
+        ),
+
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 3.dp
+            defaultElevation = 2.dp
         ),
 
         colors = CardDefaults.cardColors(
-
-            containerColor =
-                if (item.selected)
-                    MaterialTheme.colorScheme.primaryContainer
-                else
-                    MaterialTheme.colorScheme.surface
-
+            containerColor = Color.White
         )
 
     ) {
@@ -76,169 +66,96 @@ fun ResultCard(
 
             ) {
 
-                NumberBadge(item.type)
+                NumberIcon(item.type)
 
                 Spacer(
-                    Modifier.weight(1f)
+                    Modifier.width(10.dp)
                 )
 
-                if (item.selected) {
+                Column(
+                    Modifier.weight(1f)
+                ) {
 
-                    Icon(
+                    Text(
 
-                        Icons.Outlined.CheckCircle,
+                        text = item.value,
 
-                        contentDescription = null
+                        fontWeight = FontWeight.Bold,
+
+                        fontSize = 18.sp,
+
+                        maxLines = 1,
+
+                        overflow = TextOverflow.Ellipsis
 
                     )
+
+                    Spacer(
+                        Modifier.height(4.dp)
+                    )
+
+                    NumberBadge(item.type)
 
                 }
 
             }
 
             Spacer(
-                Modifier.height(14.dp)
-            )
-
-            Text(
-
-                text = item.value,
-
-                style = MaterialTheme.typography.titleMedium,
-
-                fontWeight = FontWeight.Bold
-
-            )
-
-            Spacer(
-                Modifier.height(12.dp)
-            )
-
-            Text(
-
-                text = when (item.type) {
-
-                    NumberType.MOBILE ->
-                        "شماره موبایل"
-
-                    NumberType.LANDLINE ->
-                        "تلفن ثابت"
-
-                    NumberType.BANK_CARD ->
-                        "شماره کارت"
-
-                    NumberType.SHABA ->
-                        "شماره شبا"
-
-                },
-
-                style = MaterialTheme.typography.bodyMedium
-
-            )
-
-            Spacer(
-                Modifier.height(16.dp)
+                Modifier.height(18.dp)
             )
 
             HorizontalDivider()
 
             Spacer(
-                Modifier.height(8.dp)
+                Modifier.height(12.dp)
             )
 
             Row(
 
                 modifier = Modifier.fillMaxWidth(),
 
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement =
+                    Arrangement.SpaceEvenly
 
             ) {
 
-                TextButton(
+                SmallActionButton(
 
-                    onClick = {
+                    icon = Icons.Outlined.ContentCopy,
 
-                        onCopy?.invoke()
-
-                    }
+                    text = "کپی"
 
                 ) {
-
-                    Icon(
-
-                        Icons.Outlined.ContentCopy,
-
-                        contentDescription = null
-
-                    )
-
-                    Spacer(
-                        Modifier.width(4.dp)
-                    )
-
-                    Text("کپی")
 
                 }
 
-                TextButton(
+                SmallActionButton(
 
-                    onClick = {
+                    icon = Icons.Outlined.Call,
 
-                        onShare?.invoke()
-
-                    }
+                    text = "تماس"
 
                 ) {
-
-                    Icon(
-
-                        Icons.Outlined.Share,
-
-                        contentDescription = null
-
-                    )
-
-                    Spacer(
-                        Modifier.width(4.dp)
-                    )
-
-                    Text("اشتراک")
 
                 }
 
-                if (
+                SmallActionButton(
 
-                    item.type == NumberType.MOBILE ||
+                    icon = Icons.Outlined.Message,
 
-                    item.type == NumberType.LANDLINE
+                    text = "پیامک"
 
                 ) {
 
-                    TextButton(
+                }
 
-                        onClick = {
+                SmallActionButton(
 
-                            onCall?.invoke()
+                    icon = Icons.Outlined.Share,
 
-                        }
+                    text = "اشتراک"
 
-                    ) {
-
-                        Icon(
-
-                            Icons.Outlined.Call,
-
-                            contentDescription = null
-
-                        )
-
-                        Spacer(
-                            Modifier.width(4.dp)
-                        )
-
-                        Text("تماس")
-
-                    }
+                ) {
 
                 }
 
