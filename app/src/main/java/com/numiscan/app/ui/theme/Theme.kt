@@ -6,29 +6,34 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-
 private val LightColors = lightColorScheme(
 
-    primary = PrimaryBlue,
+    primary = Primary,
+    secondary = Secondary,
+    tertiary = Accent,
 
-    secondary = SecondaryTeal,
+    background = Background,
+    surface = Surface,
 
-    background = BackgroundLight
+    onPrimary = Surface,
+    onBackground = TextPrimary,
+    onSurface = TextPrimary
 
 )
-
 
 private val DarkColors = darkColorScheme(
 
-    primary = PrimaryBlue,
+    primary = Secondary,
+    secondary = Accent,
 
-    secondary = SecondaryTeal,
+    background = Color(0xFF111827),
+    surface = Color(0xFF1F2937),
 
-    background = BackgroundDark
+    onPrimary = Surface,
+    onBackground = Surface,
+    onSurface = Surface
 
 )
-
-
 
 @Composable
 fun NumiScanTheme(
@@ -41,10 +46,7 @@ fun NumiScanTheme(
 
     MaterialTheme(
 
-        colorScheme = if (darkTheme)
-            DarkColors
-        else
-            LightColors,
+        colorScheme = if (darkTheme) DarkColors else LightColors,
 
         typography = AppTypography,
 
