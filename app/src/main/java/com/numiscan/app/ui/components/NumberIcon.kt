@@ -18,35 +18,16 @@ fun NumberIcon(
 ){
 
 
-    val icon: ImageVector = when(type){
+    val icon: ImageVector = when (type) {
 
-
-        NumberType.MOBILE ->
-            Icons.Default.PhoneAndroid
-
-
-
-        NumberType.LANDLINE ->
-            Icons.Default.Phone
-
-
-
-        NumberType.BANK_CARD ->
-            Icons.Default.CreditCard
-
-
-
-        NumberType.SHABA ->
-            Icons.Default.AccountBalance
-
-
-
-        NumberType.UNKNOWN ->
-            Icons.Default.Help
-
-
-    }
-
+                NumberType.MOBILE -> Icons.Default.PhoneAndroid
+            
+                NumberType.LANDLINE -> Icons.Default.Call
+            
+                NumberType.BANK_CARD -> Icons.Default.CreditCard
+            
+                NumberType.SHABA -> Icons.Default.AccountBalance
+            }
 
 
     Icon(
