@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -18,7 +16,9 @@ fun SearchBar(
 
     query: String,
 
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+
+    modifier: Modifier = Modifier
 
 ) {
 
@@ -28,13 +28,19 @@ fun SearchBar(
 
         onValueChange = onQueryChange,
 
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(58.dp),
+            .height(56.dp),
 
-        shape = RoundedCornerShape(16.dp),
+        placeholder = {
 
-        singleLine = true,
+            Text(
+
+                text = "جستجو در نتایج..."
+
+            )
+
+        },
 
         leadingIcon = {
 
@@ -48,17 +54,21 @@ fun SearchBar(
 
         },
 
-        placeholder = {
+        singleLine = true,
 
-            Text(
+        shape = RoundedCornerShape(18.dp),
 
-                "جستجو بین نتایج"
+        colors = OutlinedTextFieldDefaults.colors(
 
-            )
+            focusedContainerColor = Color.White,
 
-        },
+            unfocusedContainerColor = Color.White,
 
-        textStyle = MaterialTheme.typography.bodyLarge
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+
+            unfocusedBorderColor = Color(0xFFD8DDE5)
+
+        )
 
     )
 
