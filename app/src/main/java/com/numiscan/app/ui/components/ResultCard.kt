@@ -1,12 +1,15 @@
 package com.numiscan.app.ui.components
 
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
+
 
 
 @Composable
@@ -16,23 +19,27 @@ fun ResultCard(
 
     onSelect: () -> Unit
 
-) {
+){
 
 
     Card(
 
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable {
 
-                onSelect()
+                    onSelect()
 
-            },
+                },
 
 
-        shape = MaterialTheme.shapes.large
+        shape =
+            MaterialTheme.shapes.large
 
-    ) {
+
+    ){
+
 
 
         Row(
@@ -40,13 +47,38 @@ fun ResultCard(
             modifier =
                 Modifier.padding(16.dp),
 
-            horizontalArrangement =
-                Arrangement.SpaceBetween
 
-        ) {
+            verticalAlignment =
+                Alignment.CenterVertically
+
+        ){
 
 
-            Column {
+
+            NumberIcon(
+
+                type = item.type
+
+            )
+
+
+
+            Spacer(
+
+                modifier =
+                    Modifier.width(12.dp)
+
+            )
+
+
+
+            Column(
+
+                modifier =
+                    Modifier.weight(1f)
+
+            ){
+
 
 
                 Text(
@@ -61,11 +93,13 @@ fun ResultCard(
                 )
 
 
-                Text(
 
-                    text = item.type.name
+                NumberBadge(
+
+                    type = item.type
 
                 )
+
 
             }
 
@@ -73,7 +107,9 @@ fun ResultCard(
 
             Checkbox(
 
-                checked = item.selected,
+                checked =
+                    item.selected,
+
 
                 onCheckedChange = {
 
