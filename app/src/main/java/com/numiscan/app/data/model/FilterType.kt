@@ -1,6 +1,5 @@
 package com.numiscan.app.data.model
 
-
 enum class FilterType {
 
     ALL,
@@ -9,6 +8,8 @@ enum class FilterType {
 
     LANDLINE,
 
-    BANK_CARD
+    BANK_CARD,
+
+    SHABA
 
 }
