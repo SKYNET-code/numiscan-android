@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
 import com.numiscan.app.data.model.FilterType
@@ -19,11 +19,11 @@ import com.numiscan.app.ui.components.*
 @Composable
 fun HomeScreen(
 
-    inputText: String,
+    inputText: TextFieldValue,
 
     results: List<ExtractedNumber>,
 
-    onTextChange: (String) -> Unit,
+    onTextChange: (TextFieldValue) -> Unit,
 
     onFilter: (FilterType) -> Unit,
 
@@ -44,7 +44,9 @@ fun HomeScreen(
         topBar = {
 
             AppTopBar(
+
                 title = "NumiScan"
+
             )
 
         }
@@ -61,8 +63,11 @@ fun HomeScreen(
                 .padding(padding),
 
             contentPadding = PaddingValues(
+
                 horizontal = 16.dp,
+
                 vertical = 16.dp
+
             ),
 
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -86,18 +91,18 @@ fun HomeScreen(
                 if (results.isEmpty()) {
 
                     Box(
-
-                        modifier = Modifier.fillMaxWidth(),
-
-                        contentAlignment = Alignment.Center
-
+                        modifier = Modifier.fillMaxWidth()
                     ) {
 
                         PrimaryButton(
 
                             text = "تشخیص شماره",
 
-                            onClick = onExtract
+                            onClick = onExtract,
+
+                            modifier = Modifier.align(
+                                androidx.compose.ui.Alignment.Center
+                            )
 
                         )
 
@@ -109,14 +114,12 @@ fun HomeScreen(
 
                         modifier = Modifier.fillMaxWidth(),
 
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
 
                     ) {
 
                         Box(
-
                             modifier = Modifier.weight(1f)
-
                         ) {
 
                             PrimaryButton(
@@ -132,9 +135,7 @@ fun HomeScreen(
                         }
 
                         Box(
-
                             modifier = Modifier.weight(1f)
-
                         ) {
 
                             PrimaryButton(
@@ -145,7 +146,7 @@ fun HomeScreen(
 
                                 modifier = Modifier.fillMaxWidth(),
 
-                                outlined = true
+                                destructive = true
 
                             )
 
@@ -169,13 +170,11 @@ fun HomeScreen(
 
                         onFilter(
 
-                            when (it) {
+                            it?.let {
 
-                                null -> FilterType.ALL
+                                FilterType.valueOf(it.name)
 
-                                else -> FilterType.valueOf(it.name)
-
-                            }
+                            } ?: FilterType.ALL
 
                         )
 
@@ -185,9 +184,9 @@ fun HomeScreen(
 
             }
 
-            item {
+            if (results.isNotEmpty()) {
 
-                if (results.isNotEmpty()) {
+                item {
 
                     ResultSummaryCard(
 
@@ -213,7 +212,11 @@ fun HomeScreen(
 
                     items = results,
 
-                    key = { it.type.name + it.value }
+                    key = {
+
+                        it.type.name + it.value
+
+                    }
 
                 ) { item ->
 
