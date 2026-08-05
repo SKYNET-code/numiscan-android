@@ -5,28 +5,36 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun InputCard(
 
-    text: String,
+    text: TextFieldValue,
 
-    onTextChange: (String) -> Unit,
+    onTextChange: (TextFieldValue) -> Unit,
 
     modifier: Modifier = Modifier
 
 ) {
 
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = LocalClipboardManager.current
 
     Card(
 
@@ -61,7 +69,9 @@ fun InputCard(
                 onValueChange = onTextChange,
 
                 modifier = Modifier
+
                     .fillMaxWidth()
+
                     .heightIn(min = 150.dp),
 
                 placeholder = {
@@ -78,13 +88,7 @@ fun InputCard(
 
                 },
 
-                textStyle = MaterialTheme.typography.bodyLarge.copy(
-
-                    textAlign = TextAlign.Start,
-
-                    textDirection = TextDirection.Content
-
-                ),
+                textStyle = MaterialTheme.typography.bodyLarge,
 
                 shape = RoundedCornerShape(16.dp),
 
@@ -126,21 +130,23 @@ fun InputCard(
 
                     onClick = {
 
-                        clipboardManager.getText()?.let {
+                        clipboard.getText()?.let {
 
-                            onTextChange(it.text)
+                            onTextChange(
+
+                                TextFieldValue(
+
+                                    text = it.text,
+
+                                    selection = TextRange(it.text.length)
+
+                                )
+
+                            )
 
                         }
 
-                    },
-
-                    shape = RoundedCornerShape(12.dp),
-
-                    colors = ButtonDefaults.buttonColors(
-
-                        containerColor = MaterialTheme.colorScheme.primary
-
-                    )
+                    }
 
                 ) {
 
@@ -172,11 +178,13 @@ fun InputCard(
 
                     onClick = {
 
-                        onTextChange("")
+                        onTextChange(
+
+                            TextFieldValue("")
+
+                        )
 
                     },
-
-                    shape = RoundedCornerShape(12.dp),
 
                     colors = ButtonDefaults.buttonColors(
 
