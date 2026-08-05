@@ -2,26 +2,20 @@ package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun InputCard(
@@ -35,6 +29,11 @@ fun InputCard(
 ) {
 
     val clipboardManager = LocalClipboardManager.current
+
+    val textFieldValue = TextFieldValue(
+        text = text,
+        selection = TextRange(text.length)
+    )
 
     Card(
 
@@ -58,35 +57,23 @@ fun InputCard(
 
         Column(
 
-            modifier = Modifier.padding(18.dp)
+            modifier = Modifier.padding(16.dp)
 
         ) {
 
-            Text(
-
-                text = "متن ورودی",
-
-                style = MaterialTheme.typography.titleMedium,
-
-                fontWeight = FontWeight.Bold
-
-            )
-
-            Spacer(
-
-                modifier = Modifier.height(12.dp)
-
-            )
-
             OutlinedTextField(
 
-                value = text,
+                value = textFieldValue,
 
-                onValueChange = onTextChange,
+                onValueChange = {
+
+                    onTextChange(it.text)
+
+                },
 
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 180.dp),
+                    .heightIn(min = 150.dp),
 
                 placeholder = {
 
@@ -96,7 +83,7 @@ fun InputCard(
 
                         modifier = Modifier.fillMaxWidth(),
 
-                        textAlign = TextAlign.End
+                        textAlign = TextAlign.Right
 
                     )
 
@@ -104,9 +91,13 @@ fun InputCard(
 
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
 
-                    textAlign = TextAlign.End,
+                    textAlign = TextAlign.Right
 
-                    textDirection = TextDirection.ContentOrRtl
+                ),
+
+                keyboardOptions = KeyboardOptions(
+
+                    keyboardType = KeyboardType.Text
 
                 ),
 
@@ -132,7 +123,7 @@ fun InputCard(
 
             Spacer(
 
-                modifier = Modifier.height(16.dp)
+                modifier = Modifier.height(12.dp)
 
             )
 
@@ -140,7 +131,9 @@ fun InputCard(
 
                 modifier = Modifier.fillMaxWidth(),
 
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
+                horizontalArrangement = Arrangement.Center,
+
+                verticalAlignment = Alignment.CenterVertically
 
             ) {
 
@@ -148,11 +141,9 @@ fun InputCard(
 
                     onClick = {
 
-                        val clipboardText = clipboardManager.getText()
+                        clipboardManager.getText()?.let {
 
-                        if (clipboardText != null) {
-
-                            onTextChange(clipboardText.text)
+                            onTextChange(it.text)
 
                         }
 
@@ -162,7 +153,7 @@ fun InputCard(
 
                 ) {
 
-                    androidx.compose.material3.Icon(
+                    Icon(
 
                         imageVector = Icons.Outlined.ContentPaste,
 
@@ -176,13 +167,15 @@ fun InputCard(
 
                     )
 
-                    Text(
-
-                        "چسباندن"
-
-                    )
+                    Text("چسباندن")
 
                 }
+
+                Spacer(
+
+                    modifier = Modifier.width(12.dp)
+
+                )
 
                 Button(
 
@@ -196,7 +189,7 @@ fun InputCard(
 
                 ) {
 
-                    androidx.compose.material3.Icon(
+                    Icon(
 
                         imageVector = Icons.Outlined.DeleteOutline,
 
@@ -210,11 +203,7 @@ fun InputCard(
 
                     )
 
-                    Text(
-
-                        "پاک کردن"
-
-                    )
+                    Text("پاک کردن")
 
                 }
 
