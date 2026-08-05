@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,10 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
 import com.numiscan.app.data.model.FilterType
-import com.numiscan.app.ui.components.*
 import com.numiscan.app.data.model.NumberType
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.gestures.FlingBehavior
+import com.numiscan.app.ui.components.*
 import androidx.compose.foundation.gestures.ScrollableDefaults
 
 
@@ -48,65 +45,78 @@ fun HomeScreen(
     val listState = rememberLazyListState()
     val flingBehavior = ScrollableDefaults.flingBehavior()
 
-    Scaffold(
 
-    ) { padding ->
+    LazyColumn(
 
+        state = listState,
 
-        LazyColumn(
+        modifier = Modifier
 
-            state = listState,
+            .fillMaxSize()
 
-            modifier = Modifier
+            .background(
 
-                .fillMaxSize()
-
-                .background(
-
-                    MaterialTheme.colorScheme.background
-
-                )
-
-                .padding(padding),
-            
-            flingBehavior = flingBehavior,
-
-            contentPadding = PaddingValues(
-
-                horizontal = 16.dp,
-
-                vertical = 16.dp
+                MaterialTheme.colorScheme.background
 
             ),
 
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        flingBehavior = flingBehavior,
 
-        ) {
+        contentPadding = PaddingValues(
 
+            horizontal = 16.dp,
 
-            item {
+            vertical = 16.dp
 
-                InputCard(
+        ),
 
-                    text = inputText,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
 
-                    onTextChange = onTextChange
-
-                )
-
-            }
+    ) {
 
 
-            item {
+        item {
 
-                Row(
+            InputCard(
 
-                    modifier = Modifier.fillMaxWidth(),
+                text = inputText,
 
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                onTextChange = onTextChange
+
+            )
+
+        }
+
+
+        item {
+
+            Row(
+
+                modifier = Modifier.fillMaxWidth(),
+
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+
+            ) {
+
+
+                Box(
+
+                    modifier = Modifier.weight(1f)
 
                 ) {
 
+                    PrimaryButton(
+
+                        text = "شناسایی شماره‌ها",
+
+                        onClick = onExtract
+
+                    )
+
+                }
+
+
+                if (results.isNotEmpty()) {
 
                     Box(
 
@@ -116,32 +126,11 @@ fun HomeScreen(
 
                         PrimaryButton(
 
-                            text = "شناسایی شماره‌ها",
+                            text = "حذف نتایج",
 
-                            onClick = onExtract
+                            onClick = onClear
 
                         )
-
-                    }
-
-
-                    if (results.isNotEmpty()) {
-
-                        Box(
-
-                            modifier = Modifier.weight(1f)
-
-                        ) {
-
-                            PrimaryButton(
-
-                                text = "حذف نتایج",
-
-                                onClick = onClear
-
-                            )
-
-                        }
 
                     }
 
@@ -149,89 +138,90 @@ fun HomeScreen(
 
             }
 
+        }
 
-            item {
 
-                FilterBar(
+        item {
 
-                    selectedType = selectedType,
+            FilterBar(
 
-                    onTypeSelected = {
+                selectedType = selectedType,
 
-                        selectedType = it
+                onTypeSelected = {
 
-                        onFilter(
+                    selectedType = it
 
-                            when (it) {
+                    onFilter(
 
-                                null ->
-                                    FilterType.ALL
+                        when (it) {
 
-                                else ->
-                                    FilterType.valueOf(
+                            null ->
+                                FilterType.ALL
 
-                                        it.name
+                            else ->
+                                FilterType.valueOf(
 
-                                    )
+                                    it.name
 
-                            }
+                                )
 
-                        )
+                        }
 
-                    }
+                    )
+
+                }
+
+            )
+
+        }
+
+
+        item {
+
+            if (results.isNotEmpty()) {
+
+                ResultSummaryCard(
+
+                    total = results.size
 
                 )
 
             }
 
+        }
+
+
+        if (results.isEmpty()) {
+
 
             item {
 
-                if (results.isNotEmpty()) {
-
-                    ResultSummaryCard(
-
-                        total = results.size
-
-                    )
-
-                }
+                EmptyState()
 
             }
 
 
-            if (results.isEmpty()) {
+        } else {
 
 
-                item {
+            items(
 
-                    EmptyState()
+                items = results,
 
-                }
+                key = { it.type.name + it.value }
 
-
-            } else {
-
-
-                items(
-
-                        items = results,
-                        key = { it.type.name + it.value }
-
-                ) { item ->
+            ) { item ->
 
 
-                    ResultCard(
+                ResultCard(
 
-                        item = item
+                    item = item
 
-                    )
-
-
-                }
+                )
 
 
             }
+
 
         }
 
