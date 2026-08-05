@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
@@ -37,7 +38,9 @@ fun HomeScreen(
 ) {
 
     var selectedType by remember {
+
         mutableStateOf<NumberType?>(null)
+
     }
 
     val listState = rememberLazyListState()
@@ -61,15 +64,8 @@ fun HomeScreen(
             state = listState,
 
             modifier = Modifier
-
                 .fillMaxSize()
-
-                .background(
-
-                    MaterialTheme.colorScheme.background
-
-                )
-
+                .background(MaterialTheme.colorScheme.background)
                 .padding(padding),
 
             contentPadding = PaddingValues(
@@ -97,18 +93,13 @@ fun HomeScreen(
             }
 
             item {
-
-                Row(
-
-                    modifier = Modifier.fillMaxWidth(),
-
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-
-                ) {
+                                if (results.isEmpty()) {
 
                     Box(
 
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.fillMaxWidth(),
+
+                        contentAlignment = Alignment.Center
 
                     ) {
 
@@ -122,7 +113,33 @@ fun HomeScreen(
 
                     }
 
-                    if (results.isNotEmpty()) {
+                } else {
+
+                    Row(
+
+                        modifier = Modifier.fillMaxWidth(),
+
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+
+                    ) {
+
+                        Box(
+
+                            modifier = Modifier.weight(1f)
+
+                        ) {
+
+                            PrimaryButton(
+
+                                text = "شناسایی شماره‌ها",
+
+                                onClick = onExtract,
+
+                                modifier = Modifier.fillMaxWidth()
+
+                            )
+
+                        }
 
                         Box(
 
@@ -134,7 +151,9 @@ fun HomeScreen(
 
                                 text = "حذف نتایج",
 
-                                onClick = onClear
+                                onClick = onClear,
+
+                                modifier = Modifier.fillMaxWidth()
 
                             )
 
@@ -160,15 +179,9 @@ fun HomeScreen(
 
                             when (it) {
 
-                                null ->
-                                    FilterType.ALL
+                                null -> FilterType.ALL
 
-                                else ->
-                                    FilterType.valueOf(
-
-                                        it.name
-
-                                    )
+                                else -> FilterType.valueOf(it.name)
 
                             }
 
@@ -193,8 +206,7 @@ fun HomeScreen(
                 }
 
             }
-
-            if (results.isEmpty()) {
+                        if (results.isEmpty()) {
 
                 item {
 
