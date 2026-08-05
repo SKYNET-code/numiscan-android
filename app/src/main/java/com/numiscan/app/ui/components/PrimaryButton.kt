@@ -1,14 +1,16 @@
 package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -20,46 +22,75 @@ fun PrimaryButton(
 
     modifier: Modifier = Modifier,
 
-    outlined: Boolean = true
+    outlined: Boolean = false
 
 ) {
 
-    OutlinedButton(
+    val shape = RoundedCornerShape(14.dp)
 
-        onClick = onClick,
+    if (outlined) {
 
-        modifier = modifier
-            .wrapContentWidth()
-            .defaultMinSize(
-                minWidth = 220.dp,
-                minHeight = 48.dp
-            ),
+        OutlinedButton(
 
-        shape = RoundedCornerShape(12.dp),
+            onClick = onClick,
 
-        colors = ButtonDefaults.outlinedButtonColors(
+            modifier = modifier
+                .defaultMinSize(
+                    minWidth = 170.dp,
+                    minHeight = 48.dp
+                ),
 
-            contentColor = MaterialTheme.colorScheme.primary
+            shape = shape
 
-        ),
+        ) {
 
-        border = ButtonDefaults.outlinedButtonBorder.copy(
+            Text(
 
-            width = 1.4.dp
+                text = text,
 
-        )
+                style = MaterialTheme.typography.titleMedium,
 
-    ) {
+                maxLines = 1,
 
-        Text(
+                softWrap = false,
 
-            text = text,
+                overflow = TextOverflow.Ellipsis
 
-            style = MaterialTheme.typography.titleMedium,
+            )
 
-            color = MaterialTheme.colorScheme.primary
+        }
 
-        )
+    } else {
+
+        Button(
+
+            onClick = onClick,
+
+            modifier = modifier
+                .defaultMinSize(
+                    minWidth = 170.dp,
+                    minHeight = 48.dp
+                ),
+
+            shape = shape
+
+        ) {
+
+            Text(
+
+                text = text,
+
+                style = MaterialTheme.typography.titleMedium,
+
+                maxLines = 1,
+
+                softWrap = false,
+
+                overflow = TextOverflow.Ellipsis
+
+            )
+
+        }
 
     }
 
