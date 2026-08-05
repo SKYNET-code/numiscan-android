@@ -2,7 +2,6 @@ package com.numiscan.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -44,7 +43,8 @@ class MainActivity : ComponentActivity() {
 
             window.decorView
 
-        ).isAppearanceLightStatusBars = true
+        ).isAppearanceLightStatusBars =
+            !resources.configuration.isNightModeActive
 
 
 
