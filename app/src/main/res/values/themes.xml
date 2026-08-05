@@ -4,11 +4,13 @@
 
     <style
         name="Theme.NumiScan"
-        parent="Theme.Material3.DayNight.NoActionBar">
+        parent="android:style/Theme.Material.Light.NoActionBar">
 
         <item name="android:windowNoTitle">true</item>
 
         <item name="android:windowActionBar">false</item>
+
+        <item name="android:windowActionModeOverlay">false</item>
 
     </style>
 
