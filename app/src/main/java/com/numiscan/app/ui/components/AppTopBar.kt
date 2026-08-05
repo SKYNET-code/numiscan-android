@@ -3,6 +3,7 @@ package com.numiscan.app.ui.components
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 
@@ -15,11 +16,13 @@ fun AppTopBar(
 
 ) {
 
+
     CenterAlignedTopAppBar(
 
         title = {
 
-            androidx.compose.material3.Text(
+
+            Text(
 
                 text = title,
 
@@ -27,14 +30,19 @@ fun AppTopBar(
 
             )
 
+
         },
+
 
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
 
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = MaterialTheme.colorScheme.surface,
+
+            titleContentColor = MaterialTheme.colorScheme.onSurface
 
         )
 
     )
+
 
 }
