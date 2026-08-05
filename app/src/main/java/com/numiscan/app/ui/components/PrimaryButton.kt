@@ -1,10 +1,8 @@
 package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -22,71 +20,46 @@ fun PrimaryButton(
 
     modifier: Modifier = Modifier,
 
-    outlined: Boolean = false
+    outlined: Boolean = true
 
 ) {
 
-    if (outlined) {
+    OutlinedButton(
 
-        OutlinedButton(
+        onClick = onClick,
 
-            onClick = onClick,
+        modifier = modifier
+            .wrapContentWidth()
+            .defaultMinSize(
+                minWidth = 220.dp,
+                minHeight = 48.dp
+            ),
 
-            modifier = modifier
-                .wrapContentWidth()
-                .defaultMinSize(
-                    minWidth = 220.dp,
-                    minHeight = 50.dp
-                ),
+        shape = RoundedCornerShape(12.dp),
 
-            shape = RoundedCornerShape(16.dp)
+        colors = ButtonDefaults.outlinedButtonColors(
 
-        ) {
+            contentColor = MaterialTheme.colorScheme.primary
 
-            Text(
+        ),
 
-                text = text,
+        border = ButtonDefaults.outlinedButtonBorder.copy(
 
-                style = MaterialTheme.typography.titleMedium
+            width = 1.4.dp
 
-            )
+        )
 
-        }
+    ) {
 
-    } else {
+        Text(
 
-        Button(
+            text = text,
 
-            onClick = onClick,
+            style = MaterialTheme.typography.titleMedium,
 
-            modifier = modifier
-                .wrapContentWidth()
-                .defaultMinSize(
-                    minWidth = 220.dp,
-                    minHeight = 50.dp
-                ),
+            color = MaterialTheme.colorScheme.primary
 
-            shape = RoundedCornerShape(16.dp),
-
-            colors = ButtonDefaults.buttonColors(
-
-                containerColor = MaterialTheme.colorScheme.primary,
-
-                contentColor = MaterialTheme.colorScheme.onPrimary
-
-            )
-
-        ) {
-
-            Text(
-
-                text = text,
-
-                style = MaterialTheme.typography.titleMedium
-
-            )
-
-        }
+        )
 
     }
 
