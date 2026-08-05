@@ -14,13 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.gestures.ScrollableDefaults
-
 import com.numiscan.app.data.model.ExtractedNumber
 import com.numiscan.app.data.model.FilterType
 import com.numiscan.app.data.model.NumberType
 import com.numiscan.app.ui.components.*
-
 
 @Composable
 fun HomeScreen(
@@ -43,11 +40,7 @@ fun HomeScreen(
         mutableStateOf<NumberType?>(null)
     }
 
-
     val listState = rememberLazyListState()
-
-    val flingBehavior = ScrollableDefaults.flingBehavior()
-
 
     Scaffold(
 
@@ -62,7 +55,6 @@ fun HomeScreen(
         }
 
     ) { padding ->
-
 
         LazyColumn(
 
@@ -80,10 +72,6 @@ fun HomeScreen(
 
                 .padding(padding),
 
-
-            flingBehavior = flingBehavior,
-
-
             contentPadding = PaddingValues(
 
                 horizontal = 16.dp,
@@ -92,14 +80,11 @@ fun HomeScreen(
 
             ),
 
-
             verticalArrangement = Arrangement.spacedBy(16.dp)
 
         ) {
 
-
             item {
-
 
                 InputCard(
 
@@ -109,12 +94,9 @@ fun HomeScreen(
 
                 )
 
-
             }
 
-
             item {
-
 
                 Row(
 
@@ -124,13 +106,11 @@ fun HomeScreen(
 
                 ) {
 
-
                     Box(
 
                         modifier = Modifier.weight(1f)
 
                     ) {
-
 
                         PrimaryButton(
 
@@ -140,19 +120,15 @@ fun HomeScreen(
 
                         )
 
-
                     }
 
-
                     if (results.isNotEmpty()) {
-
 
                         Box(
 
                             modifier = Modifier.weight(1f)
 
                         ) {
-
 
                             PrimaryButton(
 
@@ -162,20 +138,15 @@ fun HomeScreen(
 
                             )
 
-
                         }
 
                     }
 
-
                 }
-
 
             }
 
-
             item {
-
 
                 FilterBar(
 
@@ -183,22 +154,16 @@ fun HomeScreen(
 
                     onTypeSelected = {
 
-
                         selectedType = it
-
 
                         onFilter(
 
                             when (it) {
 
-
                                 null ->
-
                                     FilterType.ALL
 
-
                                 else ->
-
                                     FilterType.valueOf(
 
                                         it.name
@@ -209,20 +174,15 @@ fun HomeScreen(
 
                         )
 
-
                     }
 
                 )
 
-
             }
-
 
             item {
 
-
                 if (results.isNotEmpty()) {
-
 
                     ResultSummaryCard(
 
@@ -230,40 +190,27 @@ fun HomeScreen(
 
                     )
 
-
                 }
-
 
             }
 
-
             if (results.isEmpty()) {
-
 
                 item {
 
-
                     EmptyState()
-
 
                 }
 
-
             } else {
-
 
                 items(
 
                     items = results,
 
-                    key = {
-
-                        it.type.name + it.value
-
-                    }
+                    key = { it.type.name + it.value }
 
                 ) { item ->
-
 
                     ResultCard(
 
@@ -271,17 +218,12 @@ fun HomeScreen(
 
                     )
 
-
                 }
-
 
             }
 
-
         }
 
-
     }
-
 
 }
