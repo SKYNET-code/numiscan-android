@@ -7,11 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
@@ -37,7 +33,9 @@ fun HomeScreen(
 ) {
 
     var selectedType by remember {
+
         mutableStateOf<NumberType?>(null)
+
     }
 
     val listState = rememberLazyListState()
@@ -56,55 +54,59 @@ fun HomeScreen(
 
     ) { padding ->
 
-        LazyColumn(
-
-            state = listState,
+        Column(
 
             modifier = Modifier
 
                 .fillMaxSize()
 
-                .background(
+                .background(MaterialTheme.colorScheme.background)
 
-                    MaterialTheme.colorScheme.background
+                .padding(padding)
 
-                )
-
-                .padding(padding),
-
-            contentPadding = PaddingValues(
-
-                horizontal = 16.dp,
-
-                vertical = 16.dp
-
-            ),
-
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
 
         ) {
 
-            item {
+            InputCard(
 
-                InputCard(
+                text = inputText,
 
-                    text = inputText,
+                onTextChange = onTextChange
 
-                    onTextChange = onTextChange
+            )
 
-                )
+            Spacer(
 
-            }
+                modifier = Modifier.height(16.dp)
 
-            item {
+            )
 
-                Row(
+            Row(
 
-                    modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
 
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+
+            ) {
+
+                Box(
+
+                    modifier = Modifier.weight(1f)
 
                 ) {
+
+                    PrimaryButton(
+
+                        text = "شناسایی شماره‌ها",
+
+                        onClick = onExtract
+
+                    )
+
+                }
+
+                if (results.isNotEmpty()) {
 
                     Box(
 
@@ -114,109 +116,112 @@ fun HomeScreen(
 
                         PrimaryButton(
 
-                            text = "شناسایی شماره‌ها",
+                            text = "حذف نتایج",
 
-                            onClick = onExtract
+                            onClick = onClear
 
                         )
 
                     }
 
-                    if (results.isNotEmpty()) {
+                }
 
-                        Box(
+            }
 
-                            modifier = Modifier.weight(1f)
+            Spacer(
 
-                        ) {
+                modifier = Modifier.height(16.dp)
 
-                            PrimaryButton(
+            )
 
-                                text = "حذف نتایج",
+            FilterBar(
 
-                                onClick = onClear
+                selectedType = selectedType,
+
+                onTypeSelected = {
+
+                    selectedType = it
+
+                    onFilter(
+
+                        when (it) {
+
+                            null -> FilterType.ALL
+
+                            else -> FilterType.valueOf(it.name)
+
+                        }
+
+                    )
+
+                }
+
+            )
+
+            if (results.isNotEmpty()) {
+
+                Spacer(
+
+                    modifier = Modifier.height(16.dp)
+
+                )
+
+                ResultSummaryCard(
+
+                    total = results.size
+
+                )
+
+            }
+
+            Spacer(
+
+                modifier = Modifier.height(16.dp)
+
+            )
+
+            Box(
+
+                modifier = Modifier.weight(1f)
+
+            ) {
+                                LazyColumn(
+
+                    state = listState,
+
+                    modifier = Modifier.fillMaxSize(),
+
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+
+                ) {
+
+                    if (results.isEmpty()) {
+
+                        item {
+
+                            EmptyState()
+
+                        }
+
+                    } else {
+
+                        items(
+
+                            items = results,
+
+                            key = { it.type.name + it.value }
+
+                        ) { item ->
+
+                            ResultCard(
+
+                                item = item
 
                             )
 
                         }
 
                     }
-
-                }
-
-            }
-
-            item {
-
-                FilterBar(
-
-                    selectedType = selectedType,
-
-                    onTypeSelected = {
-
-                        selectedType = it
-
-                        onFilter(
-
-                            when (it) {
-
-                                null ->
-                                    FilterType.ALL
-
-                                else ->
-                                    FilterType.valueOf(
-
-                                        it.name
-
-                                    )
-
-                            }
-
-                        )
-
-                    }
-
-                )
-
-            }
-
-            item {
-
-                if (results.isNotEmpty()) {
-
-                    ResultSummaryCard(
-
-                        total = results.size
-
-                    )
-
-                }
-
-            }
-
-            if (results.isEmpty()) {
-
-                item {
-
-                    EmptyState()
-
-                }
-
-            } else {
-
-                items(
-
-                    items = results,
-
-                    key = { it.type.name + it.value }
-
-                ) { item ->
-
-                    ResultCard(
-
-                        item = item
-
-                    )
 
                 }
 
