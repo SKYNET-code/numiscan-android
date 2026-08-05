@@ -1,5 +1,7 @@
 package com.numiscan.app.viewmodel
 
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import com.numiscan.app.data.model.ExtractedNumber
 import com.numiscan.app.data.model.FilterType
@@ -13,7 +15,9 @@ class MainViewModel : ViewModel() {
 
     private val duplicateFilter = DuplicateFilter()
 
-    private val _inputText = MutableStateFlow("")
+    private val _inputText =
+        MutableStateFlow(TextFieldValue(""))
+
     val inputText = _inputText.asStateFlow()
 
     private val _allResults =
@@ -29,21 +33,42 @@ class MainViewModel : ViewModel() {
 
     private var searchQuery = ""
 
+    fun updateText(value: TextFieldValue) {
+
+        _inputText.value = value
+
+    }
+
     fun updateText(text: String) {
-        _inputText.value = text
+
+        _inputText.value = TextFieldValue(
+
+            text = text,
+
+            selection = TextRange(text.length)
+
+        )
+
     }
 
     fun extractNumbers(removeDuplicates: Boolean = true) {
 
-        var data = NumberExtractor.extract(_inputText.value)
+        var data = NumberExtractor.extract(
+
+            _inputText.value.text
+
+        )
 
         if (removeDuplicates) {
+
             data = duplicateFilter.removeDuplicates(data)
+
         }
 
         _allResults.value = data
 
         applyFilters()
+
     }
 
     fun search(query: String) {
@@ -66,21 +91,26 @@ class MainViewModel : ViewModel() {
 
         _results.value = when (type) {
 
-            SortType.NEWEST ->
-                _results.value
+            SortType.NEWEST -> _results.value
 
-            SortType.OLDEST ->
-                _results.value
+            SortType.OLDEST -> _results.value
 
             SortType.ASCENDING ->
+
                 _results.value.sortedBy {
+
                     it.value
+
                 }
 
             SortType.DESCENDING ->
+
                 _results.value.sortedByDescending {
+
                     it.value
+
                 }
+
         }
 
     }
@@ -104,8 +134,11 @@ class MainViewModel : ViewModel() {
             list = list.filter {
 
                 it.value.contains(
+
                     searchQuery,
+
                     ignoreCase = true
+
                 )
 
             }
@@ -164,7 +197,7 @@ class MainViewModel : ViewModel() {
 
     fun clearText() {
 
-        _inputText.value = ""
+        _inputText.value = TextFieldValue("")
 
     }
 
