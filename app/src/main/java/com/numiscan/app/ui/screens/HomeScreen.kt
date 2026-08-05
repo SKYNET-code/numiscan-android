@@ -7,11 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -38,9 +34,7 @@ fun HomeScreen(
 ) {
 
     var selectedType by remember {
-
         mutableStateOf<NumberType?>(null)
-
     }
 
     val listState = rememberLazyListState()
@@ -50,9 +44,7 @@ fun HomeScreen(
         topBar = {
 
             AppTopBar(
-
                 title = "NumiScan"
-
             )
 
         }
@@ -69,11 +61,8 @@ fun HomeScreen(
                 .padding(padding),
 
             contentPadding = PaddingValues(
-
                 horizontal = 16.dp,
-
                 vertical = 16.dp
-
             ),
 
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -93,7 +82,8 @@ fun HomeScreen(
             }
 
             item {
-                                if (results.isEmpty()) {
+
+                if (results.isEmpty()) {
 
                     Box(
 
@@ -105,7 +95,7 @@ fun HomeScreen(
 
                         PrimaryButton(
 
-                            text = "شناسایی شماره‌ها",
+                            text = "تشخیص شماره",
 
                             onClick = onExtract
 
@@ -119,7 +109,7 @@ fun HomeScreen(
 
                         modifier = Modifier.fillMaxWidth(),
 
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
 
                     ) {
 
@@ -131,7 +121,7 @@ fun HomeScreen(
 
                             PrimaryButton(
 
-                                text = "شناسایی شماره‌ها",
+                                text = "تشخیص شماره",
 
                                 onClick = onExtract,
 
@@ -153,7 +143,9 @@ fun HomeScreen(
 
                                 onClick = onClear,
 
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
+
+                                outlined = true
 
                             )
 
@@ -206,7 +198,8 @@ fun HomeScreen(
                 }
 
             }
-                        if (results.isEmpty()) {
+
+            if (results.isEmpty()) {
 
                 item {
 
