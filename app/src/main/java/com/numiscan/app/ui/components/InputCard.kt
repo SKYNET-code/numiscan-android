@@ -5,14 +5,23 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun InputCard(
@@ -31,7 +40,7 @@ fun InputCard(
 
         modifier = modifier.fillMaxWidth(),
 
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(16.dp),
 
         colors = CardDefaults.cardColors(
 
@@ -59,9 +68,7 @@ fun InputCard(
 
                 style = MaterialTheme.typography.titleMedium,
 
-                fontWeight = FontWeight.Bold,
-
-                color = MaterialTheme.colorScheme.onSurface
+                fontWeight = FontWeight.Bold
 
             )
 
@@ -78,9 +85,7 @@ fun InputCard(
                 onValueChange = onTextChange,
 
                 modifier = Modifier
-
                     .fillMaxWidth()
-
                     .heightIn(min = 180.dp),
 
                 placeholder = {
@@ -89,7 +94,9 @@ fun InputCard(
 
                         text = "متن، پیام، شماره‌ها یا اطلاعات را اینجا وارد کنید...",
 
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        modifier = Modifier.fillMaxWidth(),
+
+                        textAlign = TextAlign.End
 
                     )
 
@@ -97,7 +104,9 @@ fun InputCard(
 
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
 
-                    color = MaterialTheme.colorScheme.onSurface
+                    textAlign = TextAlign.End,
+
+                    textDirection = TextDirection.ContentOrRtl
 
                 ),
 
@@ -115,13 +124,7 @@ fun InputCard(
 
                     focusedContainerColor = MaterialTheme.colorScheme.surface,
 
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-
-                    cursorColor = MaterialTheme.colorScheme.primary,
-
-                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
-
-                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
 
                 )
 
@@ -129,7 +132,7 @@ fun InputCard(
 
             Spacer(
 
-                modifier = Modifier.height(14.dp)
+                modifier = Modifier.height(16.dp)
 
             )
 
@@ -137,101 +140,81 @@ fun InputCard(
 
                 modifier = Modifier.fillMaxWidth(),
 
-                horizontalArrangement = Arrangement.SpaceBetween,
-
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
 
             ) {
 
-                Text(
+                Button(
 
-                    text = "${text.length} کاراکتر",
+                    onClick = {
 
-                    style = MaterialTheme.typography.bodySmall,
+                        val clipboardText = clipboardManager.getText()
 
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                        if (clipboardText != null) {
 
-                )
+                            onTextChange(clipboardText.text)
 
-                Row(
+                        }
 
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    },
+
+                    shape = RoundedCornerShape(12.dp)
 
                 ) {
-                                        OutlinedButton(
 
-                        onClick = {
+                    androidx.compose.material3.Icon(
 
-                            val clipboardText =
-                                clipboardManager.getText()
+                        imageVector = Icons.Outlined.ContentPaste,
 
-                            if (clipboardText != null) {
+                        contentDescription = null
 
-                                onTextChange(
+                    )
 
-                                    clipboardText.text
+                    Spacer(
 
-                                )
+                        modifier = Modifier.width(6.dp)
 
-                            }
+                    )
 
-                        }
+                    Text(
 
-                    ) {
+                        "چسباندن"
 
-                        Icon(
+                    )
 
-                            imageVector = Icons.Outlined.ContentPaste,
+                }
 
-                            contentDescription = null
+                Button(
 
-                        )
+                    onClick = {
 
-                        Spacer(
+                        onTextChange("")
 
-                            modifier = Modifier.width(6.dp)
+                    },
 
-                        )
+                    shape = RoundedCornerShape(12.dp)
 
-                        Text(
+                ) {
 
-                            "Paste"
+                    androidx.compose.material3.Icon(
 
-                        )
+                        imageVector = Icons.Outlined.DeleteOutline,
 
-                    }
+                        contentDescription = null
 
-                    Button(
+                    )
 
-                        onClick = {
+                    Spacer(
 
-                            onTextChange("")
+                        modifier = Modifier.width(6.dp)
 
-                        }
+                    )
 
-                    ) {
+                    Text(
 
-                        Icon(
+                        "پاک کردن"
 
-                            imageVector = Icons.Outlined.DeleteOutline,
-
-                            contentDescription = null
-
-                        )
-
-                        Spacer(
-
-                            modifier = Modifier.width(6.dp)
-
-                        )
-
-                        Text(
-
-                            "پاک کردن"
-
-                        )
-
-                    }
+                    )
 
                 }
 
