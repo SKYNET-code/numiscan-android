@@ -5,12 +5,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -26,8 +26,6 @@ fun PrimaryButton(
 
 ) {
 
-    val shape = RoundedCornerShape(14.dp)
-
     if (outlined) {
 
         OutlinedButton(
@@ -35,12 +33,12 @@ fun PrimaryButton(
             onClick = onClick,
 
             modifier = modifier
+                .fillMaxWidth()
                 .defaultMinSize(
-                    minWidth = 170.dp,
                     minHeight = 48.dp
                 ),
 
-            shape = shape
+            shape = RoundedCornerShape(12.dp)
 
         ) {
 
@@ -48,13 +46,9 @@ fun PrimaryButton(
 
                 text = text,
 
-                style = MaterialTheme.typography.titleMedium,
-
                 maxLines = 1,
 
-                softWrap = false,
-
-                overflow = TextOverflow.Ellipsis
+                style = MaterialTheme.typography.titleMedium
 
             )
 
@@ -67,12 +61,20 @@ fun PrimaryButton(
             onClick = onClick,
 
             modifier = modifier
+                .fillMaxWidth()
                 .defaultMinSize(
-                    minWidth = 170.dp,
                     minHeight = 48.dp
                 ),
 
-            shape = shape
+            shape = RoundedCornerShape(12.dp),
+
+            colors = ButtonDefaults.buttonColors(
+
+                containerColor = MaterialTheme.colorScheme.primary,
+
+                contentColor = MaterialTheme.colorScheme.onPrimary
+
+            )
 
         ) {
 
@@ -80,13 +82,9 @@ fun PrimaryButton(
 
                 text = text,
 
-                style = MaterialTheme.typography.titleMedium,
-
                 maxLines = 1,
 
-                softWrap = false,
-
-                overflow = TextOverflow.Ellipsis
+                style = MaterialTheme.typography.titleMedium
 
             )
 
