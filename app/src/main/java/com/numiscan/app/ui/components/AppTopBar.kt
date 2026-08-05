@@ -1,28 +1,37 @@
 package com.numiscan.app.ui.components
 
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(
 
-    title: String = ""
+    title: String = "NumiScan"
 
 ) {
 
-    TopAppBar(
+    CenterAlignedTopAppBar(
 
         title = {
 
+            androidx.compose.material3.Text(
+
+                text = title,
+
+                style = MaterialTheme.typography.titleLarge
+
+            )
+
         },
 
-        colors = TopAppBarDefaults.topAppBarColors(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
 
-            containerColor = Color.Transparent
+            containerColor = MaterialTheme.colorScheme.background
 
         )
 
