@@ -1,32 +1,16 @@
 package com.numiscan.app.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
@@ -72,12 +56,9 @@ fun InputCard(
 
             OutlinedTextField(
 
-                value = TextFieldValue(text),
-                                onValueChange = {
+                value = text,
 
-                    onTextChange(it.text)
-
-                },
+                onValueChange = onTextChange,
 
                 modifier = Modifier
                     .fillMaxWidth()
@@ -91,7 +72,7 @@ fun InputCard(
 
                         modifier = Modifier.fillMaxWidth(),
 
-                        textAlign = TextAlign.Right
+                        textAlign = TextAlign.End
 
                     )
 
@@ -99,9 +80,9 @@ fun InputCard(
 
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
 
-                    textAlign = TextAlign.Right,
+                    textAlign = TextAlign.Start,
 
-                    textDirection = TextDirection.Rtl
+                    textDirection = TextDirection.Content
 
                 ),
 
@@ -127,7 +108,7 @@ fun InputCard(
 
             Spacer(
 
-                modifier = Modifier.height(14.dp)
+                modifier = Modifier.height(16.dp)
 
             )
 
@@ -145,17 +126,21 @@ fun InputCard(
 
                     onClick = {
 
-                        val clipboardText = clipboardManager.getText()
+                        clipboardManager.getText()?.let {
 
-                        if (clipboardText != null) {
-
-                            onTextChange(clipboardText.text)
+                            onTextChange(it.text)
 
                         }
 
                     },
 
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
+
+                    colors = ButtonDefaults.buttonColors(
+
+                        containerColor = MaterialTheme.colorScheme.primary
+
+                    )
 
                 ) {
 
@@ -182,7 +167,8 @@ fun InputCard(
                     modifier = Modifier.width(12.dp)
 
                 )
-                                Button(
+
+                Button(
 
                     onClick = {
 
@@ -190,7 +176,15 @@ fun InputCard(
 
                     },
 
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
+
+                    colors = ButtonDefaults.buttonColors(
+
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
+
+                    )
 
                 ) {
 
