@@ -50,16 +50,6 @@ fun HomeScreen(
 
     Scaffold(
 
-        topBar = {
-
-            AppTopBar(
-
-                title = "NumiScan"
-
-            )
-
-        }
-
     ) { padding ->
 
 
