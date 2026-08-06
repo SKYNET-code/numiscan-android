@@ -1,5 +1,6 @@
 package com.numiscan.app.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -8,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.numiscan.app.data.model.ExtractedNumber
-import androidx.compose.runtime.Immutable
 
 @Composable
 fun ResultCard(
@@ -32,9 +32,17 @@ fun ResultCard(
 
         ),
 
+        border = BorderStroke(
+
+            width = 1.dp,
+
+            color = MaterialTheme.colorScheme.outline
+
+        ),
+
         elevation = CardDefaults.cardElevation(
 
-            defaultElevation = 2.dp
+            defaultElevation = 4.dp
 
         )
 
@@ -82,8 +90,8 @@ fun ResultCard(
 
                 }
 
-
             }
+
 
             Text(
 
@@ -92,7 +100,9 @@ fun ResultCard(
                 style = MaterialTheme.typography.titleLarge
 
             )
-                        ResultActions(
+
+
+            ResultActions(
 
                 value = item.value
 
