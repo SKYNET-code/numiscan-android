@@ -9,28 +9,30 @@ import androidx.compose.runtime.Composable
 private val LightColors = lightColorScheme(
 
     primary = BluePrimary,
-
     secondary = BlueSecondary,
 
     background = LightBackground,
+    surface = LightSurface,
 
-    surface = LightSurface
+    surfaceVariant = LightSurfaceVariant,
+
+    outline = LightOutline
 
 )
-
 
 private val DarkColors = darkColorScheme(
 
     primary = BluePrimary,
-
     secondary = BlueSecondary,
 
     background = DarkBackground,
+    surface = DarkSurface,
 
-    surface = DarkSurface
+    surfaceVariant = DarkSurfaceVariant,
+
+    outline = DarkOutline
 
 )
-
 
 @Composable
 fun NumiScanTheme(
