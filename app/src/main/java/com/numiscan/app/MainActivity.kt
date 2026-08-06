@@ -1,13 +1,15 @@
 package com.numiscan.app
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.runtime.getValue
+import androidx.core.view.WindowCompat
 import com.numiscan.app.navigation.AppNavigation
 import com.numiscan.app.ui.screens.HomeScreen
 import com.numiscan.app.ui.theme.NumiScanTheme
@@ -21,6 +23,19 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
+        enableEdgeToEdge()
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        window.statusBarColor = Color.TRANSPARENT
+
+        val controller = WindowCompat.getInsetsController(
+            window,
+            window.decorView
+        )
+
+        controller.isAppearanceLightStatusBars = true
+
         handleShareIntent(intent)
 
         setContent {
@@ -28,7 +43,6 @@ class MainActivity : ComponentActivity() {
             NumiScanTheme {
 
                 val inputText by viewModel.inputText.collectAsState()
-
                 val results by viewModel.results.collectAsState()
 
                 AppNavigation {
@@ -84,10 +98,8 @@ class MainActivity : ComponentActivity() {
     private fun handleShareIntent(intent: Intent) {
 
         if (
-
             intent.action == Intent.ACTION_SEND &&
             intent.type == "text/plain"
-
         ) {
 
             intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
