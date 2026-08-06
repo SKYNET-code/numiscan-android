@@ -1,7 +1,6 @@
 package com.numiscan.app.ui.components
 
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -22,9 +21,31 @@ fun PrimaryButton(
 
     modifier: Modifier = Modifier,
 
-    outlined: Boolean = false
+    outlined: Boolean = false,
+
+    destructive: Boolean = false
 
 ) {
+
+    val colors = when {
+
+        destructive -> ButtonDefaults.buttonColors(
+
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+
+            contentColor = MaterialTheme.colorScheme.onErrorContainer
+
+        )
+
+        else -> ButtonDefaults.buttonColors(
+
+            containerColor = MaterialTheme.colorScheme.primary,
+
+            contentColor = MaterialTheme.colorScheme.onPrimary
+
+        )
+
+    }
 
     if (outlined) {
 
@@ -33,12 +54,13 @@ fun PrimaryButton(
             onClick = onClick,
 
             modifier = modifier
-                .fillMaxWidth()
+                .wrapContentWidth()
                 .defaultMinSize(
-                    minHeight = 48.dp
+                    minWidth = 160.dp,
+                    minHeight = 50.dp
                 ),
 
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(16.dp)
 
         ) {
 
@@ -46,9 +68,9 @@ fun PrimaryButton(
 
                 text = text,
 
-                maxLines = 1,
+                style = MaterialTheme.typography.titleMedium,
 
-                style = MaterialTheme.typography.titleMedium
+                maxLines = 1
 
             )
 
@@ -61,20 +83,15 @@ fun PrimaryButton(
             onClick = onClick,
 
             modifier = modifier
-                .fillMaxWidth()
+                .wrapContentWidth()
                 .defaultMinSize(
-                    minHeight = 48.dp
+                    minWidth = 160.dp,
+                    minHeight = 50.dp
                 ),
 
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(16.dp),
 
-            colors = ButtonDefaults.buttonColors(
-
-                containerColor = MaterialTheme.colorScheme.primary,
-
-                contentColor = MaterialTheme.colorScheme.onPrimary
-
-            )
+            colors = colors
 
         ) {
 
@@ -82,9 +99,9 @@ fun PrimaryButton(
 
                 text = text,
 
-                maxLines = 1,
+                style = MaterialTheme.typography.titleMedium,
 
-                style = MaterialTheme.typography.titleMedium
+                maxLines = 1
 
             )
 
