@@ -1,6 +1,7 @@
 package com.numiscan.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,8 +10,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalFocusManager
 import com.numiscan.app.data.model.ExtractedNumber
 import com.numiscan.app.data.model.FilterType
 import com.numiscan.app.data.model.NumberType
@@ -39,87 +42,79 @@ fun HomeScreen(
 
     val listState = rememberLazyListState()
 
-    Scaffold(
+    val focusManager = LocalFocusManager.current
 
-        topBar = {
 
-            AppTopBar(
+    Box(
 
-                title = "NumiScan"
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
 
-            )
+                detectTapGestures {
 
-        }
+                    focusManager.clearFocus()
 
-    ) { padding ->
+                }
 
-        LazyColumn(
+            }
 
-            state = listState,
+    ) {
 
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(padding),
+        Scaffold(
 
-            contentPadding = PaddingValues(
+            topBar = {
 
-                horizontal = 16.dp,
+                AppTopBar(
 
-                vertical = 16.dp
-
-            ),
-
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-
-        ) {
-
-            item {
-
-                InputCard(
-
-                    text = inputText,
-
-                    onTextChange = onTextChange
+                    title = "NumiScan"
 
                 )
 
             }
 
-            item {
+        ) { padding ->
 
-                if (results.isEmpty()) {
+            LazyColumn(
 
-                    Box(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
+                state = listState,
 
-                        PrimaryButton(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(padding),
 
-                            text = "تشخیص شماره",
+                contentPadding = PaddingValues(
 
-                            onClick = onExtract,
+                    horizontal = 16.dp,
 
-                            modifier = Modifier.align(
-                                androidx.compose.ui.Alignment.Center
-                            )
+                    vertical = 16.dp
 
-                        )
+                ),
 
-                    }
+                verticalArrangement = Arrangement.spacedBy(16.dp)
 
-                } else {
+            ) {
 
-                    Row(
+                item {
 
-                        modifier = Modifier.fillMaxWidth(),
+                    InputCard(
 
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        text = inputText,
 
-                    ) {
+                        onTextChange = onTextChange
+
+                    )
+
+                }
+
+
+                item {
+
+                    if (results.isEmpty()) {
 
                         Box(
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.fillMaxWidth()
                         ) {
 
                             PrimaryButton(
@@ -128,27 +123,58 @@ fun HomeScreen(
 
                                 onClick = onExtract,
 
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.align(
+                                    androidx.compose.ui.Alignment.Center
+                                )
 
                             )
 
                         }
 
-                        Box(
-                            modifier = Modifier.weight(1f)
+                    } else {
+
+                        Row(
+
+                            modifier = Modifier.fillMaxWidth(),
+
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+
                         ) {
 
-                            PrimaryButton(
+                            Box(
+                                modifier = Modifier.weight(1f)
+                            ) {
 
-                                text = "حذف نتایج",
+                                PrimaryButton(
 
-                                onClick = onClear,
+                                    text = "تشخیص شماره",
 
-                                modifier = Modifier.fillMaxWidth(),
+                                    onClick = onExtract,
 
-                                destructive = true
+                                    modifier = Modifier.fillMaxWidth()
 
-                            )
+                                )
+
+                            }
+
+
+                            Box(
+                                modifier = Modifier.weight(1f)
+                            ) {
+
+                                PrimaryButton(
+
+                                    text = "حذف نتایج",
+
+                                    onClick = onClear,
+
+                                    modifier = Modifier.fillMaxWidth(),
+
+                                    destructive = true
+
+                                )
+
+                            }
 
                         }
 
@@ -156,75 +182,78 @@ fun HomeScreen(
 
                 }
 
-            }
 
-            item {
+                item {
 
-                FilterBar(
+                    FilterBar(
 
-                    selectedType = selectedType,
+                        selectedType = selectedType,
 
-                    onTypeSelected = {
+                        onTypeSelected = {
 
-                        selectedType = it
+                            selectedType = it
 
-                        onFilter(
+                            onFilter(
 
-                            it?.let {
+                                it?.let {
 
-                                FilterType.valueOf(it.name)
+                                    FilterType.valueOf(it.name)
 
-                            } ?: FilterType.ALL
+                                } ?: FilterType.ALL
+
+                            )
+
+                        }
+
+                    )
+
+                }
+
+
+                if (results.isNotEmpty()) {
+
+                    item {
+
+                        ResultSummaryCard(
+
+                            total = results.size
 
                         )
 
                     }
 
-                )
-
-            }
-
-            if (results.isNotEmpty()) {
-
-                item {
-
-                    ResultSummaryCard(
-
-                        total = results.size
-
-                    )
-
                 }
 
-            }
 
-            if (results.isEmpty()) {
+                if (results.isEmpty()) {
 
-                item {
+                    item {
 
-                    EmptyState()
-
-                }
-
-            } else {
-
-                items(
-
-                    items = results,
-
-                    key = {
-
-                        it.type.name + it.value
+                        EmptyState()
 
                     }
 
-                ) { item ->
+                } else {
 
-                    ResultCard(
+                    items(
 
-                        item = item
+                        items = results,
 
-                    )
+                        key = {
+
+                            it.type.name + it.value
+
+                        }
+
+                    ) { item ->
+
+                        ResultCard(
+
+                            item = item
+
+                        )
+
+                    }
 
                 }
 
