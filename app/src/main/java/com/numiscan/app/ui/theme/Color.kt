@@ -19,16 +19,16 @@ val LightError = Color(0xFFE57373)
 
 
 
-/* ---------- Dark Theme (Idea 5) ---------- */
+/* ---------- Dark Theme (Idea 5 refined) ---------- */
 
 val DarkPrimary = Color(0xFF42A5F5)
 val DarkSecondary = Color(0xFF26C6DA)
 
-val DarkBackground = Color(0xFF101827)
-val DarkSurface = Color(0xFF182233)
+val DarkBackground = Color(0xFF0B1220)
+val DarkSurface = Color(0xFF172235)
 
-val DarkOutline = Color(0xFF2D415A)
-val DarkSurfaceVariant = Color(0xFF223044)
+val DarkOutline = Color(0xFF30465F)
+val DarkSurfaceVariant = Color(0xFF202D42)
 
 val DarkSuccess = Color(0xFF66BB6A)
 val DarkError = Color(0xFFEF9A9A)
