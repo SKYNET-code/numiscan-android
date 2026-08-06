@@ -7,8 +7,9 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
-import android.app.Activity
 import androidx.core.view.WindowCompat
+import android.app.Activity
+
 
 private val LightColors = lightColorScheme(
 
@@ -24,10 +25,11 @@ private val LightColors = lightColorScheme(
 
 )
 
+
 private val DarkColors = darkColorScheme(
 
-    primary = BluePrimary,
-    secondary = BlueSecondary,
+    primary = DarkPrimary,
+    secondary = DarkSecondary,
 
     background = DarkBackground,
     surface = DarkSurface,
@@ -59,6 +61,7 @@ fun NumiScanTheme(
             view
         ).isAppearanceLightStatusBars = !darkTheme
 
+
         window.statusBarColor =
             if (darkTheme) {
                 DarkBackground.toArgb()
@@ -71,7 +74,11 @@ fun NumiScanTheme(
 
     MaterialTheme(
 
-        colorScheme = if (darkTheme) DarkColors else LightColors,
+        colorScheme = if (darkTheme) {
+            DarkColors
+        } else {
+            LightColors
+        },
 
         typography = AppTypography,
 
