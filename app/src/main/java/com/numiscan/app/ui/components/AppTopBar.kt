@@ -1,5 +1,8 @@
 package com.numiscan.app.ui.components
 
+import androidx.compose.foundation.shadow
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +21,11 @@ fun AppTopBar(
 
 
     CenterAlignedTopAppBar(
+
+        modifier = Modifier
+            .shadow(
+                elevation = 4.dp
+            ),
 
         title = {
 
