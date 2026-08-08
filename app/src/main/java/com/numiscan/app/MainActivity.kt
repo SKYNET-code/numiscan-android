@@ -1,7 +1,6 @@
 package com.numiscan.app
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,15 +25,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        window.statusBarColor = Color.TRANSPARENT
-
-        val controller = WindowCompat.getInsetsController(
-            window,
-            window.decorView
-        )
-
-        controller.isAppearanceLightStatusBars = true
 
         handleShareIntent(intent)
 
@@ -91,22 +81,23 @@ class MainActivity : ComponentActivity() {
 
         super.onNewIntent(intent)
 
+        setIntent(intent)
+
         handleShareIntent(intent)
 
     }
 
-    private fun handleShareIntent(intent: Intent) {
+    private fun handleShareIntent(intent: Intent?) {
 
-        if (
-            intent.action == Intent.ACTION_SEND &&
-            intent.type == "text/plain"
-        ) {
+        if (intent?.action != Intent.ACTION_SEND) {
+            return
+        }
 
-            intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
+        val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
 
-                viewModel.updateText(text)
+        if (!sharedText.isNullOrEmpty()) {
 
-            }
+            viewModel.updateText(sharedText)
 
         }
 
